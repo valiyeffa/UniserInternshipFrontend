@@ -1,0 +1,53 @@
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      2024-cü ildən fəaliyyətdə
+    </div>
+    <h1>Gələcəyini <br><span class="gradient-text">Bizimlə İnşa Et</span></h1>
+    <p>Müasir texnologiyalar üzrə peşəkar kurslar, təcrübəli müəllimlər və real layihələr ilə karyeranı irəli apar.</p>
+    <div class="hero-buttons">
+      <a routerLink="/courses" class="btn-primary">📚 Kurslara Bax</a>
+      <a routerLink="/students" class="btn-secondary">👨‍🎓 Tələbələr</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="stat-item">
+    <div class="stat-number">5+</div>
+    <div class="stat-label">Tələbə</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">4+</div>
+    <div class="stat-label">Kurs</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">98%</div>
+    <div class="stat-label">Məmnuniyyət</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">1 İl</div>
+    <div class="stat-label">Təcrübə</div>
+  </div>
+</section>
+
+<!-- Cards -->
+<section class="features">
+  <div class="features-header">
+    <h2>Niyə Bizi Seçməlisiniz?</h2>
+    <p>Keyfiyyətli təhsil üçün lazım olan hər şey burada.</p>
+  </div>
+
+  <div class="cards">
+    @for (card of cards; track card.id) {
+      <div class="card">
+        <div class="card-icon" [style.background]="card.bg">{{ card.icon }}</div>
+        <h3>{{ card.title }}</h3>
+        <p>{{ card.desc }}</p>
+      </div>
+    }
+  </div>
+</section>

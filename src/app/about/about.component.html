@@ -1,0 +1,70 @@
+<!-- Hero -->
+<div class="about-hero">
+  <div class="about-hero-inner">
+    <h1>Haqqımızda</h1>
+    <p>Biz 2024-cü ildə yaradılmış müasir bir təhsil platformayıq. Məqsədimiz texnologiya sahəsində peşəkarlar yetişdirməkdir.</p>
+  </div>
+</div>
+
+<!-- Contact Strip -->
+<div class="contact-strip">
+  <div class="contact-strip-inner">
+    <div class="contact-item">
+      <span class="contact-icon">📍</span>
+      <span>Bakı, Azərbaycan</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-icon">📞</span>
+      <span>+994 50 000 00 00</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-icon">📧</span>
+      <span>info&#64;school.az</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-icon">🕐</span>
+      <span>09:00 - 18:00</span>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="features-section">
+  <div class="features-inner">
+    <div class="section-header">
+      <p class="section-label">Xüsusiyyətlər</p>
+      <h2>Platformamızın <span class="purple">Güclü Tərəfləri</span></h2>
+      <p class="section-desc">İş üslubunuzu tamamilə dəyişdirəcək xüsusiyyətlər.</p>
+    </div>
+
+    <div class="features-grid">
+      @for (feature of features; track feature.id) {
+        <div class="feature-card">
+          <div class="feature-icon" [style.background]="feature.bg">{{ feature.icon }}</div>
+          <div class="feature-title-row">
+            <h3>{{ feature.title }}</h3>
+            @if (feature.isNew) {
+              <span class="new-badge">Yeni</span>
+            }
+          </div>
+          <p>{{ feature.description }}</p>
+          <a href="#" class="feature-link">
+            Ətraflı
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+              <path d="m23.564 11.235-7.56-7.56a1.08 1.08 0 0 0-1.528 1.528l5.717 5.716H1.2a1.08 1.08 0 0 0 0 2.16h18.993l-5.717 5.716a1.08 1.08 0 1 0 1.528 1.528l7.56-7.56a1.08 1.08 0 0 0 0-1.528z"/>
+            </svg>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Bizimlə Öyrənməyə Başla!</h2>
+    <p>İndi qeydiyyatdan keç, ilk dərsin pulsuzdur.</p>
+    <a routerLink="/courses" class="cta-btn">📚 Kurslara Bax →</a>
+  </div>
+</section>

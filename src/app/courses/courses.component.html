@@ -1,0 +1,58 @@
+<!-- Header -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <p class="page-subtitle">Təhsil Proqramı</p>
+    <h1>📚 Kurslar</h1>
+    <p class="page-desc">Gələcəyinə investisiya edin — doğru kursu seçin</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <p class="filter-text">Cəmi <strong>{{ courses.length }}</strong> kurs tapıldı</p>
+    <div class="filter-badges">
+      <span class="fbadge green">✅ {{ availableCount }} açıq</span>
+      <span class="fbadge red">🔴 {{ courses.length - availableCount }} bağlı</span>
+    </div>
+  </div>
+
+  <!-- Course Cards -->
+  <div class="course-grid">
+    @for (course of courses; track course.id) {
+      <div class="course-card">
+        <div class="course-bar" [style.background]="course.color"></div>
+        <div class="course-body">
+          <div class="course-top">
+            <div class="course-icon">{{ course.icon }}</div>
+            @if (course.available) {
+              <span class="status-badge available">
+                <span class="dot dot-green"></span> Açıqdır
+              </span>
+            } @else {
+              <span class="status-badge unavailable">
+                <span class="dot dot-gray"></span> Bağlıdır
+              </span>
+            }
+          </div>
+
+          <h3>{{ course.name }}</h3>
+          <p class="course-desc">{{ course.description }}</p>
+
+          <div class="course-tags">
+            <span class="tag">👨‍🏫 {{ course.teacher }}</span>
+            <span class="tag">⏱️ {{ course.duration }}</span>
+            <span class="tag">📊 {{ course.level }}</span>
+          </div>
+
+          @if (course.available) {
+            <button class="btn-enroll">Kursa Yazıl →</button>
+          } @else {
+            <button class="btn-disabled" disabled>Hazırda Mövcud Deyil</button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
