@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CourseCardComponent } from "../../components/course-card/course-card.component";
 import { HttpClient } from '@angular/common/http';
 import { Courses } from '../../models/model';
@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-courses',
   imports: [FormsModule, CourseCardComponent, MatFormFieldModule, MatSelectModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.css'
 })
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class CoursesComponent {
   courses: Courses[] = [];
   selectedValue !: string;
+  isLoading = true;
 
   filters: any[] = [
     { value: '0', viewValue: 'None' },
@@ -30,6 +32,7 @@ export class CoursesComponent {
     this.http.get<Courses[]>('https://mocki.io/v1/3110cfad-7a4c-4a12-ad6c-9b3230f9d9dd')
       .subscribe((data: any) => {
         this.courses = data.courses;
+        this.isLoading = false;
       })
   }
 

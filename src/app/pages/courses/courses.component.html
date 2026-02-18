@@ -11,8 +11,15 @@
     </mat-form-field>
 </div>
 
+@if (isLoading) {
+<div class="flex justify-center items-center h-40">
+    <l-ring-2 size="70" stroke="5" stroke-length="0.25" bg-opacity="0.1" speed="0.8" color="#3b82f6">
+    </l-ring-2>
+</div>
+} @else {
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-5 my-5">
     @for (c of filteredCourses; track c.id) {
     <app-course-card [item]="c" />
     }
 </div>
+}
