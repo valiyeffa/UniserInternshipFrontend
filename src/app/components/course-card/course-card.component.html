@@ -1,4 +1,4 @@
-<mat-card class="example-card h-120" appearance="outlined">
+<mat-card class="example-card h-130" appearance="outlined">
   <mat-card-header>
     <mat-card-title>{{item.title}}</mat-card-title>
     <mat-card-subtitle>{{item.category}}</mat-card-subtitle>
@@ -13,5 +13,16 @@
       <span> {{item.discountPrice}}AZN</span>
     </div>
     <span>Rating: {{item.rating}}</span>
+    <button class="bg-red ">Qosul</button>
   </mat-card-actions>
+
+  <div class="example-button-row">
+    <a mat-button="filled" href="#" [disabled]="!item.isPopular" target="_blank">Register</a>
+    <!-- @if (item.isPopular) {
+    <a mat-button="filled" href="#" target="_blank">Register</a>
+    } @else {
+    <a mat-button="filled" href="#" disabled target="_blank">Registeration close</a>
+    } -->
+  </div>
+
 </mat-card>

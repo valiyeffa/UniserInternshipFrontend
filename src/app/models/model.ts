@@ -7,6 +7,7 @@ export interface Courses {
     price: number;
     discountPrice: number;
     rating: number;
+    isPopular: boolean;
 }
 
 export interface Students {

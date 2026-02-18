@@ -18,6 +18,7 @@ export class CoursesComponent {
     this.http.get<Courses[]>('https://mocki.io/v1/3eb2e6e2-057d-480e-92f3-274f65715636')
       .subscribe((data: any) => {
         this.courses = data.courses;
+        
       })
   }
 }
