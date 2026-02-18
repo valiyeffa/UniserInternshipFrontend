@@ -1,0 +1,12 @@
+<div class="container">
+  <h1>
+  Courses
+  </h1>
+  <ul>
+    @for(course of courses(); track course.id) {
+      <div>
+        <li>{{course.id}} --- {{course.name}}</li>
+      </div>
+    }
+  </ul>
+</div>

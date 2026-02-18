@@ -1,0 +1,12 @@
+.container {
+  text-align: center;
+  color: white;
+}
+
+ul {
+  color: white;
+}
+
+ul li::marker {
+  content: none;
+}

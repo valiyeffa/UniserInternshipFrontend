@@ -1,0 +1,10 @@
+<div class="container">
+  <h1>Students</h1>
+  <ul>
+    @for(student of students(); track student.id){
+      <div>
+        <li>{{student.id}} --- {{student.name}} --- {{student.age}}</li>
+      </div>
+    }
+  </ul>
+</div>

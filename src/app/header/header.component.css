@@ -1,0 +1,32 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  padding: 0 40px;
+  text-align: center;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 800px;
+  font-family: 'Open Sans';
+  align-items: end;
+}
+
+ul li::marker {
+  content: none;
+}
+
+a {
+  text-decoration: none;
+  color: gray;
+}
+
+a:hover {
+  color: white;
+}
+
+.active {
+  color: white;
+}
