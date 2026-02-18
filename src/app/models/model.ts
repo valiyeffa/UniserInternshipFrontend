@@ -1,12 +1,20 @@
-export interface User {
+export interface Courses {
     id: number;
-    name: string;
-    email: string;
-    isActive: boolean;
+    title: string;
+    description: string;
+    category: string;
+    thumbnail: string;
+    price: number;
+    discountPrice: number;
+    rating: number;
 }
 
-export interface TODO {
-    id: number,
-    task: string,
-    completed: boolean
+export interface Students {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: number;
+    age: number;
+    gender: string;
 }

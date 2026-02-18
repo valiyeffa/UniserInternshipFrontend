@@ -1,1 +1,7 @@
-<p class="font-bold text-center py-52 text-2xl">Courses works!</p>
+<p class="font-bold text-center py-5 text-2xl">Courses</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-5 my-5">
+    @for (c of courses; track c.id) {
+    <app-course-card [item]="c" />
+    }
+</div>
