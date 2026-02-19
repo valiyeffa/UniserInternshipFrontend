@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule, CourseCardComponent, MatFormFieldModule, MatSelectModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './courses.component.html',
-  styleUrl: './courses.component.css'
 })
 
 export class CoursesComponent {

@@ -8,7 +8,6 @@ import { HeaderComponent } from "../header/header.component";
   standalone: true,
   imports: [RouterOutlet, FooterComponent, HeaderComponent],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
 

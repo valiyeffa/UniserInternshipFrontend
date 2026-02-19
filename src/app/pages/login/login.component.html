@@ -1,25 +1,36 @@
 <div class="flex flex-col items-center justify-center mb-30">
     <h2 class="font-bold text-3xl mt-25 mb-15">LOGIN</h2>
-    <form class="flex flex-col gap-5 mb-23" [formGroup]="loginForm" (ngSubmit)="loginApp()">
+    <form class="flex flex-col mb-23" [formGroup]="loginForm" (ngSubmit)="loginApp()">
         <label for="username">Username</label>
-        <input type="text" placeholder="Username" id="username" formControlName="username"
+        <input autocomplete="username" type="email" placeholder="Username" id="username" formControlName="username"
             class="border rounded w-95 h-8 p-2 focus:outline-0 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 transition">
+        @if(loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required']){
+        <p class="text-red-500 text-sm">Username required!</p>
+        }
 
-        <label for="password">Password</label>
+        <label for="password" class="mt-2">Password</label>
         <div
             class="flex w-95 h-8 border rounded items-center focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 transition">
-            <input id="password" formControlName="password" [type]="isShowPass? 'password': 'text'"
+            <input id="password" formControlName="password" autocomplete="current-password" [type]="!isShowPass? 'password': 'text'"
                 placeholder="Password" class="w-full h-full p-2 focus:outline-0">
             <button type="button" class="cursor-pointer p-2" (click)="changeVisibility()">
-                @if (isShowPass) {
+                @if (!isShowPass) {
                 <i class="fa-solid fa-eye text-gray-600 w-5 h-5"></i>
                 }@else{
                 <i class="fa-solid fa-eye-slash text-gray-600 w-5 h-5"></i>
                 }
             </button>
         </div>
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
+        <p class="text-red-500 text-sm">Password required!</p>
+        }
 
-        <button class="bg-blue-500 p-1 rounded cursor-pointer disabled:bg-gray-500" type="submit"
-            [disabled]="loginForm.invalid">Login</button>
+        <button class="bg-blue-500 p-1 mt-5 rounded cursor-pointer disabled:bg-gray-500" [disabled]="isLoading" type="submit">
+            @if (isLoading) {
+                Loading...
+            }@else {
+                Login
+            }
+        </button>
     </form>
 </div>

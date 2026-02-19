@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -8,8 +9,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
 })
+
 export class LoginComponent {
   isShowPass: boolean = false;
+  isLoading: boolean = false;
 
   changeVisibility() {
     this.isShowPass = !this.isShowPass;
@@ -24,19 +27,23 @@ export class LoginComponent {
 
   loginApp() {
     if (this.loginForm.invalid) {
-      alert('olmaz!');
+      alert('Not allowed empty input!');
       return;
     }
 
+    this.isLoading = true;
+
     const loginData = this.loginForm.value;
 
-    this.loginService.createPost(loginData).subscribe(
-      res => {
-        alert('Ugurlu!');
-        console.log('success', res);
-      },
-      err => console.error(err)
-    )
+    this.loginService.createPost(loginData)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(
+        res => {
+          console.log('success', res.json);
+          alert('WELCOME '+ res.json.username + '!');
+        },
+        err => console.error(err)
+      )
   }
 
 }
