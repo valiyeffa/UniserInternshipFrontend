@@ -15,6 +15,7 @@ export class StudentsComponent {
   students: Students[] = [];
   isLoading = true;
   newStudentName = '';
+  searchName = '';
 
   StudentsList: StudentsList[] = [
     { id: 1, nameSurname: 'Firuza Valiyeva' },
@@ -23,6 +24,10 @@ export class StudentsComponent {
     { id: 4, nameSurname: 'Rahida Residli' },
     { id: 5, nameSurname: 'İsmayil Abdurehmanli' }
   ];
+
+  searchFilter() {
+    return this.StudentsList.filter(i => i.nameSurname.toLowerCase().includes(this.searchName));
+  }
 
   constructor(private http: HttpClient) { }
 
