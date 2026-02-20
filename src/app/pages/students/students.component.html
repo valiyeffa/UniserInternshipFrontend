@@ -1,5 +1,16 @@
 <p class="text-2xl py-5 text-center font-bold">Students</p>
 
+<div class="w-full flex items-center justify-center mt-5">
+    <input type="text" [(ngModel)]="addStudent" class="border rounded w-1/4 h-10 p-3 " placeholder="Add new student">
+    <button (click)="addNewStudent()" class="border h-10 cursor-pointer rounded px-3">Add</button>
+</div>
+
+<div class="flex items-center mx-5 mt-5">
+    <input type="text" [(ngModel)]="searchNameStudents" class="border rounded w-1/4 h-10 p-3 "
+        placeholder="Search student">
+</div>
+
+
 @if(isLoading){
 <div class="flex justify-center items-center h-40">
     <l-ring-2 size="70" stroke="5" stroke-length="0.25" bg-opacity="0.1" speed="0.8" color="#3b82f6">
@@ -7,7 +18,7 @@
 </div>
 }@else {
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-5 my-5">
-    @for (s of students; track s.id) {
+    @for (s of searchFilterApi(); track s.id) {
     <app-students-card [item]="s" (deleteStudent)="deleteStudent($event)" />
     }
 </div>
@@ -23,8 +34,7 @@
     </div>
 
     <div class="w-full flex items-center justify-center mt-5">
-        <input type="text" [(ngModel)]="searchName" class="border rounded w-1/4 h-10 p-3 "
-            placeholder="Search student">
+        <input type="text" [(ngModel)]="searchName" class="border rounded w-1/4 h-10 p-3 " placeholder="Search student">
     </div>
 
     <ul class="mb-15 mt-10">

@@ -15,7 +15,9 @@ export class StudentsComponent {
   students: Students[] = [];
   isLoading = true;
   newStudentName = '';
+  addStudent = '';
   searchName = '';
+  searchNameStudents = '';
 
   StudentsList: StudentsList[] = [
     { id: 1, nameSurname: 'Firuza Valiyeva' },
@@ -24,6 +26,10 @@ export class StudentsComponent {
     { id: 4, nameSurname: 'Rahida Residli' },
     { id: 5, nameSurname: 'İsmayil Abdurehmanli' }
   ];
+
+  searchFilterApi() {
+    return this.students.filter(i => i.firstName.toLowerCase().includes(this.searchNameStudents));
+  }
 
   searchFilter() {
     return this.StudentsList.filter(i => i.nameSurname.toLowerCase().includes(this.searchName));
@@ -41,6 +47,14 @@ export class StudentsComponent {
 
   deleteStudent(id: number) {
     this.students = this.students.filter(i => i.id !== id);
+  }
+
+  addNewStudent() {
+    this.students.push(
+      { id: this.students.length + 1, firstName: this.addStudent, lastName:'', email:'test@gmail.com', age:21, gender:'None', phone:99455123456 }
+    )
+
+    this.addStudent = '';
   }
 
   addNewStudentList() {
