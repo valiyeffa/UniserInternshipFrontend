@@ -1,0 +1,65 @@
+
+<!-- Header -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <p class="page-subtitle">Məlumat Bazası</p>
+    <h1>👨‍🎓 Tələbələr</h1>
+    <p class="page-desc">Platformamızda qeydiyyatdan keçmiş bütün tələbələr</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="summary-number">{{ students.length }}</div>
+      <div class="summary-label">Ümumi</div>
+    </div>
+    <div class="summary-card green">
+      <div class="summary-number">{{ activeCount }}</div>
+      <div class="summary-label">Aktiv</div>
+    </div>
+    <div class="summary-card red">
+      <div class="summary-number">{{ students.length - activeCount }}</div>
+      <div class="summary-label">Qeyri-aktiv</div>
+    </div>
+    <div class="summary-card purple">
+      <div class="summary-number">2024</div>
+      <div class="summary-label">Qəbul ili</div>
+    </div>
+  </div>
+
+  <!-- Search və Add -->
+  <div class="actions-bar">
+    <input 
+      type="text" 
+      [(ngModel)]="searchText" 
+      placeholder="Tələbə axtar..."
+      class="search-input"
+    />
+    <div class="add-bar">
+      <input 
+        type="text" 
+        [(ngModel)]="newStudentName" 
+        placeholder="Yeni tələbə adı..."
+        class="add-input"
+      />
+      <button (click)="addStudent()" class="add-btn">+ Əlavə et</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <div class="table-header">
+      <h2>Tələbə Siyahısı</h2>
+      <span class="count-badge">{{ filteredStudents.length }} nəfər</span>
+    </div>
+
+    <app-student-list 
+      [students]="filteredStudents" 
+      (deleteStudent)="deleteStudent($event)">
+    </app-student-list>
+
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<td>{{ student.id }}</td>
+<td>
+  <div class="student-name">
+    <div class="avatar">{{ student.name.charAt(0) }}</div>
+    <span>{{ student.name }}</span>
+  </div>
+</td>
+<td>{{ student.age }}</td>
+<td>{{ student.major }}</td>
+<td>
+  @if (student.active) {
+    <span class="badge badge-active">Aktiv</span>
+  } @else {
+    <span class="badge badge-inactive">Qeyri-aktiv</span>
+  }
+</td>
+<td>
+  <button class="delete-btn" (click)="onDelete()">Sil</button>
+</td>

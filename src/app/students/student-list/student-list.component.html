@@ -1,0 +1,10 @@
+<table>
+  <tbody>
+    @for (student of students; track student.id) {
+      <tr app-student-item
+        [student]="student"
+        (deleteStudent)="onDelete($event)">
+      </tr>
+    }
+  </tbody>
+</table>
