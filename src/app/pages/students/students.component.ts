@@ -1,18 +1,28 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Students } from '../../models/model';
+import { Students, StudentsList } from '../../models/model';
 import { StudentsCardComponent } from "../../components/students-card/students-card.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-students',
-  imports: [StudentsCardComponent],
+  imports: [StudentsCardComponent, FormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './students.component.html',
-  styleUrl: './students.component.css'
 })
+
 export class StudentsComponent {
   students: Students[] = [];
   isLoading = true;
+  newStudentName = '';
+
+  StudentsList: StudentsList[] = [
+    { id: 1, nameSurname: 'Firuza Valiyeva' },
+    { id: 2, nameSurname: 'Cavid Ismayilov' },
+    { id: 3, nameSurname: 'Konul Aliyeva' },
+    { id: 4, nameSurname: 'Rahida Residli' },
+    { id: 5, nameSurname: 'İsmayil Abdurehmanli' }
+  ];
 
   constructor(private http: HttpClient) { }
 
@@ -22,5 +32,21 @@ export class StudentsComponent {
         this.students = data.students;
         this.isLoading = false;
       })
+  }
+
+  deleteStudent(id: number) {
+    this.students = this.students.filter(i => i.id !== id);
+  }
+
+  addNewStudentList() {
+    this.StudentsList.push(
+      { id: this.StudentsList.length + 1, nameSurname: this.newStudentName }
+    )
+
+    this.newStudentName = '';
+  }
+
+  deleteStudentList(id: number) {
+    this.StudentsList = this.StudentsList.filter(i => i.id !== id)
   }
 }

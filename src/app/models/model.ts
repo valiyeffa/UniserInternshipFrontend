@@ -19,3 +19,8 @@ export interface Students {
     age: number;
     gender: string;
 }
+
+export interface StudentsList {
+    id: number;
+    nameSurname: string;
+}
