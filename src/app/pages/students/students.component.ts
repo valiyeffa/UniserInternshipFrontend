@@ -14,25 +14,11 @@ import { FormsModule } from '@angular/forms';
 export class StudentsComponent {
   students: Students[] = [];
   isLoading = true;
-  newStudentName = '';
   addStudent = '';
-  searchName = '';
   searchNameStudents = '';
-
-  StudentsList: StudentsList[] = [
-    { id: 1, nameSurname: 'Firuza Valiyeva' },
-    { id: 2, nameSurname: 'Cavid Ismayilov' },
-    { id: 3, nameSurname: 'Konul Aliyeva' },
-    { id: 4, nameSurname: 'Rahida Residli' },
-    { id: 5, nameSurname: 'İsmayil Abdurehmanli' }
-  ];
 
   searchFilterApi() {
     return this.students.filter(i => i.firstName.toLowerCase().includes(this.searchNameStudents));
-  }
-
-  searchFilter() {
-    return this.StudentsList.filter(i => i.nameSurname.toLowerCase().includes(this.searchName));
   }
 
   constructor(private http: HttpClient) { }
@@ -55,17 +41,5 @@ export class StudentsComponent {
     )
 
     this.addStudent = '';
-  }
-
-  addNewStudentList() {
-    this.StudentsList.push(
-      { id: this.StudentsList.length + 1, nameSurname: this.newStudentName }
-    )
-
-    this.newStudentName = '';
-  }
-
-  deleteStudentList(id: number) {
-    this.StudentsList = this.StudentsList.filter(i => i.id !== id)
   }
 }
