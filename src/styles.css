@@ -5,3 +5,6 @@ body {
   font-family: 'Open Sans';
   background-color: black;
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

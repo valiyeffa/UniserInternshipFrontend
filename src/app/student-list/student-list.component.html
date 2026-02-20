@@ -1,0 +1,8 @@
+<ul class="flex gap-5 flex-col m-20">
+    @for(student of students; track student.id){
+      <div class="flex flex-row gap-10">
+        <li>{{student.id}} --- {{student.name}} --- {{student.age}}</li>
+        <button class="p-2 bg-red-600 rounded-xl text-sm" (click)="handleDeleteStudent(student.id)">delete</button>
+      </div>
+    }
+</ul>
