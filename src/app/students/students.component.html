@@ -1,15 +1,18 @@
 <div class="container">
   <h1>List of students</h1>
+  <div>
+    <input type="text" placeholder="search student" class="p-1 text-black" [(ngModel)]="filterName">
+  </div>
   <div class="flex flex-col gap-4">
     <div class="flex flex-row gap-4 p-2 text-black text-sm">
-      <input type="text" class="p-1">
-      <input type="text" class="p-1">
-      <input type="text" class="p-1">
+      <input type="text" placeholder="name" class="p-1" [(ngModel)]="newName">
+      <input type="text" placeholder="surname" class="p-1" [(ngModel)]="newSurname">
+      <input type="number" placeholder="age" class="p-1" [(ngModel)]="newAge">
     </div>
     <div>
-      <button  class="p-2 bg-blue-600 rounded-xl text-sm">add student</button>
+      <button (click)="addStudent()" class="p-2 bg-blue-600 rounded-xl text-sm">add student</button>
     </div>
   </div>
-  
-  <app-student-list [students]="students"></app-student-list>
+
+  <app-student-list [students]="filteredStudents" (deleteStudent)="deleteStudent($event)"></app-student-list>
 </div>

@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Student } from '../students/student.interface';
 
 @Component({
   selector: 'app-student-item',
@@ -7,5 +8,10 @@ import { Component, Input } from '@angular/core';
   styleUrl: './student-item.component.css'
 })
 export class StudentItemComponent {
-  @Input() item:any = {};
+  @Input() student!: Student;  
+  @Output() deleteStudent = new EventEmitter<number>();  
+
+  onDelete() {
+    this.deleteStudent.emit(this.student.id); 
+  }
 }
