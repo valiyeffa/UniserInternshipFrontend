@@ -24,6 +24,9 @@
         @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
         <p class="text-red-500 text-sm">Password required!</p>
         }
+        @if (loginForm.get('password')?.errors?.['minlength']) {
+        <p class="text-red-500 text-sm">Password must min 5 character!</p>
+        }
 
         <button class="bg-blue-500 p-1 mt-5 rounded cursor-pointer disabled:bg-gray-500" [disabled]="isLoading" type="submit">
             @if (isLoading) {

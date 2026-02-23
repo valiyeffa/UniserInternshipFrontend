@@ -7,7 +7,7 @@ import { finalize } from 'rxjs';
   selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './login.component.html',
+  templateUrl: './login.component.html'
 })
 
 export class LoginComponent {
@@ -20,7 +20,7 @@ export class LoginComponent {
 
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    password: new FormControl('', [Validators.required, Validators.minLength(5)]),
   })
 
   constructor(private loginService: LoginService) { }

@@ -18,4 +18,10 @@ export class StudentsCardComponent {
   onDelete() {
     this.deleteStudent.emit(this.item.id);
   }
+
+  ngOnChanges() {
+    console.log("Input dəyişdi");
+  }
+
+  
 }
