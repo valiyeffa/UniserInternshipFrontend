@@ -1,6 +1,6 @@
-<mat-card class="example-card h-50" appearance="outlined">
+<mat-card class="example-card h-55" appearance="outlined">
   <mat-card-header class="flex justify-between">
-    <mat-card-title>{{item.firstName}} {{item.lastName}}</mat-card-title>
+    <mat-card-title>{{item.firstName}} {{item.lastName| shorten:3}}</mat-card-title>
     <button (click)="onDelete()" class="text-red-600 cursor-pointer hover:bg-red-200 p-2 rounded-2xl">Delete</button>
   </mat-card-header>
   <mat-card-content>
@@ -10,5 +10,6 @@
     <span>Phone: {{item.phone}}</span>
     <span>Gender: {{item.gender}}</span>
     <span>Age: {{item.age}}</span>
+    <span>Created Date: {{item.createdAt | date:'dd MMMM YYYY'}}</span>
   </div>
 </mat-card>

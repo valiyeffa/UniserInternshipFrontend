@@ -12,15 +12,11 @@ export interface Courses {
 
 export interface Students {
     id: number;
+    createdAt: string;
     firstName: string;
     lastName: string;
     email: string;
     phone: number;
     age: number;
     gender: string;
-}
-
-export interface StudentsList {
-    id: number;
-    nameSurname: string;
 }
