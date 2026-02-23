@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { Student } from './student.interface';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { fullNameConverter } from './fullnameConverter.pipe';
 
 @Component({
   selector: 'app-students',
-  imports: [StudentListComponent, FormsModule],
+  imports: [StudentListComponent, FormsModule, DatePipe, fullNameConverter],
   templateUrl: './students.component.html',
   styleUrl: './students.component.css'
 })
@@ -59,4 +61,7 @@ export class StudentsComponent {
     this.newSurname = '';
     this.newAge = '';
   }  
+
+  tarix: string = Date();
+  myName: string = 'Lala Alimova'
 }

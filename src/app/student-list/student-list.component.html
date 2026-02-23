@@ -1,4 +1,4 @@
-<ul class="flex gap-5 flex-col m-20">
+<ul class="flex gap-5 flex-col my-20">
   @for(student of students; track student.id){
     <app-student-item [student]="student"
       (deleteStudent)="onDelete($event)"></app-student-item>
