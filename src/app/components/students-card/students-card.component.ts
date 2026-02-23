@@ -22,6 +22,4 @@ export class StudentsCardComponent {
   ngOnChanges() {
     console.log("Input dəyişdi");
   }
-
-  
 }

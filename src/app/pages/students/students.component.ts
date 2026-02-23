@@ -31,6 +31,12 @@ export class StudentsComponent {
         this.students = data.students;
         this.isLoading = false;
       })
+
+    console.log('Data gəldi');
+  }
+
+  ngOnDestroy() {
+    console.log("Component silindi");
   }
 
   deleteStudent(id: number) {
@@ -39,7 +45,7 @@ export class StudentsComponent {
 
   addNewStudent() {
     this.students.push(
-      { id: this.students.length + 1, firstName: this.addStudent, lastName: '', email: 'test@gmail.com', age: 21, gender: 'None', phone: 99455123456, createdAt: 'this.currentDate' }
+      { id: this.students.length + 1, firstName: this.addStudent, lastName: '', email: 'test@gmail.com', age: 21, gender: 'None', phone: 99455123456, createdAt: this.currentDate.toISOString() }
     )
 
     this.addStudent = '';
