@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { Student } from './student.interface';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -64,6 +64,14 @@ export class StudentsComponent {
   myName: string = 'Lala Alimova';
 
   ngOnInit() {
-    console.log("I started");
+    console.log("Students page component initialized");
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Changes detected in students page: ', changes);
+  }
+
+  ngOnDestroy() {
+    console.log('Students page component destroyed');
   }
 }

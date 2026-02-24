@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Student } from '../students/student.interface';
 import { UpperCasePipe } from '@angular/common';
 import { nameConverter } from '../students/nameConverter.pipe';
@@ -14,5 +14,17 @@ export class StudentItemComponent {
 
   onDelete() {
     this.deleteStudent.emit(this.student.id); 
+  }
+
+  ngOnInit() {
+    console.log("Students item component initialized");
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Changes detected in students item: ', changes);
+  }
+
+  ngOnDestroy() {
+    console.log('Students item component destroyed');
   }
 }
