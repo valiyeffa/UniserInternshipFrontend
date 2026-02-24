@@ -2,12 +2,12 @@ import { Component, SimpleChanges } from '@angular/core';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { Student } from './student.interface';
 import { FormsModule, NgForm } from '@angular/forms';
-import { DatePipe, NgIf} from '@angular/common';
+import { DatePipe, NgIf, NgClass} from '@angular/common';
 import { fullNameConverter } from './fullnameConverter.pipe';
 
 @Component({
   selector: 'app-students',
-  imports: [StudentListComponent, FormsModule, DatePipe, fullNameConverter, NgIf],
+  imports: [StudentListComponent, FormsModule, NgClass, DatePipe, fullNameConverter, NgIf],
   templateUrl: './students.component.html',
   styleUrl: './students.component.css'
 })

@@ -21,7 +21,7 @@
           <span *ngIf="ageField.invalid && (ageField.dirty || ageField.touched)" class="text-white">age must be greater than 1</span> 
       </div>
       <div>
-        <button class="p-2 bg-blue-600 rounded-xl text-sm" type="submit" [disabled]="addNewStudentForm.invalid">add student</button>
+        <button [ngClass]="{'bg-yellow-600': addNewStudentForm.invalid}" class="p-2 bg-blue-600 rounded-xl text-sm" type="submit" [disabled]="addNewStudentForm.invalid">add student</button>
       </div>
     </form>
   </div>
