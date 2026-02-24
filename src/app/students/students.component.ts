@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { Student } from './student.interface';
-import { FormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { DatePipe, NgIf} from '@angular/common';
 import { fullNameConverter } from './fullnameConverter.pipe';
 
 @Component({
   selector: 'app-students',
-  imports: [StudentListComponent, FormsModule, DatePipe, fullNameConverter],
+  imports: [StudentListComponent, FormsModule, DatePipe, fullNameConverter, NgIf],
   templateUrl: './students.component.html',
   styleUrl: './students.component.css'
 })
@@ -45,23 +45,25 @@ export class StudentsComponent {
   newSurname = '';
   newAge = '';
 
-  addStudent() {
-    if (!this.newName.trim() || !this.newSurname.trim() || !this.newAge) return;
+  onSubmit(form: NgForm) {
+    if(form.valid) {
+      const newId = Math.max(...this.students.map(s => s.id)) + 1;
 
-    const newId = Math.max(...this.students.map(s => s.id)) + 1;
+      this.students = [...this.students, {
+            id: newId,
+            name: this.newName.trim(),
+            surname: this.newSurname.trim(),
+            age: Number(this.newAge)
+      }];
 
-    this.students = [...this.students, {
-      id: newId,
-      name: this.newName.trim(),
-      surname: this.newSurname.trim(),
-      age: Number(this.newAge)
-    }];
-
-    this.newName = '';
-    this.newSurname = '';
-    this.newAge = '';
-  }  
+      form.reset();
+    }
+  }
 
   tarix: string = Date();
-  myName: string = 'Lala Alimova'
+  myName: string = 'Lala Alimova';
+
+  ngOnInit() {
+    console.log("I started");
+  }
 }
