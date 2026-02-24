@@ -1,4 +1,3 @@
-
 <!-- Header -->
 <div class="page-header">
   <div class="page-header-inner">
@@ -31,23 +30,140 @@
   </div>
 
   <!-- Search və Add -->
+  <!-- Search və Add -->
   <div class="actions-bar">
-    <input 
-      type="text" 
-      [(ngModel)]="searchText" 
-      placeholder="Tələbə axtar..."
-      class="search-input"
-    />
-    <div class="add-bar">
-      <input 
-        type="text" 
-        [(ngModel)]="newStudentName" 
-        placeholder="Yeni tələbə adı..."
-        class="add-input"
-      />
-      <button (click)="addStudent()" class="add-btn">+ Əlavə et</button>
-    </div>
+    <input type="text" [(ngModel)]="searchText" placeholder="Tələbə axtar..." class="search-input" />
+    <button class="add-btn" (click)="toggleForm()">+ Yeni Tələbə</button>
   </div>
+
+
+
+  @if (showForm) {
+  <div class="form-card">
+    <h3>Yeni Tələbə Əlavə Et</h3>
+    <form #studentForm="ngForm" (ngSubmit)="addStudent(studentForm)" class="student-form">
+
+      <div class="input-wrapper">
+        <label>Ad Soyad</label>
+        <input type="text" name="studentName" [(ngModel)]="newStudentName" #nameInput="ngModel" required minlength="3"
+          placeholder="Məs: Aysel Məmmədova" class="add-input" />
+        @if (nameInput.invalid && nameInput.touched) {
+        @if (nameInput.errors?.['required']) {
+        <span class="error-msg">Ad boş ola bilməz!</span>
+        }
+        @if (nameInput.errors?.['minlength']) {
+        <span class="error-msg">Ad minimum 3 hərf olmalıdır!</span>
+        }
+        }
+      </div>
+
+      <div class="input-wrapper">
+        <label>Yaş</label>
+        <input type="number" name="studentAge" [(ngModel)]="newStudentAge" #ageInput="ngModel" required min="16"
+          max="60" placeholder="Yaşınızı daxil edin..." class="add-input" />
+        @if (ageInput.invalid && ageInput.touched) {
+        <span class="error-msg">Yaş 16 ilə 60 arasında olmalıdır!</span>
+        }
+      </div>
+
+      <div class="input-wrapper">
+        <label>İxtisas</label>
+        <select name="studentMajor" [(ngModel)]="newStudentMajor" required class="add-input">
+          <option value="" disabled selected>İxtisas seçin...</option>
+          <option value="Frontend">Frontend</option>
+          <option value="Backend">Backend</option>
+          <option value="UI/UX">UI/UX</option>
+          <option value="DevOps">DevOps</option>
+          <option value="Mobile">Mobile</option>
+        </select>
+      </div>
+
+      <div class="input-wrapper">
+        <label>Status</label>
+        <select name="studentActive" [(ngModel)]="newStudentActive" required class="add-input">
+          <option [ngValue]="null" disabled selected>Status seçin...</option>
+          <option [ngValue]="true">Aktiv</option>
+          <option [ngValue]="false">Qeyri-aktiv</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="toggleForm()">Ləğv et</button>
+        <button type="submit" class="add-btn" [disabled]="studentForm.invalid">Əlavə et</button>
+      </div>
+
+    </form>
+  </div>
+
+  }
+
+
+
+  @if (editingStudent) {
+  <div class="form-card">
+    <h3>Tələbəni Redaktə Et</h3>
+    <form #editForm="ngForm" (ngSubmit)="saveEdit(editForm)" class="student-form">
+
+      <div class="input-wrapper">
+        <label>Ad Soyad</label>
+        <input type="text" name="editName" [(ngModel)]="editingStudent.name" #editNameInput="ngModel" required
+          minlength="3" class="add-input" />
+        @if (editNameInput.invalid && editNameInput.touched) {
+        <span class="error-msg">Ad minimum 3 hərf olmalıdır!</span>
+        }
+      </div>
+
+      <div class="input-wrapper">
+        <label>Yaş</label>
+        <input type="number" name="editAge" [(ngModel)]="editingStudent.age" #editAgeInput="ngModel" required min="16"
+          max="60" class="add-input" />
+
+        @if (editAgeInput.invalid && editAgeInput.touched) {
+
+        @if (editAgeInput.errors?.['required']) {
+        <span class="error-msg">Yaş boş ola bilməz!</span>
+        }
+
+        @if (editAgeInput.errors?.['min']) {
+        <span class="error-msg">Yaş minimum 16 olmalıdır!</span>
+        }
+
+        @if (editAgeInput.errors?.['max']) {
+        <span class="error-msg">Yaş maksimum 60 olmalıdır!</span>
+        }
+
+        }
+      </div>
+
+      <div class="input-wrapper">
+        <label>İxtisas</label>
+        <select name="editMajor" [(ngModel)]="editingStudent.major" class="add-input">
+          <option value="Frontend">Frontend</option>
+          <option value="Backend">Backend</option>
+          <option value="UI/UX">UI/UX</option>
+          <option value="DevOps">DevOps</option>
+          <option value="Mobile">Mobile</option>
+        </select>
+      </div>
+
+      <div class="input-wrapper">
+        <label>Status</label>
+        <select name="editActive" [(ngModel)]="editingStudent.active" class="add-input">
+          <option [ngValue]="true">Aktiv</option>
+          <option [ngValue]="false">Qeyri-aktiv</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Ləğv et</button>
+        <button type="submit" class="add-btn" [disabled]="editForm.invalid">Yadda saxla</button>
+      </div>
+
+    </form>
+  </div>
+  }
+
+
+
 
   <!-- Table -->
   <div class="table-wrapper">
@@ -56,9 +172,8 @@
       <span class="count-badge">{{ filteredStudents.length }} nəfər</span>
     </div>
 
-    <app-student-list 
-      [students]="filteredStudents" 
-      (deleteStudent)="deleteStudent($event)">
+    <app-student-list [students]="filteredStudents" (deleteStudent)="deleteStudent($event)"
+      (editStudent)="editStudent($event)">
     </app-student-list>
 
   </div>

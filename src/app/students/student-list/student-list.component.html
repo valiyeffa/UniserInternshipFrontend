@@ -3,7 +3,8 @@
     @for (student of students; track student.id) {
       <tr app-student-item
         [student]="student"
-        (deleteStudent)="onDelete($event)">
+        (deleteStudent)="onDelete($event)"
+        (editStudent)="onEdit($event)">
       </tr>
     }
   </tbody>

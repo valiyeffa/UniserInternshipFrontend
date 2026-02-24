@@ -1,19 +1,33 @@
-<td>{{ student.id }}</td>
+<td class="id-cell">{{ student.id }}</td>
 <td>
   <div class="student-name">
     <div class="avatar">{{ student.name.charAt(0) }}</div>
-    <span>{{ student.name }}</span>
+    <span class="name-wrapper tooltip">
+      {{ student.name | shortName | uppercase }}
+      <span class="tooltip-text">{{ student.name }}</span>
+    </span>
   </div>
 </td>
 <td>{{ student.age }}</td>
 <td>{{ student.major }}</td>
+<td>{{ student.enrollDate | date: 'dd.MM.yyyy' }}</td>
+
 <td>
   @if (student.active) {
-    <span class="badge badge-active">Aktiv</span>
+    <span class="badge badge-active tooltip">
+      <span class="dot dot-green"></span>Aktiv
+      <span class="tooltip-text">Tələbə təhsilinə davam edir</span>
+    </span>
   } @else {
-    <span class="badge badge-inactive">Qeyri-aktiv</span>
+    <span class="badge badge-inactive tooltip">
+      <span class="dot dot-red"></span>Qeyri-aktiv
+      <span class="tooltip-text">Tələbə təhsilini dondurub</span>
+    </span>
   }
 </td>
 <td>
-  <button class="delete-btn" (click)="onDelete()">Sil</button>
+  <div class="btn-group">
+    <button class="edit-btn" (click)="onEdit()">✏️ Redaktə</button>
+    <button class="delete-btn" (click)="onDelete()">🗑️ Sil</button>
+  </div>
 </td>
