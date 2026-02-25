@@ -46,4 +46,7 @@ export class LoginComponent {
       )
   }
 
+  ngOnInit(){
+    console.log(this.loginService.getData());
+  }
 }

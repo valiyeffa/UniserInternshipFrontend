@@ -7,6 +7,12 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(),
-    provideRouter(routes)
+    provideRouter(routes),
+    {
+      provide:'Base_url',
+      useValue:{
+        apiUrl:'https://httpbin.org/post'
+      }
+    }
   ]
 };

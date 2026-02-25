@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,11 +7,15 @@ import { Observable } from 'rxjs';
 })
 
 export class LoginService {
-  private apiLink = 'https://httpbin.org/post';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    @Inject('Base_url') private config: any) { }
+
+  getData() {
+    return ['Ali', 'Veli', 'Aysel'];
+  }
 
   createPost(data: any): Observable<any> {
-    return this.http.post(this.apiLink, data) 
+    return this.http.post(this.config.apiUrl, data)
   }
 }
