@@ -1,21 +1,36 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout/layout.component';
-import { HomeComponent } from './pages/home/home.component';
-import { StudentsComponent } from './pages/students/students.component';
-import { CoursesComponent } from './pages/courses/courses.component';
-import { AboutComponent } from './pages/about/about.component';
-import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
     {
-        path:'',
+        path: '',
         component: LayoutComponent,
-        children:[
-            {path:'', component: HomeComponent, title:'Home'},
-            {path:'students', component: StudentsComponent, title:'Students'},
-            {path:'courses', component: CoursesComponent, title:'Courses'},
-            {path:'about', component: AboutComponent, title:'About'},
-            {path:'login', component: LoginComponent, title:'Login'},
+        children: [
+            {
+                path: '',
+                loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
+                title: 'Home'
+            },
+            {
+                path: 'students',
+                loadComponent: () => import('./pages/students/students.component').then(m => m.StudentsComponent),
+                title: 'Students'
+            },
+            {
+                path: 'courses',
+                loadComponent: () => import('./pages/courses/courses.component').then(m => m.CoursesComponent),
+                title: 'Courses'
+            },
+            {
+                path: 'about',
+                loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
+                title: 'About'
+            },
+            {
+                path: 'login',
+                loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
+                title: 'Login'
+            }
         ]
     }
 ];

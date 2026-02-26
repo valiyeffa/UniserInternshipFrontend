@@ -7,6 +7,7 @@ import { ShortenPipe } from '../../shorten.pipe';
 
 @Component({
   selector: 'app-students-card',
+  standalone: true,
   imports: [MatCardModule, MatButtonModule, CommonModule, ShortenPipe],
   templateUrl: './students-card.component.html',
 })

@@ -5,6 +5,7 @@ import { Courses } from '../../models/model';
 
 @Component({
   selector: 'app-course-card',
+  standalone: true,
   imports: [MatCardModule, MatButtonModule],
   templateUrl: './course-card.component.html',
 })
