@@ -1,0 +1,21 @@
+<div class="w-full h-160 flex">
+    <div class="w-1/5 h-full shadow-xl">
+        <div class="flex justify-center flex-col">
+            <a routerLink="/teacher-module" routerLinkActive="text-indigo-600 border-blue-600"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+                Lesson Plan</a>
+
+            <a routerLink="/teacher-module/student-assessment" routerLinkActive="text-indigo-600 border-blue-600"
+                class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+                Student Assessment</a>
+
+            <a routerLink="/teacher-module/attendance-management" routerLinkActive="text-indigo-600 border-blue-600"
+                class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+                Attendance Management</a>
+        </div>
+    </div>
+    <div class="w-4/5 h-full p-5">
+        <router-outlet />
+    </div>
+</div>

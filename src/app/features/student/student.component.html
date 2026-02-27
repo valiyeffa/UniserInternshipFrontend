@@ -1,0 +1,21 @@
+<div class="w-full h-160 flex">
+    <div class="w-1/5 h-full shadow-xl">
+        <div class="flex justify-center flex-col">
+            <a routerLink="/students-module" routerLinkActive="text-indigo-600 border-blue-600"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+                Class Schedule</a>
+
+            <a routerLink="/students-module/electron-journal" routerLinkActive="text-indigo-600 border-blue-600"
+                class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+                Electron Journal</a>
+
+            <a routerLink="/students-module/grade-table" routerLinkActive="text-indigo-600 border-blue-600"
+                class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+                Grade table</a>
+        </div>
+    </div>
+    <div class="w-4/5 h-full p-5">
+        <router-outlet />
+    </div>
+</div>

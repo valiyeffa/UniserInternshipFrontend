@@ -30,7 +30,20 @@ export const routes: Routes = [
                 path: 'login',
                 loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
                 title: 'Login'
-            }
+            },
+
+            // !===================================FEATURES==================================
+
+            {
+                path: 'students-module',
+                loadChildren: () => import('./features/student/student.routes').then(m => m.Student_Routes),
+                title: 'StudentsModule'
+            },
+            {
+                path: 'teacher-module',
+                loadChildren: () => import('./features/teacher/teacher.routes').then(m => m.Teacher_Routes),
+                title: 'StudentsModule'
+            },
         ]
     }
 ];
