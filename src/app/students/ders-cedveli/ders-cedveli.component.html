@@ -1,0 +1,23 @@
+<div class="page-container">
+  <h2>📅 Dərs Cədvəli</h2>
+  <table class="schedule-table">
+    <thead>
+      <tr>
+        <th>Gün</th>
+        <th>Saat</th>
+        <th>Fənn</th>
+        <th>Müəllim</th>
+        <th>Otaq</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lesson of lessons">
+        <td>{{ lesson.day }}</td>
+        <td>{{ lesson.time }}</td>
+        <td>{{ lesson.subject }}</td>
+        <td>{{ lesson.teacher }}</td>
+        <td>{{ lesson.room }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

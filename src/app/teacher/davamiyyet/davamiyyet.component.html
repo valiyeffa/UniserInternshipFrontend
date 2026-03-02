@@ -1,0 +1,102 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>✅ Davamiyyət İdarəetməsi</h2>
+      <p class="subtitle">Tələbələrin dərslərə davamiyyəti</p>
+    </div>
+    <div class="filters">
+      <select class="filter-select" [(ngModel)]="selectedGroup">
+        <option value="all">Bütün qruplar</option>
+        <option value="FE-01">FE-01</option>
+        <option value="FE-02">FE-02</option>
+        <option value="FE-03">FE-03</option>
+      </select>
+      <select class="filter-select" [(ngModel)]="selectedMonth">
+        <option value="Fevral">Fevral</option>
+        <option value="Mart">Mart</option>
+        <option value="Aprel">Aprel</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Statistika -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <span class="stat-icon">👨‍🎓</span>
+      <div class="stat-info">
+        <span class="stat-num">{{ filteredRecords.length }}</span>
+        <span class="stat-lbl">Tələbə</span>
+      </div>
+    </div>
+    <div class="stat-box green">
+      <span class="stat-icon">✅</span>
+      <div class="stat-info">
+        <span class="stat-num">{{ goodAttendance }}</span>
+        <span class="stat-lbl">Yaxşı davamiyyət</span>
+      </div>
+    </div>
+    <div class="stat-box yellow">
+      <span class="stat-icon">⚠️</span>
+      <div class="stat-info">
+        <span class="stat-num">{{ warningAttendance }}</span>
+        <span class="stat-lbl">Xəbərdarlıq</span>
+      </div>
+    </div>
+    <div class="stat-box red">
+      <span class="stat-icon">❌</span>
+      <div class="stat-info">
+        <span class="stat-num">{{ badAttendance }}</span>
+        <span class="stat-lbl">Kritik</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cədvəl -->
+  <div class="table-wrapper">
+    <table class="attendance-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Tələbə</th>
+          <th>Qrup</th>
+          <th>Ümumi dərs</th>
+          <th>İştirak</th>
+          <th>Qayıb</th>
+          <th>Davamiyyət %</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of filteredRecords; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <div class="student-name">
+              <div class="avatar">{{ record.name[0] }}</div>
+              {{ record.name }}
+            </div>
+          </td>
+          <td><span class="group-tag">{{ record.group }}</span></td>
+          <td>{{ record.total }}</td>
+          <td class="present-count">{{ record.present }}</td>
+          <td class="absent-count">{{ record.total - record.present }}</td>
+          <td>
+            <div class="progress-wrapper">
+              <div class="progress-bar">
+                <div class="progress-fill"
+                  [style.width.%]="getPercent(record)"
+                  [class]="getPercentClass(record)">
+                </div>
+              </div>
+              <span class="percent-text">{{ getPercent(record) }}%</span>
+            </div>
+          </td>
+          <td>
+            <span [class]="'badge ' + getStatusClass(record)">
+              {{ getStatusText(record) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

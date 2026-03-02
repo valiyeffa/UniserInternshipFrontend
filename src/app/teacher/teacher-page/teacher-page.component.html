@@ -1,0 +1,42 @@
+<div class="teacher-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="teacher-avatar">👨‍🏫</div>
+      <div>
+        <h3>Əli Məmmədov</h3>
+        <span class="role-badge">Müəllim</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="ders-plani" routerLinkActive="active-link">
+        📚 Dərs Planı
+      </a>
+      <a routerLink="telebe-qiymetlendirme" routerLinkActive="active-link">
+        📊 Tələbə Qiymətləndirmə
+      </a>
+      <a routerLink="davamiyyet" routerLinkActive="active-link">
+        ✅ Davamiyyət
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="stat-item">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Qrup</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">47</span>
+        <span class="stat-label">Tələbə</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">5</span>
+        <span class="stat-label">Fənn</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="teacher-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

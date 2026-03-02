@@ -1,0 +1,25 @@
+<div class="page-container">
+  <h2>📊 Qiymət Cədvəli</h2>
+  <table class="grade-table">
+    <thead>
+      <tr>
+        <th>Fənn</th>
+        <th>Müəllim</th>
+        <th>Qiymət</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grade of grades">
+        <td>{{ grade.subject }}</td>
+        <td>{{ grade.teacher }}</td>
+        <td><strong>{{ grade.grade }}</strong></td>
+        <td>
+          <span [class]="grade.grade >= 51 ? 'badge pass' : 'badge fail'">
+            {{ grade.grade >= 51 ? 'Keçdi' : 'Kəsildi' }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

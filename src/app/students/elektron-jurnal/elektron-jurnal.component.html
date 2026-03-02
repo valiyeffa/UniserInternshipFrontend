@@ -1,0 +1,25 @@
+<div class="page-container">
+  <h2>📓 Elektron Jurnal</h2>
+  <table class="journal-table">
+    <thead>
+      <tr>
+        <th>Tarix</th>
+        <th>Fənn</th>
+        <th>Davamiyyət</th>
+        <th>Qeyd</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of journal">
+        <td>{{ entry.date }}</td>
+        <td>{{ entry.subject }}</td>
+        <td>
+          <span [class]="entry.present ? 'badge present' : 'badge absent'">
+            {{ entry.present ? 'İştirak etdi' : 'Qayıb' }}
+          </span>
+        </td>
+        <td>{{ entry.note }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,51 @@
+.page-container {
+  padding: 24px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.grade-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.grade-table th {
+  background: #4f46e5;
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.grade-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.grade-table tr:hover {
+  background: #f5f5ff;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pass {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.fail {
+  background: #fee2e2;
+  color: #dc2626;
+}

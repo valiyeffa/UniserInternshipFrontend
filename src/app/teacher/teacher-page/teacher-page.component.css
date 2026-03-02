@@ -1,0 +1,109 @@
+.teacher-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f0f2ff;
+}
+
+.sidebar {
+  width: 260px;
+  background: #1e1b4b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  gap: 32px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.teacher-avatar {
+  font-size: 40px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: white;
+}
+
+.role-badge {
+  background: #4f46e5;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav a {
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.active-link {
+  background: #4f46e5 !important;
+  color: white !important;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-number {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
+.teacher-main {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}

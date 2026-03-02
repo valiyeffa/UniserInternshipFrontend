@@ -1,0 +1,76 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>📚 Dərs Planı</h2>
+      <p class="subtitle">2024-2025 tədris ili, Yaz semestri</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-card">
+        <span class="stat-num">5</span>
+        <span class="stat-lbl">Fənn</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">18</span>
+        <span class="stat-lbl">Həftəlik saat</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">3</span>
+        <span class="stat-lbl">Qrup</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Həftəlik cədvəl -->
+  <div class="section">
+    <h3>📅 Həftəlik Dərs Cədvəli</h3>
+    <div class="schedule-grid">
+      <div class="schedule-card" *ngFor="let item of schedule">
+        <div class="schedule-day">{{ item.day }}</div>
+        <div class="schedule-lessons">
+          <div class="lesson-row" *ngFor="let lesson of item.lessons">
+            <span class="lesson-time">{{ lesson.time }}</span>
+            <span class="lesson-subject">{{ lesson.subject }}</span>
+            <span class="lesson-group">{{ lesson.group }}</span>
+            <span class="lesson-room">🏫 {{ lesson.room }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fənn planı -->
+  <div class="section">
+    <h3>📋 Fənn Planı</h3>
+    <table class="plan-table">
+      <thead>
+        <tr>
+          <th>Fənn</th>
+          <th>Qrup</th>
+          <th>Həftəlik saat</th>
+          <th>Ümumi saat</th>
+          <th>Tamamlanma</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let plan of lessonPlans">
+          <td><strong>{{ plan.subject }}</strong></td>
+          <td>{{ plan.group }}</td>
+          <td>{{ plan.weeklyHours }}</td>
+          <td>{{ plan.totalHours }}</td>
+          <td>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="plan.completion"></div>
+            </div>
+            <span class="progress-text">{{ plan.completion }}%</span>
+          </td>
+          <td>
+            <span [class]="'badge ' + plan.status">
+              {{ plan.status === 'active' ? 'Davam edir' : plan.status === 'done' ? 'Tamamlandı' : 'Planlanır' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

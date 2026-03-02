@@ -227,3 +227,38 @@
   background: #aaa;
   cursor: not-allowed;
 }
+
+.student-nav {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  background: white;
+  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.student-nav a {
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #4f46e5;
+  font-weight: 500;
+  font-size: 14px;
+  background: #f0f2ff;
+  border: none;
+  transition: all 0.2s;
+}
+
+.student-nav a:hover {
+  background: #4f46e5;
+  color: white;
+}
+
+.active-link {
+  background: #4f46e5 !important;
+  color: white !important;
+}

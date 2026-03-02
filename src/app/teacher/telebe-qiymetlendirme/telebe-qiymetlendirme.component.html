@@ -1,0 +1,87 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>📊 Tələbə Qiymətləndirmə</h2>
+      <p class="subtitle">Bütün qruplar üzrə qiymətlər</p>
+    </div>
+    <select class="group-select" [(ngModel)]="selectedGroup">
+      <option value="all">Bütün qruplar</option>
+      <option value="FE-01">FE-01</option>
+      <option value="FE-02">FE-02</option>
+      <option value="FE-03">FE-03</option>
+    </select>
+  </div>
+
+  <!-- Ümumi statistika -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-icon">👨‍🎓</div>
+      <div class="stat-info">
+        <span class="stat-num">{{ filteredStudents.length }}</span>
+        <span class="stat-lbl">Tələbə</span>
+      </div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">⭐</div>
+      <div class="stat-info">
+        <span class="stat-num">{{ avgGrade }}</span>
+        <span class="stat-lbl">Orta qiymət</span>
+      </div>
+    </div>
+    <div class="stat-box green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <span class="stat-num">{{ passCount }}</span>
+        <span class="stat-lbl">Keçən</span>
+      </div>
+    </div>
+    <div class="stat-box red">
+      <div class="stat-icon">❌</div>
+      <div class="stat-info">
+        <span class="stat-num">{{ failCount }}</span>
+        <span class="stat-lbl">Kəsilən</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Qiymət cədvəli -->
+  <div class="table-wrapper">
+    <table class="grade-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Tələbə</th>
+          <th>Qrup</th>
+          <th>Angular</th>
+          <th>TypeScript</th>
+          <th>JavaScript</th>
+          <th>HTML/CSS</th>
+          <th>Orta</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of filteredStudents; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <div class="student-name">
+              <div class="avatar">{{ student.name[0] }}</div>
+              {{ student.name }}
+            </div>
+          </td>
+          <td><span class="group-tag">{{ student.group }}</span></td>
+          <td [class]="getGradeClass(student.angular)">{{ student.angular }}</td>
+          <td [class]="getGradeClass(student.typescript)">{{ student.typescript }}</td>
+          <td [class]="getGradeClass(student.javascript)">{{ student.javascript }}</td>
+          <td [class]="getGradeClass(student.htmlcss)">{{ student.htmlcss }}</td>
+          <td><strong>{{ getAvg(student) }}</strong></td>
+          <td>
+            <span [class]="getAvg(student) >= 51 ? 'badge pass' : 'badge fail'">
+              {{ getAvg(student) >= 51 ? 'Keçdi' : 'Kəsildi' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
