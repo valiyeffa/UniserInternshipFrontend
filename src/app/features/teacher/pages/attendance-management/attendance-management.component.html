@@ -1,1 +1,71 @@
-<p>attendance-management works!</p>
+<div class="px-6 py-4">
+    <h2 class="text-xl font-semibold text-gray-700">Attendance Management</h2>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="min-w-full text-sm text-left">
+
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Subject</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Class</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Date</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Student</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Status</th>
+            </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100 bg-white">
+
+            @for (i of attendance; track i.lessonId) {
+
+            <tr class="hover:bg-gray-50 align-top">
+                <td [attr.rowspan]="i.records.length" class="px-6 py-4 font-medium text-gray-900 bg-gray-50">
+                    {{i.subject}}
+                </td>
+                <td [attr.rowspan]="i.records.length" class="px-6 py-4 bg-gray-50">{{i.class}}</td>
+                <td [attr.rowspan]="i.records.length" class="px-6 py-4 bg-gray-50">{{i.date}}</td>
+
+                @if (i.records.length>0) {
+                <td class="px-6 py-4">{{i.records[0].studentName}}</td>
+                <td class="px-6 py-4">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full" [ngClass]="{'bg-green-100 text-green-700':i.records[0].status=='Present',
+                            'bg-red-100 text-red-700':i.records[0].status=='Absent',
+                            'bg-yellow-100 text-yellow-700':i.records[0].status=='Late'
+                        }">
+                        {{i.records[0].status}}
+                    </span>
+                </td>
+                }
+            </tr>
+
+            @if (i.records.length>1) {
+            @for (item of i.records.slice(1); track $index) {
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">{{item.studentName}}</td>
+                <td class="px-6 py-4">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full" [ngClass]="{'bg-green-100 text-green-700':item.status=='Present',
+                            'bg-red-100 text-red-700':item.status=='Absent',
+                            'bg-yellow-100 text-yellow-700':item.status=='Late'
+                        }">
+                        {{item.status}}
+                    </span>
+                </td>
+            </tr>
+            }
+            }
+
+            <!-- <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">Nigar Huseynova</td>
+                <td class="px-6 py-4">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">
+                        Late
+                    </span>
+                </td>
+            </tr> -->
+            }
+
+        </tbody>
+
+    </table>
+</div>
