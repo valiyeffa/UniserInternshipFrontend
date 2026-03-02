@@ -1,9 +1,10 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component, inject, SimpleChanges } from '@angular/core';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { Student } from './student.interface';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DatePipe, NgIf, NgClass} from '@angular/common';
 import { fullNameConverter } from './fullnameConverter.pipe';
+import { StudentDataService } from '../student-data.service';
 
 @Component({
   selector: 'app-students',
@@ -13,6 +14,10 @@ import { fullNameConverter } from './fullnameConverter.pipe';
 })
 
 export class StudentsComponent {
+  private studentDataService = inject(StudentDataService);
+  students: Student[] = [];
+
+/*
   students: Student[] = [
     { id: 1, name: "Emma", surname: "Johnson", age: 20 },
     { id: 2, name: "Liam", surname: "Williams", age: 22 },
@@ -30,6 +35,7 @@ export class StudentsComponent {
     { id: 14, name: "Amelia", surname: "Martin", age: 22 },
     { id: 15, name: "Lucas", surname: "Garcia", age: 21 },
   ]
+*/
 
   deleteStudent(id: number) {
     this.students.splice(this.students.findIndex(item => item.id === id), 1);
@@ -61,15 +67,19 @@ export class StudentsComponent {
   }
 
   tarix: string = Date();
-  myName: string = 'Lala Alimova';
+  myName: string = 'Mike Wheeler';
 
   ngOnInit() {
+    this.students = this.studentDataService.getStudent();
     console.log("Students page component initialized");
   }
 
+  /* 
+  doesnt run since theres no @Input()
   ngOnChanges(changes: SimpleChanges) {
     console.log('Changes detected in students page: ', changes);
-  }
+  } 
+  */
 
   ngOnDestroy() {
     console.log('Students page component destroyed');
