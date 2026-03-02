@@ -1,1 +1,42 @@
-<p>electron-journal works!</p>
+<div class="px-6 py-4">
+    <h2 class="text-xl font-semibold text-gray-700">Electron Journal</h2>
+</div>
+
+<table class="min-w-full text-sm text-left">
+
+    <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 font-medium text-gray-500 uppercase">Date</th>
+            <th class="px-6 py-3 font-medium text-gray-500 uppercase">Subject</th>
+            <th class="px-6 py-3 font-medium text-gray-500 uppercase">Attendance</th>
+            <th class="px-6 py-3 font-medium text-gray-500 uppercase">Topic</th>
+            <th class="px-6 py-3 font-medium text-gray-500 uppercase">Homework</th>
+            <th class="px-6 py-3 font-medium text-gray-500 uppercase">Note</th>
+        </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-100 bg-white">
+        @for (item of electronJournal; track $index) {
+        <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4">{{item.date | date}}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{item.subject}}</td>
+            <td class="px-6 py-4">
+                <span class="px-2 py-1 text-xs font-semibold rounded-full" [ngClass]="{
+    'bg-green-100 text-green-700': item.attendance === 'Present',
+    'bg-yellow-100 text-yellow-700': item.attendance === 'Late',
+    'bg-red-100 text-red-700': item.attendance !== 'Present' && item.attendance !== 'Late'
+  }">
+                    {{item.attendance}}
+                </span>
+            </td>
+            <td class="px-6 py-4">{{item.topic}}</td>
+            <td class="px-6 py-4">{{item.homework}}</td>
+            <td class="px-6 py-4 text-gray-500">@if(item.note==''){
+                —
+                }@else {
+                {{item.note}}
+                }</td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,1 +1,43 @@
-<p>class-schedule works!</p>
+<div class="px-6 py-4">
+    <h2 class="text-xl font-semibold text-gray-700">Weekly Schedule</h2>
+</div>
+
+<div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+
+    <div class="overflow-auto">
+        <table class="min-w-full text-sm text-left border-collapse">
+
+            @for (item of classSchedule; track $index) {
+            <thead class="bg-gray-100">
+                <tr>
+                    <th colspan="4" class="px-6 py-4 text-center font-semibold text-gray-900 align-top uppercase">
+                        {{item.day}}
+                    </th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                <tr class="bg-gray-50">
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Time</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Subject</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Teacher</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Room</th>
+                </tr>
+
+                @for (les of item.lessons; track les.lessonId) {
+
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">{{les.startTime}} - {{les.endTime}}</td>
+                    <td class="px-6 py-4">{{les.subject}}</td>
+                    <td class="px-6 py-4">{{les.teacher}}</td>
+                    <td class="px-6 py-4">{{les.room}}</td>
+                </tr>
+                }
+            </tbody>
+            }
+
+        </table>
+    </div>
+
+</div>

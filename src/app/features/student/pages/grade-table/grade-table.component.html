@@ -1,1 +1,48 @@
-<p>grade-table works!</p>
+<div class="px-6 py-4">
+    <h2 class="text-xl font-semibold text-gray-700">Grade Table</h2>
+</div>
+
+<div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+
+    <div class="overflow-x-auto">
+
+        <table class="min-w-full text-sm text-left border-collapse">
+            @for (item of gradeTable; track $index) {
+
+            <thead class="bg-gray-100 text-center">
+                <tr>
+                    <td colspan="5" class="px-6 py-4 font-semibold text-gray-900 align-top">
+                        {{item.subject}}
+                    </td>
+                </tr>
+            </thead>
+
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 font-medium text-gray-500 uppercase">Assessment</th>
+                    <th class="px-6 py-3 font-medium text-gray-500 uppercase">Date</th>
+                    <th class="px-6 py-3 font-medium text-gray-500 uppercase">Score</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @for (ass of item.assessments; track $index) {
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">{{ass.type}}</td>
+                    <td class="px-6 py-4">{{ass.date | date}}</td>
+                    <td class="px-6 py-4 font-medium text-blue-600">{{ass.score}}</td>
+                </tr>
+                }
+            </tbody>
+            <tr class="bg-gray-200">
+                <td colspan="3" class="px-6 py-4 font-medium  text-end">
+                    Average:
+                    {{item.average}}</td>
+            </tr>
+            }
+
+        </table>
+    </div>
+
+</div>

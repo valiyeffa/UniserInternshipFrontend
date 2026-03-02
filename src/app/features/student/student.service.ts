@@ -128,8 +128,8 @@ export class StudentService {
         { "date": "2026-02-18", "subject": "Programming", "attendance": "Present", "topic": "Angular Services", "homework": "Create service", "note": "" },
         { "date": "2026-02-18", "subject": "English", "attendance": "Absent", "topic": "Listening", "homework": "Watch video", "note": "Medical leave" },
         { "date": "2026-02-19", "subject": "Chemistry", "attendance": "Present", "topic": "Organic intro", "homework": "Exercises page 22", "note": "" },
-        { "date": "2026-02-19", "subject": "History", "attendance": "Present", "topic": "WW2", "homework": "Essay", "note": "" },
-        { "date": "2026-02-20", "subject": "UI/UX Design", "attendance": "Present", "topic": "Color theory", "homework": "Palette create", "note": "Creative" },
+        { "date": "2026-02-19", "subject": "History", "attendance": "Absent", "topic": "WW2", "homework": "Essay", "note": "" },
+        { "date": "2026-02-20", "subject": "UI/UX Design", "attendance": "Late", "topic": "Color theory", "homework": "Palette create", "note": "Creative" },
         { "date": "2026-02-20", "subject": "Mathematics", "attendance": "Present", "topic": "Integrals", "homework": "Exercises 5-10", "note": "" }
       ]
     }
