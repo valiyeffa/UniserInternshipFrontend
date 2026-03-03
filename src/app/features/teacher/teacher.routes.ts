@@ -20,11 +20,15 @@ export const Teacher_Routes: Routes = [
             },
             {
                 path: 'students-list',
-                loadComponent: () => import('./pages/students-list/students-list.component').then(m => m.StudentsListComponent),
+                loadComponent: () => import('./pages/students-list/students-list.component').then(m => m.StudentsListComponent)
             },
             {
                 path: 'students-list/add-student',
-                loadComponent: () => import('./pages/students-list/add-student/add-student.component').then(m => m.AddStudentComponent),
+                loadComponent: () => import('./pages/students-list/add-student/add-student.component').then(m => m.AddStudentComponent)
+            },
+            {
+                path: 'students-list/edit-student/:id',
+                loadComponent: () => import('./pages/students-list/edit-student/edit-student.component').then(m => m.EditStudentComponent)
             },
         ]
     },

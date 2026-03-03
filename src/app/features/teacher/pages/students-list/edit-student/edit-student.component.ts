@@ -1,19 +1,17 @@
 import { Component } from '@angular/core';
-import { TeacherService } from '../../../teacher.service';
-import { RouterLink } from "@angular/router";
-import { MatInputModule } from '@angular/material/input';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TeacherService } from '../../../teacher.service';
 
 @Component({
-  selector: 'app-add-student',
+  selector: 'app-edit-student',
   imports: [RouterLink, MatInputModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule],
-  standalone: true,
-  templateUrl: './add-student.component.html',
+  templateUrl: './edit-student.component.html',
 })
-
-export class AddStudentComponent {
+export class EditStudentComponent {
   subjectList: any[] = [];
   isLoading: boolean = false;
 

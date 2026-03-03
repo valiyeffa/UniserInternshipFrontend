@@ -1,0 +1,83 @@
+<a routerLink="/teacher-module/students-list"
+    class="bg-red-200 text-red-700 text-l rounded p-2 hover:bg-red-300 cursor-pointer">
+    <- Go Back </a>
+
+        <p class="text-xl text-center uppercase font-bold">Update Student</p>
+
+        <div class="w-full h-full flex justify-center align-center mt-10">
+            <form class="w-130 flex flex-col gap-2" [formGroup]="addStudentForm" (ngSubmit)="addStudentFunc()">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input formControlName="name" type="text" matInput placeholder="Name">
+                    @if (addStudentForm.get('name')?.hasError('minlength') &&
+                    !addStudentForm.get('name')?.hasError('required')) {
+                    <mat-error>Min length must be 3</mat-error>
+                    }
+                    @if (addStudentForm.get('name')?.hasError('required')) {
+                    <mat-error>Name is <strong>required</strong></mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Surname</mat-label>
+                    <input formControlName="surname" type="text" matInput placeholder="Surname">
+                    @if (addStudentForm.get('surname')?.hasError('minlength') &&
+                    !addStudentForm.get('surname')?.hasError('required')) {
+                    <mat-error>Min length must be 3</mat-error>
+                    }
+                    @if (addStudentForm.get('surname')?.hasError('required')) {
+                    <mat-error>Surname is <strong>required</strong></mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" type="email" matInput placeholder="Ex. pat@example.com">
+                    @if (addStudentForm.get('email')?.hasError('email') &&
+                    !addStudentForm.get('email')?.hasError('required')) {
+                    <mat-error>Please enter a valid email address</mat-error>
+                    }
+                    @if (addStudentForm.get('email')?.hasError('required')) {
+                    <mat-error>Email is <strong>required</strong></mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Age</mat-label>
+                    <input type="number" matInput formControlName="age">
+                    @if (addStudentForm.get('age')?.hasError('min') && !addStudentForm.get('age')?.hasError('required'))
+                    {
+                    <mat-error>Student must be min 18 years old!</mat-error>
+                    }
+                    @if (addStudentForm.get('age')?.hasError('required')) {
+                    <mat-error>Age is <strong>required</strong></mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Subjects</mat-label>
+
+                    <mat-select multiple formControlName="subjects">
+                        @for (item of subjectList; track item.id) {
+                        <mat-option [value]="item.id">{{item.name}}</mat-option>
+                        }
+                    </mat-select>
+
+                    @if (addStudentForm.get('subjects')?.hasError('required')
+                    && addStudentForm.get('subjects')?.touched) {
+                    <mat-error>Subjects are <strong>required</strong></mat-error>
+                    }
+
+                </mat-form-field>
+
+                <button
+                    class="bg-blue-500 w-fit py-2 px-5 transition-all hover:bg-blue-700 text-white flex justify-end rounded cursor-pointer disabled:bg-gray-500"
+                    type="submit" [disabled]="addStudentForm.invalid">
+                    @if (isLoading) {
+                    Loading...
+                    }@else {
+                    Update
+                    }
+                </button>
+            </form>
+        </div>

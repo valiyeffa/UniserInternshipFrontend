@@ -267,6 +267,21 @@ export class TeacherService {
     alert('Student successfully added!');
   }
 
+  updateStudent(student: any) {
+    // ilk silecek sonra eyni id ile movcud dataya elave edecek
+
+    this.students = this.students.filter(i => i.id !== student.id);
+
+    const newStudent = {
+      id: student.id,
+      ...student
+    }
+
+    this.students.push(newStudent);
+
+    console.log(student);
+  }
+
   deleteStudent(id: number) {
     this.students = this.students.filter(i => i.id !== id);
 
