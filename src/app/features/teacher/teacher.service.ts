@@ -133,4 +133,137 @@ export class TeacherService {
       ]
     }
   }
+
+  // !====================================STUDENTS LIST=====================================
+
+  private students = [
+    {
+      "id": 1,
+      "name": "Aylin",
+      "surname": "Mammadova",
+      "email": "aylin.mammadova@gmail.com",
+      "age": 20,
+      "subjects": [
+        "Mathematics",
+        "Physics",
+        "Programming",
+        "English"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Murad",
+      "surname": "Aliyev",
+      "email": "murad.aliyev@gmail.com",
+      "age": 21,
+      "subjects": [
+        "Mathematics",
+        "Chemistry",
+        "History"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Nigar",
+      "surname": "Huseynova",
+      "email": "nigar.huseynova@gmail.com",
+      "age": 19,
+      "subjects": [
+        "Programming",
+        "UI/UX Design",
+        "English"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Elvin",
+      "surname": "Quliyev",
+      "email": "elvin.quliyev@gmail.com",
+      "age": 22,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Sevinc",
+      "surname": "Karimova",
+      "email": "sevinc.karimova@gmail.com",
+      "age": 20,
+      "subjects": [
+        "English",
+        "History",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Orxan",
+      "surname": "Rustamov",
+      "email": "orxan.rustamov@gmail.com",
+      "age": 23,
+      "subjects": [
+        "Programming",
+        "Physics"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Aysel",
+      "surname": "Abbasova",
+      "email": "aysel.abbasova@gmail.com",
+      "age": 19,
+      "subjects": [
+        "UI/UX Design",
+        "English",
+        "Programming"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Kamran",
+      "surname": "Hasanli",
+      "email": "kamran.hasanli@gmail.com",
+      "age": 21,
+      "subjects": [
+        "Mathematics",
+        "History",
+        "Chemistry"
+      ]
+    }
+  ]
+
+  private subjects = [
+    { "id": "Mathematics", "name": "Mathematics" },
+    { "id": "Physics", "name": "Physics" },
+    { "id": "Chemistry", "name": "Chemistry" },
+    { "id": "Biology", "name": "Biology" },
+    { "id": "History", "name": "History" },
+    { "id": "Geography", "name": "Geography" },
+    { "id": "English", "name": "English" },
+    { "id": "Programming", "name": "Programming" },
+    { "id": "UI/UX Design", "name": "UI/UX Design" },
+    { "id": "Physical Education", "name": "Physical Education" }
+  ];
+
+  getStudentsList() {
+    return this.students;
+  }
+
+  getSubjects() {
+    return this.subjects;
+  }
+
+  addStudent(student: any) {
+    const newStudent = {
+      id: this.getStudentsList.length + 1,
+      ...student
+    }
+
+    this.students.push(newStudent);
+
+    alert('Operation successfully done!');
+  }
 }

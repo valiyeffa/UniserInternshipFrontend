@@ -18,6 +18,14 @@ export const Teacher_Routes: Routes = [
                 path: 'attendance-management',
                 loadComponent: () => import('./pages/attendance-management/attendance-management.component').then(m => m.AttendanceManagementComponent)
             },
+            {
+                path: 'students-list',
+                loadComponent: () => import('./pages/students-list/students-list.component').then(m => m.StudentsListComponent),
+            },
+            {
+                path: 'students-list/add-student',
+                loadComponent: () => import('./pages/students-list/add-student/add-student.component').then(m => m.AddStudentComponent),
+            },
         ]
     },
 ]

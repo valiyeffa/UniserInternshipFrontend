@@ -1,0 +1,38 @@
+<div class="w-full flex justify-end mb-5">
+    <a routerLink="/teacher-module/students-list/add-student" class="bg-blue-200 text-blue-700 text-l rounded p-2 hover:bg-blue-300 cursor-pointer">
+        + Add Student
+    </a>
+</div>
+
+<div class="h-138 overflow-auto">
+    <table class="min-w-full text-sm text-left">
+        <thead class="bg-gray-100 sticky top-0 z-10">
+            <tr>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">ID</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Name Surname</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Email</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Age</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Subjects</th>
+            </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100 bg-white">
+            @for (item of students; track item.id) {
+            <tr class="hover:bg-gray-50 align-top">
+                <td class="px-6 py-4">{{item.id}}</td>
+                <td class="px-6 py-4 font-medium text-gray-900">{{item.name}} {{item.surname}}</td>
+                <td class="px-6 py-4">{{item.email}}</td>
+                <td class="px-6 py-4">{{item.age}}</td>
+
+                <td class="px-6 py-4 space-y-1">
+                    @for (i of item.subjects; track $index) {
+                    <span class="block bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs">
+                        {{i}}
+                    </span>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
