@@ -1,5 +1,6 @@
 <div class="w-full flex justify-end mb-5">
-    <a routerLink="/teacher-module/students-list/add-student" class="bg-blue-200 text-blue-700 text-l rounded p-2 hover:bg-blue-300 cursor-pointer">
+    <a routerLink="/teacher-module/students-list/add-student"
+        class="bg-blue-200 text-blue-700 text-l rounded p-2 hover:bg-blue-300 cursor-pointer">
         + Add Student
     </a>
 </div>
@@ -13,6 +14,7 @@
                 <th class="px-6 py-3 font-medium text-gray-500 uppercase">Email</th>
                 <th class="px-6 py-3 font-medium text-gray-500 uppercase">Age</th>
                 <th class="px-6 py-3 font-medium text-gray-500 uppercase">Subjects</th>
+                <th class="px-6 py-3 font-medium text-gray-500 uppercase">Tools</th>
             </tr>
         </thead>
 
@@ -30,6 +32,9 @@
                         {{i}}
                     </span>
                     }
+                </td>
+                <td class="px-6 py-4">
+                    <button (click)="delStudentFunc(item.id)" class="cursor-pointer bg-red-100 text-red-800 px-3 py-2 rounded">Delete</button>
                 </td>
             </tr>
             }

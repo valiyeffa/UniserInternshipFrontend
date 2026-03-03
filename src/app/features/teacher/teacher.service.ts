@@ -264,6 +264,12 @@ export class TeacherService {
 
     this.students.push(newStudent);
 
-    alert('Operation successfully done!');
+    alert('Student successfully added!');
+  }
+
+  deleteStudent(id: number) {
+    this.students = this.students.filter(i => i.id !== id);
+
+    alert('Student successfully deleted!');
   }
 }

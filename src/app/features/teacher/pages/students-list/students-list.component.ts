@@ -16,5 +16,9 @@ export class StudentsListComponent {
   ngOnInit() {
     this.students = this.teacherService.getStudentsList();
   }
-  
+
+  delStudentFunc(id: number) {
+    this.teacherService.deleteStudent(id);
+    this.students = this.teacherService.getStudentsList();
+  }
 }
