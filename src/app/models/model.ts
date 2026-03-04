@@ -21,3 +21,11 @@ export interface Students {
     gender: string;
 }
 
+export interface StudentList {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    age: number | any;
+    subjects: string[] | any;
+}

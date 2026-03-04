@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StudentList } from '../../models/model';
 
 @Injectable({
   providedIn: 'root'
@@ -136,7 +137,7 @@ export class TeacherService {
 
   // !====================================STUDENTS LIST=====================================
 
-  private students = [
+  private students: StudentList[] = [
     {
       "id": 1,
       "name": "Aylin",
@@ -267,24 +268,15 @@ export class TeacherService {
     alert('Student successfully added!');
   }
 
-  updateStudent(student: any) {
-    // ilk silecek sonra eyni id ile movcud dataya elave edecek
-
-    this.students = this.students.filter(i => i.id !== student.id);
-
-    const newStudent = {
-      id: student.id,
-      ...student
-    }
-
-    this.students.push(newStudent);
-
-    console.log(student);
+  updateStudent(updatedStudent: any) {
+    this.students = this.students.map(i =>
+      i.id === updatedStudent.id
+        ? updatedStudent
+        : i
+    );
   }
 
   deleteStudent(id: number) {
     this.students = this.students.filter(i => i.id !== id);
-
-    alert('Student successfully deleted!');
   }
 }

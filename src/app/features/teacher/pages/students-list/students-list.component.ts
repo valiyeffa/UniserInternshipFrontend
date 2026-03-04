@@ -17,12 +17,10 @@ export class StudentsListComponent {
     this.students = this.teacherService.getStudentsList();
   }
 
-  editStudentData(student: any) {
-    this.teacherService.updateStudent(student);
-  }
-
   delStudentFunc(id: number) {
     this.teacherService.deleteStudent(id);
     this.students = this.teacherService.getStudentsList();
+
+    alert('Student successfully deleted!');
   }
 }

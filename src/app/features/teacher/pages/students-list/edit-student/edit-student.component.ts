@@ -3,8 +3,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TeacherService } from '../../../teacher.service';
+import { StudentList } from '../../../../../models/model';
 
 @Component({
   selector: 'app-edit-student',
@@ -14,10 +15,15 @@ import { TeacherService } from '../../../teacher.service';
 export class EditStudentComponent {
   subjectList: any[] = [];
   isLoading: boolean = false;
+  selectedStudent: StudentList | undefined;
 
-  constructor(private teacherService: TeacherService) { }
+  constructor(
+    private teacherService: TeacherService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
-  addStudentForm = new FormGroup({
+  studentForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     surname: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -27,17 +33,34 @@ export class EditStudentComponent {
 
   ngOnInit() {
     this.subjectList = this.teacherService.getSubjects();
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.selectedStudent = this.teacherService.getStudentsList().find(i => i.id === id);
+
+    if (this.selectedStudent) {
+      this.studentForm.setValue({
+        name: this.selectedStudent.name,
+        surname: this.selectedStudent.surname,
+        email: this.selectedStudent.email,
+        age: this.selectedStudent.age,
+        subjects: this.selectedStudent.subjects
+      });
+    }
   }
 
-  addStudentFunc() {
-    const formData = this.addStudentForm.value;
+  updateStudentFunc() {
+    const updatedStudent = {
+      id: Number(this.route.snapshot.paramMap.get('id')),
+      ...this.studentForm.value
+    };
 
-    this.isLoading = true;
+    this.teacherService.updateStudent(updatedStudent);
 
-    this.teacherService.addStudent(formData);
+    const result = confirm("Student updated successfully. Go back to list?");
 
-    this.addStudentForm.reset();
-    this.isLoading = false;
+    if (result) {
+      this.router.navigate(['/teacher-module/students-list']);
+    }
   }
 
 }
