@@ -31,4 +31,8 @@ export class HomeComponent {
       bg: '#d1fae5'
     }
   ];
+
+
+
+
 }

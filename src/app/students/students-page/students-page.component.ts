@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterOutlet, RouterLink } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { StudentService } from '../services/student.service';
 
 @Component({
   selector: 'app-students-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, StudentListComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterOutlet, RouterLink, StudentListComponent],
   templateUrl: './students-page.component.html',
   styleUrl: './students-page.component.css'
 })
@@ -17,19 +17,53 @@ export class StudentsPageComponent implements OnInit {
   searchText: string = '';
   showForm: boolean = false;
   editingStudent: any = null;
-  newStudentName: string = '';
-  newStudentAge: number | null = null;
-  newStudentMajor: string = '';
-  newStudentActive: boolean | null = null;
 
-  constructor(private studentService: StudentService) {}
+  // Reactive Form
+  studentForm: FormGroup;
+
+  constructor(
+    private studentService: StudentService,
+    private fb: FormBuilder
+  ) {
+    this.studentForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      age: [null, [Validators.required, Validators.min(18)]],
+      course: ['', Validators.required],
+      status: ['aktiv', Validators.required],
+      subjects: this.fb.array([
+        this.fb.control('', Validators.required)
+      ])
+    });
+  }
 
   ngOnInit() {
     this.students = this.studentService.getStudents();
   }
 
+  // FormArray-ə getter
+  get subjects(): FormArray {
+    return this.studentForm.get('subjects') as FormArray;
+  }
+
+  // Yeni subject sahəsi əlavə et
+  addSubject() {
+    this.subjects.push(this.fb.control('', Validators.required));
+  }
+
+  // Subject sahəsini sil
+  removeSubject(index: number) {
+    if (this.subjects.length > 1) {
+      this.subjects.removeAt(index);
+    }
+  }
+
   get activeCount() {
-    return this.students.filter(s => s.active).length;
+    return this.students.filter(s => s.status === 'aktiv').length;
+  }
+
+  get inactiveCount() {
+    return this.students.filter(s => s.status === 'qeyri-aktiv').length;
   }
 
   get filteredStudents() {
@@ -40,22 +74,34 @@ export class StudentsPageComponent implements OnInit {
 
   toggleForm() {
     this.showForm = !this.showForm;
+    this.editingStudent = null;
   }
 
-  addStudent(form: any) {
-    if (form.invalid) return;
+  onSubmit() {
+    // Form invalid olarsa bütün sahələri touched et
+    if (this.studentForm.invalid) {
+      this.studentForm.markAllAsTouched();
+      return;
+    }
+
+    // Service-ə göndər
     this.studentService.addStudent({
-      name: this.newStudentName,
-      age: this.newStudentAge,
-      major: this.newStudentMajor,
-      active: this.newStudentActive
+      name: this.studentForm.value.name,
+      email: this.studentForm.value.email,
+      age: this.studentForm.value.age,
+      course: this.studentForm.value.course,
+      status: this.studentForm.value.status,
+      subjects: this.studentForm.value.subjects,
+      enrollmentDate: '01.09.2024'
     });
+
     this.students = this.studentService.getStudents();
-    this.newStudentName = '';
-    this.newStudentAge = null;
-    this.newStudentMajor = '';
-    this.newStudentActive = null;
-    form.resetForm();
+
+    // Submit uğurlu olduqda formu sıfırla
+    this.studentForm.reset({ status: 'aktiv' });
+    while (this.subjects.length > 1) {
+      this.subjects.removeAt(1);
+    }
     this.showForm = false;
   }
 
@@ -64,8 +110,7 @@ export class StudentsPageComponent implements OnInit {
     this.showForm = false;
   }
 
-  saveEdit(form: any) {
-    if (form.invalid) return;
+  saveEdit() {
     this.studentService.updateStudent(this.editingStudent);
     this.students = this.studentService.getStudents();
     this.editingStudent = null;
@@ -78,5 +123,16 @@ export class StudentsPageComponent implements OnInit {
   deleteStudent(id: number) {
     this.studentService.deleteStudent(id);
     this.students = this.studentService.getStudents();
+  }
+
+  // Xəta mesajı göstərmək üçün köməkçi metod
+  getError(controlName: string): string {
+    const control = this.studentForm.get(controlName);
+    if (!control || !control.errors || !control.touched) return '';
+    if (control.errors['required']) return 'Bu sahə məcburidir!';
+    if (control.errors['minlength']) return `Minimum ${control.errors['minlength'].requiredLength} hərf olmalıdır!`;
+    if (control.errors['email']) return 'Düzgün email formatı daxil edin!';
+    if (control.errors['min']) return `Yaş minimum ${control.errors['min'].min} olmalıdır!`;
+    return '';
   }
 }

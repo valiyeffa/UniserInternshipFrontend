@@ -9,11 +9,11 @@
   </div>
 </td>
 <td>{{ student.age }}</td>
-<td>{{ student.major }}</td>
-<td>{{ student.enrollDate | date: 'dd.MM.yyyy' }}</td>
+<td>{{ student.course }}</td>
+<td>{{ student.enrollmentDate }}</td>
 
 <td>
-  @if (student.active) {
+  @if (student.status === 'aktiv') {
     <span class="badge badge-active tooltip">
       <span class="dot dot-green"></span>Aktiv
       <span class="tooltip-text">Tələbə təhsilinə davam edir</span>

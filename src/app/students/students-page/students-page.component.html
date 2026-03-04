@@ -5,7 +5,6 @@
 </nav>
 <router-outlet></router-outlet>
 
-
 <!-- Header -->
 <div class="page-header">
   <div class="page-header-inner">
@@ -28,7 +27,7 @@
       <div class="summary-label">Aktiv</div>
     </div>
     <div class="summary-card red">
-      <div class="summary-number">{{ students.length - activeCount }}</div>
+      <div class="summary-number">{{ inactiveCount }}</div>
       <div class="summary-label">Qeyri-aktiv</div>
     </div>
     <div class="summary-card purple">
@@ -38,113 +37,168 @@
   </div>
 
   <!-- Search və Add -->
-  <!-- Search və Add -->
   <div class="actions-bar">
-    <input type="text" [(ngModel)]="searchText" placeholder="Tələbə axtar..." class="search-input" />
+    <input
+      type="text"
+      [value]="searchText"
+      (input)="searchText = $any($event.target).value"
+      placeholder="Tələbə axtar..."
+      class="search-input"
+    />
     <button class="add-btn" (click)="toggleForm()">+ Yeni Tələbə</button>
   </div>
 
-
-
+  <!--  REACTİVE FORM — Yeni Tələbə -->
   @if (showForm) {
   <div class="form-card">
     <h3>Yeni Tələbə Əlavə Et</h3>
-    <form #studentForm="ngForm" (ngSubmit)="addStudent(studentForm)" class="student-form">
 
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="student-form">
+
+      <!-- Ad elave etmek hissesi -->
       <div class="input-wrapper">
         <label>Ad Soyad</label>
-        <input type="text" name="studentName" [(ngModel)]="newStudentName" #nameInput="ngModel" required minlength="3"
-          placeholder="Məs: Aysel Məmmədova" class="add-input" />
-        @if (nameInput.invalid && nameInput.touched) {
-        @if (nameInput.errors?.['required']) {
-        <span class="error-msg">Ad boş ola bilməz!</span>
-        }
-        @if (nameInput.errors?.['minlength']) {
-        <span class="error-msg">Ad minimum 3 hərf olmalıdır!</span>
-        }
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Məs: Aysel Məmmədova"
+          class="add-input"
+          [class.input-error]="studentForm.get('name')?.invalid && studentForm.get('name')?.touched"
+        />
+        @if (studentForm.get('name')?.invalid && studentForm.get('name')?.touched) {
+          <span class="error-msg">{{ getError('name') }}</span>
         }
       </div>
 
+      <!-- Email  elave etmek hissesi-->
+      <div class="input-wrapper">
+        <label>Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Məs: aysel@school.az"
+          class="add-input"
+          [class.input-error]="studentForm.get('email')?.invalid && studentForm.get('email')?.touched"
+        />
+        @if (studentForm.get('email')?.invalid && studentForm.get('email')?.touched) {
+          <span class="error-msg">{{ getError('email') }}</span>
+        }
+      </div>
+
+      <!-- Yaş  hissesi-->
       <div class="input-wrapper">
         <label>Yaş</label>
-        <input type="number" name="studentAge" [(ngModel)]="newStudentAge" #ageInput="ngModel" required min="16"
-          max="60" placeholder="Yaşınızı daxil edin..." class="add-input" />
-        @if (ageInput.invalid && ageInput.touched) {
-        <span class="error-msg">Yaş 16 ilə 60 arasında olmalıdır!</span>
+        <input
+          type="number"
+          formControlName="age"
+          placeholder="Məs: 20"
+          class="add-input"
+          [class.input-error]="studentForm.get('age')?.invalid && studentForm.get('age')?.touched"
+        />
+        @if (studentForm.get('age')?.invalid && studentForm.get('age')?.touched) {
+          <span class="error-msg">{{ getError('age') }}</span>
         }
       </div>
 
+      <!-- Kurs  secimi-->
       <div class="input-wrapper">
         <label>İxtisas</label>
-        <select name="studentMajor" [(ngModel)]="newStudentMajor" required class="add-input">
-          <option value="" disabled selected>İxtisas seçin...</option>
+        <select
+          formControlName="course"
+          class="add-input"
+          [class.input-error]="studentForm.get('course')?.invalid && studentForm.get('course')?.touched"
+        >
+          <option value="">İxtisas seçin...</option>
           <option value="Frontend">Frontend</option>
           <option value="Backend">Backend</option>
           <option value="UI/UX">UI/UX</option>
           <option value="DevOps">DevOps</option>
           <option value="Mobile">Mobile</option>
         </select>
+        @if (studentForm.get('course')?.invalid && studentForm.get('course')?.touched) {
+          <span class="error-msg">{{ getError('course') }}</span>
+        }
       </div>
 
+      <!-- Status secimi -->
       <div class="input-wrapper">
         <label>Status</label>
-        <select name="studentActive" [(ngModel)]="newStudentActive" required class="add-input">
-          <option [ngValue]="null" disabled selected>Status seçin...</option>
-          <option [ngValue]="true">Aktiv</option>
-          <option [ngValue]="false">Qeyri-aktiv</option>
+        <select formControlName="status" class="add-input">
+          <option value="aktiv">Aktiv</option>
+          <option value="qeyri-aktiv">Qeyri-aktiv</option>
         </select>
       </div>
+
+      <!-- SUBJECTS — FormArray  dersler elave etmek hissesi-->
+      <div class="input-wrapper">
+        <label>Fənlər</label>
+        <div formArrayName="subjects">
+          @for (subject of subjects.controls; track $index; let i = $index) {
+            <div class="subject-row">
+              <input
+                type="text"
+                [formControlName]="i"
+                placeholder="Məs: Angular, HTML..."
+                class="add-input"
+              />
+              @if (subjects.length > 1) {
+                <button type="button" class="remove-btn" (click)="removeSubject(i)">✕</button>
+              }
+            </div>
+          }
+        </div>
+        <button type="button" class="add-subject-btn" (click)="addSubject()">
+          + Fənn əlavə et
+        </button>
+      </div>
+
+      <!-- Form Status ( her sey okey olanda elave edirik) -->
+      <p class="form-status">
+        Form statusu: <strong>{{ studentForm.status }}</strong>
+      </p>
+
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="toggleForm()">Ləğv et</button>
-        <button type="submit" class="add-btn" [disabled]="studentForm.invalid">Əlavə et</button>
+        <button type="submit" class="add-btn">Əlavə et</button>
       </div>
 
     </form>
   </div>
-
   }
 
-
-
+  <!-- Redaktə form hissesi -->
   @if (editingStudent) {
   <div class="form-card">
     <h3>Tələbəni Redaktə Et</h3>
-    <form #editForm="ngForm" (ngSubmit)="saveEdit(editForm)" class="student-form">
+    <form class="student-form">
 
       <div class="input-wrapper">
         <label>Ad Soyad</label>
-        <input type="text" name="editName" [(ngModel)]="editingStudent.name" #editNameInput="ngModel" required
-          minlength="3" class="add-input" />
-        @if (editNameInput.invalid && editNameInput.touched) {
-        <span class="error-msg">Ad minimum 3 hərf olmalıdır!</span>
-        }
+        <input
+          type="text"
+          [value]="editingStudent.name"
+          (input)="editingStudent.name = $any($event.target).value"
+          class="add-input"
+        />
       </div>
 
       <div class="input-wrapper">
         <label>Yaş</label>
-        <input type="number" name="editAge" [(ngModel)]="editingStudent.age" #editAgeInput="ngModel" required min="16"
-          max="60" class="add-input" />
-
-        @if (editAgeInput.invalid && editAgeInput.touched) {
-
-        @if (editAgeInput.errors?.['required']) {
-        <span class="error-msg">Yaş boş ola bilməz!</span>
-        }
-
-        @if (editAgeInput.errors?.['min']) {
-        <span class="error-msg">Yaş minimum 16 olmalıdır!</span>
-        }
-
-        @if (editAgeInput.errors?.['max']) {
-        <span class="error-msg">Yaş maksimum 60 olmalıdır!</span>
-        }
-
-        }
+        <input
+          type="number"
+          [value]="editingStudent.age"
+          (input)="editingStudent.age = $any($event.target).value"
+          class="add-input"
+        />
       </div>
 
       <div class="input-wrapper">
         <label>İxtisas</label>
-        <select name="editMajor" [(ngModel)]="editingStudent.major" class="add-input">
+        <select
+          [value]="editingStudent.course"
+          (change)="editingStudent.course = $any($event.target).value"
+          class="add-input"
+        >
           <option value="Frontend">Frontend</option>
           <option value="Backend">Backend</option>
           <option value="UI/UX">UI/UX</option>
@@ -155,38 +209,37 @@
 
       <div class="input-wrapper">
         <label>Status</label>
-        <select name="editActive" [(ngModel)]="editingStudent.active" class="add-input">
-          <option [ngValue]="true">Aktiv</option>
-          <option [ngValue]="false">Qeyri-aktiv</option>
+        <select
+          [value]="editingStudent.status"
+          (change)="editingStudent.status = $any($event.target).value"
+          class="add-input"
+        >
+          <option value="aktiv">Aktiv</option>
+          <option value="qeyri-aktiv">Qeyri-aktiv</option>
         </select>
       </div>
 
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancelEdit()">Ləğv et</button>
-        <button type="submit" class="add-btn" [disabled]="editForm.invalid">Yadda saxla</button>
+        <button type="button" class="add-btn" (click)="saveEdit()">Yadda saxla</button>
       </div>
 
     </form>
   </div>
   }
 
-
-
-
-  <!-- Table -->
+  <!-- student teybl hissesi -->
   <div class="table-wrapper">
     <div class="table-header">
       <h2>Tələbə Siyahısı</h2>
       <span class="count-badge">{{ filteredStudents.length }} nəfər</span>
     </div>
 
-    <app-student-list [students]="filteredStudents" (deleteStudent)="deleteStudent($event)"
+    <app-student-list
+      [students]="filteredStudents"
+      (deleteStudent)="deleteStudent($event)"
       (editStudent)="editStudent($event)">
     </app-student-list>
 
   </div>
-</div>
-
-
-
-
+</div>  
