@@ -2,6 +2,10 @@ import { Routes } from "@angular/router";
 import { TeacherComponent } from "./teacher.component";
 import { EditStudentComponent } from "./pages/students-list/edit-student/edit-student.component";
 import { AddStudentComponent } from "./pages/students-list/add-student/add-student.component";
+import { LessonPlansComponent } from "./pages/lesson-plans/lesson-plans.component";
+import { StudentAssessmentComponent } from "./pages/student-assessment/student-assessment.component";
+import { AttendanceManagementComponent } from "./pages/attendance-management/attendance-management.component";
+import { StudentsListComponent } from "./pages/students-list/students-list.component";
 
 export const Teacher_Routes: Routes = [
     {
@@ -10,27 +14,27 @@ export const Teacher_Routes: Routes = [
         children: [
             {
                 path: '',
-                loadComponent: () => import('./pages/lesson-plans/lesson-plans.component').then(m => m.LessonPlansComponent)
+                component: LessonPlansComponent
             },
             {
                 path: 'student-assessment',
-                loadComponent: () => import('./pages/student-assessment/student-assessment.component').then(m => m.StudentAssessmentComponent)
+                component: StudentAssessmentComponent
             },
             {
                 path: 'attendance-management',
-                loadComponent: () => import('./pages/attendance-management/attendance-management.component').then(m => m.AttendanceManagementComponent)
+                component: AttendanceManagementComponent
             },
             {
                 path: 'students-list',
-                loadComponent: () => import('./pages/students-list/students-list.component').then(m => m.StudentsListComponent)
+                component: StudentsListComponent
             },
             {
                 path: 'students-list/add-student',
-                component:AddStudentComponent
+                component: AddStudentComponent
             },
             {
                 path: 'students-list/edit-student/:id',
-                component:EditStudentComponent
+                component: EditStudentComponent
             },
         ]
     },
