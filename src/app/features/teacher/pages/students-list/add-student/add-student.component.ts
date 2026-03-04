@@ -37,8 +37,8 @@ export class AddStudentComponent {
     this.isLoading = true;
 
     this.teacherService.addStudent(formData);
-
     this.addStudentForm.reset();
+    this.addStudentForm.markAsUntouched();
     this.isLoading = false;
   }
 

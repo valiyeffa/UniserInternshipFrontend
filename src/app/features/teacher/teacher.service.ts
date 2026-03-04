@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StudentList } from '../../models/model';
+import { StudentList, Subjects } from '../../models/model';
 
 @Injectable({
   providedIn: 'root'
@@ -236,7 +236,7 @@ export class TeacherService {
     }
   ]
 
-  private subjects = [
+  private subjects: Subjects[] = [
     { "id": "Mathematics", "name": "Mathematics" },
     { "id": "Physics", "name": "Physics" },
     { "id": "Chemistry", "name": "Chemistry" },
@@ -259,7 +259,7 @@ export class TeacherService {
 
   addStudent(student: any) {
     const newStudent = {
-      id: this.getStudentsList.length + 1,
+      id: this.students.length + 1,
       ...student
     }
 
