@@ -1,0 +1,9 @@
+<div class="w-full h-150 flex items-center flex-col gap-15 pt-15 bg-gray-50">
+  <h1 class="text-4xl font-bold text-gray-800">Welcome to MyApp!</h1>
+
+  <div class="flex gap-3">
+    @for (item of pages; track item.id) {
+    <app-page-card [item]="item"></app-page-card>
+    }
+  </div>
+</div>

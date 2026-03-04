@@ -38,13 +38,7 @@ export class EditStudentComponent {
     this.selectedStudent = this.teacherService.getStudentsList().find(i => i.id === id);
 
     if (this.selectedStudent) {
-      this.studentForm.setValue({
-        name: this.selectedStudent.name,
-        surname: this.selectedStudent.surname,
-        email: this.selectedStudent.email,
-        age: this.selectedStudent.age,
-        subjects: this.selectedStudent.subjects
-      });
+      this.studentForm.patchValue(this.selectedStudent);
     }
   }
 
