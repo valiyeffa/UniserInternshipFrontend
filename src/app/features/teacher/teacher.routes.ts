@@ -1,5 +1,7 @@
 import { Routes } from "@angular/router";
 import { TeacherComponent } from "./teacher.component";
+import { EditStudentComponent } from "./pages/students-list/edit-student/edit-student.component";
+import { AddStudentComponent } from "./pages/students-list/add-student/add-student.component";
 
 export const Teacher_Routes: Routes = [
     {
@@ -24,11 +26,11 @@ export const Teacher_Routes: Routes = [
             },
             {
                 path: 'students-list/add-student',
-                loadComponent: () => import('./pages/students-list/add-student/add-student.component').then(m => m.AddStudentComponent)
+                component:AddStudentComponent
             },
             {
                 path: 'students-list/edit-student/:id',
-                loadComponent: () => import('./pages/students-list/edit-student/edit-student.component').then(m => m.EditStudentComponent)
+                component:EditStudentComponent
             },
         ]
     },
