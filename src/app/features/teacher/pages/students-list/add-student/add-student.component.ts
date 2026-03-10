@@ -4,7 +4,7 @@ import { RouterLink } from "@angular/router";
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-add-student',
@@ -14,7 +14,6 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 })
 
 export class AddStudentComponent {
-  subjectList: any[] = [];
   isLoading: boolean = false;
 
   constructor(private teacherService: TeacherService) { }
@@ -24,12 +23,23 @@ export class AddStudentComponent {
     surname: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     age: new FormControl('', [Validators.required, Validators.min(18)]),
-    subjects: new FormControl([], Validators.required)
+    subjects: new FormArray([
+      new FormControl('', Validators.required)
+    ])
   })
 
-  ngOnInit() {
-    this.subjectList = this.teacherService.getSubjects();
+   get subjects(){
+    return this.addStudentForm.get('subjects') as FormArray;
   }
+
+  addSubject(){
+    this.subjects.push(new FormControl('', Validators.required));
+  }
+
+  removeSubject(index:number){
+    this.subjects.removeAt(index);
+  }
+
 
   addStudentFunc() {
     const formData = this.addStudentForm.value;

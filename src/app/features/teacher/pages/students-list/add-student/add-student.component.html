@@ -4,8 +4,8 @@
 
         <p class="text-xl text-center uppercase font-bold">Student add</p>
 
-        <div class="w-full h-full flex justify-center align-center mt-10">
-            <form class="w-130 flex flex-col gap-2" [formGroup]="addStudentForm" (ngSubmit)="addStudentFunc()">
+        <div class="w-full flex justify-center align-center mt-10">
+            <form class="w-130 flex flex-col " [formGroup]="addStudentForm" (ngSubmit)="addStudentFunc()">
                 <mat-form-field class="example-full-width">
                     <mat-label>Name</mat-label>
                     <input formControlName="name" type="text" matInput placeholder="Name">
@@ -54,24 +54,29 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Subjects</mat-label>
+                <div formArrayName="subjects" class="example-full-width">
+                    @for(subject of subjects.controls; track $index; let i = $index){
+                    <div class="flex w-full items-center">
+                        <mat-form-field class="w-full">
+                            <mat-label>Subject</mat-label>
 
-                    <mat-select multiple formControlName="subjects">
-                        @for (item of subjectList; track item.id) {
-                        <mat-option [value]="item.id">{{item.name}}</mat-option>
-                        }
-                    </mat-select>
+                            <input matInput [formControlName]="i" placeholder="Subject name">
 
-                    @if (addStudentForm.get('subjects')?.hasError('required')
-                    && addStudentForm.get('subjects')?.touched) {
-                    <mat-error>Subjects are <strong>required</strong></mat-error>
+                        </mat-form-field>
+
+                        <button type="button" class="bg-red-700 cursor-pointer text-white px-2 rounded" (click)="removeSubject(i)">
+                            Remove
+                        </button>
+                    </div>
                     }
+                </div>
 
-                </mat-form-field>
+                <button type="button" class="bg-blue-700 text-white px-3 py-1  cursor-pointer rounded" (click)="addSubject()">
+                    + Add Subject
+                </button>
 
                 <button
-                    class="bg-blue-500 w-fit py-2 px-5 transition-all hover:bg-blue-700 text-white flex justify-end rounded cursor-pointer disabled:bg-gray-500"
+                    class="bg-blue-500 w-fit py-2 px-5 mt-4 transition-all hover:bg-blue-700 text-white flex justify-end rounded cursor-pointer disabled:bg-gray-500"
                     type="submit" [disabled]="addStudentForm.invalid">
                     @if (isLoading) {
                     Loading...

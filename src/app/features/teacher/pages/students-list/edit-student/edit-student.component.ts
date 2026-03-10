@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,7 +13,6 @@ import { StudentList } from '../../../../../models/model';
   templateUrl: './edit-student.component.html',
 })
 export class EditStudentComponent {
-  subjectList: any[] = [];
   isLoading: boolean = false;
   selectedStudent: StudentList | undefined;
 
@@ -28,17 +27,41 @@ export class EditStudentComponent {
     surname: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     age: new FormControl('', [Validators.required, Validators.min(18)]),
-    subjects: new FormControl([], Validators.required)
+    subjects: new FormArray([])
   })
+  
+  get subjects() {
+    return this.studentForm.get('subjects') as FormArray;
+  }
+  
+  addSubject() {
+    this.subjects.push(new FormControl('', Validators.required));
+  }
+  
+  removeSubject(index: number) {
+    this.subjects.removeAt(index);
+  }
 
   ngOnInit() {
-    this.subjectList = this.teacherService.getSubjects();
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.selectedStudent = this.teacherService.getStudentsList().find(i => i.id === id);
+    this.selectedStudent = this.teacherService
+      .getStudentsList()
+      .find(i => i.id === id);
 
     if (this.selectedStudent) {
-      this.studentForm.patchValue(this.selectedStudent);
+
+      this.studentForm.patchValue({
+        name: this.selectedStudent.name,
+        surname: this.selectedStudent.surname,
+        email: this.selectedStudent.email,
+        age: this.selectedStudent.age
+      });
+
+      this.selectedStudent.subjects.forEach((subject: string) => {
+        this.subjects.push(new FormControl(subject, Validators.required));
+      });
+
     }
   }
 
