@@ -13,12 +13,12 @@ export class HomeComponent {
     {
       id: 1,
       title: "Student",
-      link: "/students-module"
+      link: "main/student"
     },
     {
       id: 2,
       title: "Teacher",
-      link: "/teacher-module"
+      link: "main/teacher"
     },
   ]
 

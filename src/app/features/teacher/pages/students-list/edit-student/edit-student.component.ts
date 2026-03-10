@@ -76,7 +76,7 @@ export class EditStudentComponent {
     const result = confirm("Student updated successfully. Go back to list?");
 
     if (result) {
-      this.router.navigate(['/teacher-module/students-list']);
+      this.router.navigate(['/main/teacher/students-list']);
     }
   }
 

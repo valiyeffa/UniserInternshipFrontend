@@ -1,26 +1,35 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout/layout.component';
+import { MainBodyComponent } from './features/main-body/main-body.component';
 
 export const routes: Routes = [
-    {
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
         path: '',
-        component: LayoutComponent,
+        loadComponent: () =>
+          import('./features/home/home.component').then(m => m.HomeComponent),
+        title: 'Home',
+      },
+      {
+        path: 'main',
+        component: MainBodyComponent,
+        title: 'Main Body',
         children: [
-            {
-                path: '',
-                loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
-                title: 'Home'
-            },
-            {
-                path: 'students-module',
-                loadChildren: () => import('./features/student/student.routes').then(m => m.Student_Routes),
-                title: 'StudentsModule'
-            },
-            {
-                path: 'teacher-module',
-                loadChildren: () => import('./features/teacher/teacher.routes').then(m => m.Teacher_Routes),
-                title: 'StudentsModule'
-            },
-        ]
-    }
+          {
+            path: 'student',
+            loadChildren: () =>
+              import('./features/student/student.routes').then(m=>m.Student_Routes),
+          },
+          {
+            path: 'teacher',
+            loadChildren: () =>
+              import('./features/teacher/teacher.routes').then(m => m.Teacher_Routes),
+          },
+        ],
+      },
+    ],
+  },
 ];
