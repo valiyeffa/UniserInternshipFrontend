@@ -1,87 +1,82 @@
-import { Component, inject, SimpleChanges } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { StudentListComponent } from '../student-list/student-list.component';
 import { Student } from './student.interface';
-import { FormsModule, NgForm } from '@angular/forms';
-import { DatePipe, NgIf, NgClass} from '@angular/common';
+import { DatePipe, NgIf, NgClass } from '@angular/common';
 import { fullNameConverter } from './fullnameConverter.pipe';
 import { StudentDataService } from '../student-data.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-students',
-  imports: [StudentListComponent, FormsModule, NgClass, DatePipe, fullNameConverter, NgIf],
+  imports: [StudentListComponent, ReactiveFormsModule, FormsModule, NgClass, DatePipe, fullNameConverter, NgIf],
   templateUrl: './students.component.html',
   styleUrl: './students.component.css'
 })
-
-export class StudentsComponent {
+export class StudentsComponent implements OnInit, OnDestroy {
   private studentDataService = inject(StudentDataService);
   students: Student[] = [];
-
-/*
-  students: Student[] = [
-    { id: 1, name: "Emma", surname: "Johnson", age: 20 },
-    { id: 2, name: "Liam", surname: "Williams", age: 22 },
-    { id: 3, name: "Olivia", surname: "Brown", age: 19 },
-    { id: 4, name: "Noah", surname: "Davis", age: 21 },
-    { id: 5, name: "Ava", surname: "Miller", age: 23 },
-    { id: 6, name: "Sophia", surname: "Wilson", age: 20 },
-    { id: 7, name: "Mason", surname: "Moore", age: 24 },
-    { id: 8, name: "Isabella", surname: "Taylor", age: 18 },
-    { id: 9, name: "Ethan", surname: "Anderson", age: 22 },
-    { id: 10, name: "Mia", surname: "Thomas", age: 21 },
-    { id: 11, name: "James", surname: "Jackson", age: 19 },
-    { id: 12, name: "Charlotte", surname: "White", age: 23 },
-    { id: 13, name: "Benjamin", surname: "Harris", age: 20 },
-    { id: 14, name: "Amelia", surname: "Martin", age: 22 },
-    { id: 15, name: "Lucas", surname: "Garcia", age: 21 },
-  ]
-*/
-
-  deleteStudent(id: number) {
-    this.students.splice(this.students.findIndex(item => item.id === id), 1);
-  }
-
   filterName = '';
-
-  get filteredStudents(): Student[] {
-    return this.students.filter(s => s.name.toLowerCase().includes(this.filterName.toLowerCase()));
-  }
-
-  newName = '';
-  newSurname = '';
-  newAge = '';
-
-  onSubmit(form: NgForm) {
-    if(form.valid) {
-      const newId = Math.max(...this.students.map(s => s.id)) + 1;
-
-      this.students = [...this.students, {
-            id: newId,
-            name: this.newName.trim(),
-            surname: this.newSurname.trim(),
-            age: Number(this.newAge)
-      }];
-
-      form.reset();
-    }
-  }
-
   tarix: string = Date();
   myName: string = 'Mike Wheeler';
 
-  ngOnInit() {
-    this.students = this.studentDataService.getStudent();
-    console.log("Students page component initialized");
+  studentForm = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    surname:new FormControl('', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    age: new FormControl<number | null>(null, [Validators.required, Validators.min(18)]),
+    subjects: new FormArray([])
+  });
+
+  get subjectsArray(): FormArray {
+    return this.studentForm.get('subjects') as FormArray;
   }
 
-  /* 
-  doesnt run since theres no @Input()
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('Changes detected in students page: ', changes);
-  } 
-  */
+  get filteredStudents(): Student[] {
+    return this.students.filter(s =>
+      s.name.toLowerCase().includes(this.filterName.toLowerCase())
+    );
+  }
 
-  ngOnDestroy() {
+  addSubject(): void {
+    this.subjectsArray.push(new FormControl('', Validators.required));
+  }
+
+  removeSubject(index: number): void {
+    this.subjectsArray.removeAt(index);
+  }
+
+  onSubmit(): void {
+    if (this.studentForm.invalid) {
+      this.studentForm.markAllAsTouched(); 
+      return;
+    }
+
+    const newStudent: Student = {
+      id: this.students.length > 0 ? Math.max(...this.students.map(s => s.id)) + 1 : 1,
+      name: this.studentForm.value.name!,
+      surname: this.studentForm.value.surname!,
+      email: this.studentForm.value.email!,
+      age: this.studentForm.value.age!,
+      subjects: this.studentForm.value.subjects as string[]
+    };
+
+    this.studentDataService.addStudent(newStudent);
+    this.students = this.studentDataService.getStudent();
+    this.studentForm.reset();
+    this.subjectsArray.clear(); 
+  }
+
+  deleteStudent(id: number): void {
+    this.studentDataService.deleteStudent(id);
+    this.students = this.studentDataService.getStudent();
+  }
+
+  ngOnInit(): void {
+    this.students = this.studentDataService.getStudent();
+  }
+
+  ngOnDestroy(): void {
     console.log('Students page component destroyed');
   }
 }

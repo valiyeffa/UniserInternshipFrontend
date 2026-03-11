@@ -1,0 +1,11 @@
+<label for="firstName"></label>
+<input type="text" placeholder="name" name="name" class="p-1" [(ngModel)]="newName" required minlength="4" pattern="^[a-zA-Z]+$" #nameField="ngModel">
+<span *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)" class="text-white">name is invalid</span> 
+
+<label for="surname"></label>
+<input type="text" placeholder="surname" name="surname" class="p-1" [(ngModel)]="newSurname" required minlength="4" #surnameField="ngModel">
+<span *ngIf="surnameField.invalid && (surnameField.dirty || surnameField.touched)" class="text-white">surname is invalid</span> 
+
+<label for="age"></label>
+<input type="number" placeholder="age" name="age" class="p-1" [(ngModel)]="newAge" #ageField="ngModel" required min="1">
+<span *ngIf="ageField.invalid && (ageField.dirty || ageField.touched)" class="text-white">age must be greater than 1</span> 

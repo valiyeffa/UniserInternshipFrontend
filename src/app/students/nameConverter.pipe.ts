@@ -6,6 +6,6 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 export class nameConverter implements PipeTransform {
   transform(value: string) {
-    return value.charAt(0) + '.';
+    return value.charAt(0).toUpperCase() + '.';
   }
 }

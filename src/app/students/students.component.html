@@ -1,30 +1,51 @@
 <div class="container p-10">
   <h1>List of students</h1>
   <time>{{ tarix | date:'medium' }}</time>
-  <p>{{myName | fullnameconverter}}</p>
+  <p>{{ myName | fullnameconverter }}</p>
+
   <div class="text-right">
     <input type="text" placeholder="search student" class="p-1 text-black" [(ngModel)]="filterName">
   </div>
-  <div class="flex flex-col gap-4">
-    <form #addNewStudentForm="ngForm" (ngSubmit)="onSubmit(addNewStudentForm)">
-      <div class="flex flex-row gap-4 p-2 text-black text-sm">
-          <label for="firstName"></label>
-          <input type="text" placeholder="name" name="name" class="p-1" [(ngModel)]="newName" required minlength="4" pattern="^[a-zA-Z]+$" #nameField="ngModel">
-          <span *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)" class="text-white">name is invalid</span> 
 
-          <label for="surname"></label>
-          <input type="text" placeholder="surname" name="surname" class="p-1" [(ngModel)]="newSurname" required minlength="4" #surnameField="ngModel">
-          <span *ngIf="surnameField.invalid && (surnameField.dirty || surnameField.touched)" class="text-white">surname is invalid</span> 
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-2 p-2">
 
-          <label for="age"></label>
-          <input type="number" placeholder="age" name="age" class="p-1" [(ngModel)]="newAge" #ageField="ngModel" required min="1">
-          <span *ngIf="ageField.invalid && (ageField.dirty || ageField.touched)" class="text-white">age must be greater than 1</span> 
-      </div>
-      <div>
-        <button [ngClass]="{'bg-yellow-600': addNewStudentForm.invalid}" class="p-2 bg-blue-600 rounded-xl text-sm" type="submit" [disabled]="addNewStudentForm.invalid">add student</button>
-      </div>
-    </form>
-  </div>
+    <div>
+      <input type="text" placeholder="name" formControlName="name" class="p-1 text-black">
+      <span *ngIf="studentForm.get('name')?.invalid && studentForm.get('name')?.touched" class="text-white ml-2">
+        Name required, min 3 chars
+      </span>
+    </div>
+
+    <div>
+      <input type="text" placeholder="surname" formControlName="surname" class="p-1 text-black">
+      <span *ngIf="studentForm.get('surname')?.invalid && studentForm.get('surname')?.touched" class="text-white ml-2">
+        Surname required, min 3 chars
+      </span>
+    </div>
+
+    <div>
+      <input type="email" placeholder="email" formControlName="email" class="p-1 text-black">
+      <span *ngIf="studentForm.get('email')?.invalid && studentForm.get('email')?.touched" class="text-white ml-2">
+        Valid email required
+      </span>
+    </div>
+
+    <div>
+      <input type="number" placeholder="age" formControlName="age" class="p-1 text-black">
+      <span *ngIf="studentForm.get('age')?.invalid && studentForm.get('age')?.touched" class="text-white ml-2">
+        Age must be 18+
+      </span>
+    </div>
+
+   
+    <button
+      type="submit"
+      class="p-2 bg-blue-600 rounded-xl text-sm w-fit"
+      [ngClass]="{'bg-yellow-600': studentForm.invalid}">
+      add student
+    </button>
+
+  </form>
 
   <app-student-list [students]="filteredStudents" (deleteStudent)="deleteStudent($event)"></app-student-list>
 </div>
