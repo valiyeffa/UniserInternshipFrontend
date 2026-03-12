@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 
 export class LoginService {
 
-  constructor(private http: HttpClient,
-    @Inject('Base_url') private config: any) { }
+  constructor(private http: HttpClient) { }
 
   getData() {
     return ['Ali', 'Veli', 'Aysel'];
@@ -17,6 +16,6 @@ export class LoginService {
 
   createPost(data: any): Observable<any> {
     // localStorage.setItem('token', '1234')
-    return this.http.post(this.config.apiUrl, data);
+    return this.http.post('/post', data);
   }
 }

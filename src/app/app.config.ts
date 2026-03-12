@@ -1,18 +1,16 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './auth.interceptor';
+import { apiInterceptor } from './api.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(),
-    provideRouter(routes),
-    {
-      provide:'Base_url',
-      useValue:{
-        apiUrl:'https://httpbin.org/post'
-      }
-    }
+    provideHttpClient(
+      withInterceptors([authInterceptor, apiInterceptor])
+    ),
+    provideRouter(routes)
   ]
 };
