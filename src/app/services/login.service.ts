@@ -16,6 +16,7 @@ export class LoginService {
   }
 
   createPost(data: any): Observable<any> {
-    return this.http.post(this.config.apiUrl, data)
+    // localStorage.setItem('token', '1234')
+    return this.http.post(this.config.apiUrl, data);
   }
 }
