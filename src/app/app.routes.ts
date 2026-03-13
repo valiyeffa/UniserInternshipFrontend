@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout/layout.component';
 import { MainBodyComponent } from './features/main-body/main-body.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./auth/login/login.component').then(m => m.LoginComponent),
+    title: 'Login',
+  },
   {
     path: '',
     component: LayoutComponent,
@@ -12,13 +19,9 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/home/home.component').then(m => m.HomeComponent),
         title: 'Home',
+        canActivate: [authGuard]
       },
-      {
-        path: 'login',
-        loadComponent: () =>
-          import('./auth/login/login.component').then(m => m.LoginComponent),
-        title: 'Login',
-      },
+
       {
         path: 'main',
         component: MainBodyComponent,
@@ -42,4 +45,5 @@ export const routes: Routes = [
       }
     ],
   },
+
 ];

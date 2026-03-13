@@ -9,7 +9,8 @@
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
 
-        <a routerLink="/login" routerLinkActive="active" class="text-gray-700 hover:text-indigo-600 font-medium">Login</a>
+        <button (click)="logoutFunc()"
+          class="text-gray-700 hover:text-indigo-600 cursor-pointer font-medium">Logout</button>
       </div>
     </div>
   </nav>

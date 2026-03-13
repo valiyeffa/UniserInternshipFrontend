@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -10,5 +10,10 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(private router: Router) { }
 
+  logoutFunc() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
+  }
 }
