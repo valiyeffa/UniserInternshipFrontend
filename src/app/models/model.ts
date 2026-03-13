@@ -17,3 +17,8 @@ export interface StudentList {
     age: number | any;
     subjects: Subjects[] | string | any;
 }
+
+export interface LoginForm {
+    username: string,
+    password: string
+}

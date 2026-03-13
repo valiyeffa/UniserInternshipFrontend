@@ -14,6 +14,12 @@ export const routes: Routes = [
         title: 'Home',
       },
       {
+        path: 'login',
+        loadComponent: () =>
+          import('./auth/login/login.component').then(m => m.LoginComponent),
+        title: 'Login',
+      },
+      {
         path: 'main',
         component: MainBodyComponent,
         title: 'Main Body',
