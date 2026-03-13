@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { LoginForm } from '../../models/model';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 
 export class LoginComponent {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   loginForm = new FormGroup({
     username: new FormControl<string>('', [Validators.required, Validators.minLength(5)]),
@@ -34,8 +35,11 @@ export class LoginComponent {
           } else {
             Swal.fire({
               title: "Success",
-              text: "Welcome your account!",
-              icon: "success"
+              text: "Welcome to your account!",
+              icon: "success",
+            }).then(() => {
+              this.router.navigate(['/']);
+              localStorage.setItem("token", '1234');
             });
           }
           // console.log(v)
