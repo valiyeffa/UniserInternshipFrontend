@@ -236,25 +236,8 @@ export class TeacherService {
     }
   ]
 
-  private subjects: Subjects[] = [
-    { "id": "Mathematics", "name": "Mathematics" },
-    { "id": "Physics", "name": "Physics" },
-    { "id": "Chemistry", "name": "Chemistry" },
-    { "id": "Biology", "name": "Biology" },
-    { "id": "History", "name": "History" },
-    { "id": "Geography", "name": "Geography" },
-    { "id": "English", "name": "English" },
-    { "id": "Programming", "name": "Programming" },
-    { "id": "UI/UX Design", "name": "UI/UX Design" },
-    { "id": "Physical Education", "name": "Physical Education" }
-  ];
-
   getStudentsList() {
     return this.students;
-  }
-
-  getSubjects() {
-    return this.subjects;
   }
 
   addStudent(student: any) {
