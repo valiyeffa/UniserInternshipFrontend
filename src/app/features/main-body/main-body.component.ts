@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from "@angular/router";
+import { ActivatedRoute, Router, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from "@angular/router";
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-main-body',
@@ -7,28 +8,27 @@ import { Router, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from "@ang
   templateUrl: './main-body.component.html',
 })
 export class MainBodyComponent {
-  subMenus: any[] = [];
+  subMenus!: any[];
+  id !: string;
 
-  constructor(private route: Router) { }
+  constructor(
+    private globalService: GlobalService,
+    private router: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    if (this.route.url.includes('teacher')) {
-      this.subMenus = this.teacherSubMenus;
-    } else if (this.route.url.includes('student')) {
-      this.subMenus = this.studentSubMenus;
-    }
+    this.router.firstChild?.paramMap.subscribe(params => {
+      this.id = params.get('id')!;
+    });
+
+    this.globalService.getMenus(Number(this.id)).subscribe({
+      next: (res) => {
+        this.subMenus = res.data;
+        // console.log(this.subMenus);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
   }
-
-  teacherSubMenus = [
-    { id: 1, title: 'Lesson Plan', link: '/main/teacher' },
-    { id: 2, title: 'Student Assessment', link: '/main/teacher/student-assessment' },
-    { id: 3, title: 'Attendance Management', link: '/main/teacher/attendance-management' },
-    { id: 4, title: 'Students List', link: '/main/teacher/students-list' },
-  ]
-
-  studentSubMenus = [
-    { id: 1, title: 'Class Schedule', link: '/main/student' },
-    { id: 2, title: 'Electron Journal', link: '/main/student/electron-journal' },
-    { id: 3, title: 'Grade table', link: '/main/student/grade-table' },
-  ]
 }

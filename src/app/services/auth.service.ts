@@ -14,4 +14,6 @@ export class AuthService {
   loginData(data: LoginForm): Observable<any> {
     return this.http.post('/api/Auth/login', data);
   }
+
+  
 }

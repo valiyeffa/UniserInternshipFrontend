@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCardModule } from "@angular/material/card";
-import { Page } from '../../models/model';
+import { Modules } from '../../models/model';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
@@ -13,9 +13,6 @@ import { RouterLink } from "@angular/router";
 })
 
 export class PageCardComponent {
-  @Input() item!: Page;
+  @Input() item!: Modules;
 
-  ngOnChanges() {
-    console.log("Input dəyişdi");
-  }
 }

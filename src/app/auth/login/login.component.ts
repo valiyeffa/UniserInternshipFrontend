@@ -39,7 +39,8 @@ export class LoginComponent {
               icon: "success",
             }).then(() => {
               this.router.navigate(['/']);
-              localStorage.setItem("token", '1234');
+              localStorage.setItem("token", v.data.token);
+              localStorage.setItem("refreshToken", v.data.refreshToken);
             });
           }
           // console.log(v)
@@ -56,3 +57,6 @@ export class LoginComponent {
     )
   }
 }
+
+//!======== firuzevaliyeva
+//!======== Firuze1!@#

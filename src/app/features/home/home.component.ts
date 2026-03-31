@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { PageCardComponent } from "../../components/page-card/page-card.component";
+import { GlobalService } from '../../services/global.service';
+import { Modules } from '../../models/model';
 
 @Component({
   selector: 'app-home',
@@ -9,17 +11,20 @@ import { PageCardComponent } from "../../components/page-card/page-card.componen
 })
 
 export class HomeComponent {
-  pages = [
-    {
-      id: 1,
-      title: "Student",
-      link: "main/student"
-    },
-    {
-      id: 2,
-      title: "Teacher",
-      link: "main/teacher"
-    },
-  ]
 
+  constructor(private globalService: GlobalService) { }
+
+  modules!: Modules[];
+
+  ngOnInit() {
+    this.globalService.getModules().subscribe({
+      next: (res) => {
+        this.modules = res.data;
+        // console.log(this.modules);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  }
 }

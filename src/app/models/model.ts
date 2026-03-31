@@ -1,7 +1,10 @@
-export interface Page {
+export interface Modules {
     id: number;
-    title: string;
-    link: string;
+    url: string;
+    value: string;
+    color: string;
+    icon: string;
+    code:string;
 }
 
 export interface Subjects {
