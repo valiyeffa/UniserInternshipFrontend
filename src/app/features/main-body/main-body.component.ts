@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from "@angular/router";
+import { ActivatedRoute, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from "@angular/router";
 import { GlobalService } from '../../services/global.service';
 
 @Component({
