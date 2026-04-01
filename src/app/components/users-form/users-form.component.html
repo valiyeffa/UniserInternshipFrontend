@@ -1,1 +1,160 @@
-<p>users-form works!</p>
+<div class="w-full my-5 px-50">
+    <p class="text-xl text-center uppercase font-bold">User add</p>
+
+    <a routerLink="/users" class="bg-red-200 text-red-700 text-l rounded p-2 hover:bg-red-300 cursor-pointer">
+        <- Go Back </a>
+
+            <div class="w-full flex justify-center align-center mt-10">
+                <form class="w-130 flex flex-col gap-3" [formGroup]="userForm" (ngSubmit)="addUserFunc()">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-600 mb-1">
+                            Firstname
+                        </label>
+                        <input type="text" formControlName="firstName" id="firstName" autocomplete="firstName"
+                            placeholder="FirstName"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched,
+                      'border-gray-300': userForm.get('firstName')?.valid || !userForm.get('firstName')?.touched
+                    }">
+                        @if(userForm.get('firstName')?.errors?.['required'] && userForm.get('firstName')?.touched){
+                        <p class="text-red-600 text-sm">Firstname required</p>
+                        }
+                        @if(userForm.get('firstName')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Firstname must be min 3 character</p>
+                        }
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-600 mb-1">
+                            Lastname
+                        </label>
+                        <input type="text" formControlName="lastName" id="lastName" autocomplete="lastName"
+                            placeholder="Lastname"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched,
+                      'border-gray-300': userForm.get('lastName')?.valid || !userForm.get('lastName')?.touched
+                    }">
+                        @if(userForm.get('lastName')?.errors?.['required'] && userForm.get('lastName')?.touched){
+                        <p class="text-red-600 text-sm">Lastname required</p>
+                        }
+                        @if(userForm.get('lastName')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Lastname must be min 3 character</p>
+                        }
+                    </div>
+                    <div>
+                        <label for="finCode" class="block text-sm font-medium text-gray-600 mb-1">
+                            Fin code
+                        </label>
+                        <input type="text" formControlName="finCode" id="finCode" autocomplete="finCode"
+                            placeholder="Fin Code"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('finCode')?.invalid && userForm.get('finCode')?.touched,
+                      'border-gray-300': userForm.get('finCode')?.valid || !userForm.get('finCode')?.touched
+                    }">
+                        @if(userForm.get('finCode')?.errors?.['required'] && userForm.get('finCode')?.touched){
+                        <p class="text-red-600 text-sm">Fin Code required</p>
+                        }
+                        @if(userForm.get('finCode')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Fin Code must be min 7 character</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-600 mb-1">
+                            Username
+                        </label>
+                        <input type="text" formControlName="username" id="username" autocomplete="username"
+                            placeholder="Username"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('username')?.invalid && userForm.get('username')?.touched,
+                      'border-gray-300': userForm.get('username')?.valid || !userForm.get('username')?.touched
+                    }">
+                        @if(userForm.get('username')?.errors?.['required'] && userForm.get('username')?.touched){
+                        <p class="text-red-600 text-sm">Username required</p>
+                        }
+                        @if(userForm.get('username')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Username must be min 5 character</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-600 mb-1">
+                            Email
+                        </label>
+                        <input type="text" formControlName="email" id="email" autocomplete="email" placeholder="Email"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('email')?.invalid && userForm.get('email')?.touched,
+                      'border-gray-300': userForm.get('email')?.valid || !userForm.get('email')?.touched
+                    }">
+                        @if(userForm.get('email')?.errors?.['required'] && userForm.get('email')?.touched){
+                        <p class="text-red-600 text-sm">Email required</p>
+                        }
+                        @if(userForm.get('email')?.errors?.['email']){
+                        <p class="text-red-600 text-sm">Email must be correct format</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="phone1" class="block text-sm font-medium text-gray-600 mb-1">
+                            Phone 1
+                        </label>
+                        <input type="text" formControlName="phone1" id="phone1" autocomplete="phone1"
+                            placeholder="0XX-XXX-XX-XX"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('phone1')?.invalid && userForm.get('phone1')?.touched,
+                      'border-gray-300': userForm.get('phone1')?.valid || !userForm.get('phone1')?.touched
+                    }">
+                        @if(userForm.get('phone1')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Phone must be min 10 character</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="phone2" class="block text-sm font-medium text-gray-600 mb-1">
+                            Phone 2
+                        </label>
+                        <input type="text" formControlName="phone2" id="phone2" autocomplete="phone1"
+                            placeholder="0XX-XXX-XX-XX"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('phone2')?.invalid && userForm.get('phone2')?.touched,
+                      'border-gray-300': userForm.get('phone2')?.valid || !userForm.get('phone2')?.touched
+                    }">
+                        @if(userForm.get('phone2')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Phone must be min 10 character</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-600 mb-1">
+                            Password
+                        </label>
+                        <input autocomplete="password" type="password" placeholder="********" formControlName="password"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('password')?.invalid && userForm.get('password')?.touched,
+                      'border-gray-300': userForm.get('password')?.valid || !userForm.get('password')?.touched
+                    }">
+
+                        @if(userForm.get('password')?.errors?.['required'] && userForm.get('password')?.touched){
+                        <p class="text-red-600 text-sm">Password required</p>
+                        }
+                        @if(userForm.get('password')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">Password must be min 6 character</p>
+                        }
+                    </div>
+
+                    <button type="submit" [disabled]="userForm.invalid " [ngClass]="{
+    'bg-gray-400 text-gray-700 cursor-not-allowed ring-0': userForm.invalid,
+    'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-lg': !userForm.invalid
+  }" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition">
+                        Add User
+                    </button>
+                </form>
+            </div>
+</div>
