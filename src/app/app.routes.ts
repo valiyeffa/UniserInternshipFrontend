@@ -3,6 +3,7 @@ import { LayoutComponent } from './layout/layout/layout.component';
 import { MainBodyComponent } from './features/main-body/main-body.component';
 import { authGuard } from './auth/auth.guard';
 import { ContractsComponent } from './features/contracts/contracts.component';
+import { UsersFormComponent } from './components/users-form/users-form.component';
 
 export const routes: Routes = [
   {
@@ -14,13 +15,29 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
         loadComponent: () =>
           import('./features/home/home.component').then(m => m.HomeComponent),
         title: 'Home',
-        canActivate: [authGuard]
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./features/users/users.component').then(m => m.UsersComponent),
+        title: 'Users',
+      },
+      {
+        path: 'users/new-user',
+        component: UsersFormComponent,
+        title: 'Create user',
+      },
+      {
+        path: 'users/edit-user/:id',
+        component: UsersFormComponent,
+        title: 'Edit user',
       },
       {
         path: 'main',
@@ -39,5 +56,4 @@ export const routes: Routes = [
       }
     ],
   },
-
 ];

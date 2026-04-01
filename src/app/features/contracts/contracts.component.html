@@ -1,1 +1,39 @@
-<p>contracts works!</p>
+<div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+
+    <div class="overflow-auto">
+        <table class="min-w-full text-sm text-left border-collapse">
+
+            <!-- @for (item of classSchedule; track $index) { -->
+            <thead class="bg-gray-100">
+                <tr>
+                    <th colspan="4" class="px-6 py-4 text-center font-semibold text-gray-900 align-top uppercase">
+                        <!-- {{item.day}} -->TABLE
+                    </th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                <tr class="bg-gray-50">
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">No</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Data</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Info</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Tools</th>
+                </tr>
+
+                <!-- @for (les of item.lessons; track les.lessonId) {
+
+                } -->
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">1</td>
+                    <td class="px-6 py-4">Data</td>
+                    <td class="px-6 py-4">Info</td>
+                    <td class="px-6 py-4">Tools</td>
+                </tr>
+            </tbody>
+            <!-- } -->
+
+        </table>
+    </div>
+
+</div>

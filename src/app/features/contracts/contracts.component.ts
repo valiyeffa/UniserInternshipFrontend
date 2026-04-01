@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   imports: [],
   templateUrl: './contracts.component.html',
 })
+
 export class ContractsComponent {
 
 }
