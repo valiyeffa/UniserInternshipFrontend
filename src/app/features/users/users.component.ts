@@ -17,7 +17,7 @@ export class UsersComponent {
   ngOnInit() {
     this.globalService.getUsers().subscribe({
       next: (res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.users = res.data.reverse();
       },
       error: (err) => {

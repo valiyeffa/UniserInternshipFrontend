@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { NgClass } from '@angular/common';
 import Swal from 'sweetalert2';
 
@@ -12,7 +12,13 @@ import Swal from 'sweetalert2';
   styles: ``
 })
 export class UsersFormComponent {
-  constructor(private globalService: GlobalService) { }
+  selectedUser!: any[];
+  id!: number;
+
+  constructor(
+    private globalService: GlobalService,
+    private router: ActivatedRoute
+  ) { }
 
   userForm = new FormGroup({
     gender: new FormControl(''),
@@ -27,13 +33,26 @@ export class UsersFormComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(4)]),
   })
 
+  ngOnInit() {
+    this.id = Number(this.router.snapshot.paramMap.get('id'));
+
+    this.globalService.getUserById(this.id).subscribe({
+      next: (res) => {
+        this.selectedUser = res.data;
+        console.log(this.selectedUser);
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
+
   addUserFunc() {
     const formData = this.userForm.value;
-    // console.log(formData);
 
     this.globalService.addUser(formData).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == false) {
           Swal.fire({
             title: "Error",

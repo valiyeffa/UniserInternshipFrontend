@@ -26,6 +26,10 @@ export class GlobalService {
     return this.http.get<any>('/api/Global/GetAllUsers')
   }
 
+  getUserById(id: number) {
+    return this.http.get<any>(`/api/Global/GetUserById?userId=${id}`)
+  }
+
   addUser(data: any) {
     return this.http.post<any>('/api/Global/AddUser', data)
       .pipe(
