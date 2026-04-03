@@ -38,9 +38,9 @@ export class LoginComponent {
               text: "Welcome to your account!",
               icon: "success",
             }).then(() => {
-              this.router.navigate(['/']);
               localStorage.setItem("token", v.data.token);
               localStorage.setItem("refreshToken", v.data.refreshToken);
+              this.router.navigate(['/']);
             });
           }
           // console.log(v)
