@@ -12,7 +12,6 @@ import { GlobalService } from '../../../services/global.service';
   styles: ``
 })
 export class UsersFormComponent {
-  selectedUser!: any;
   id!: number;
 
   constructor(
@@ -40,9 +39,7 @@ export class UsersFormComponent {
     if (this.id) {
       this.globalService.getUserById(this.id).subscribe({
         next: (res) => {
-          this.selectedUser = res.data;
-          console.log(this.selectedUser);
-          this.userForm.patchValue(this.selectedUser);
+          this.userForm.patchValue(res.data);
 
           this.userForm.get('password')?.clearValidators();
           this.userForm.get('password')?.updateValueAndValidity();
@@ -65,7 +62,7 @@ export class UsersFormComponent {
 
       this.globalService.editUser(updatedData).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status == false) {
             Swal.fire({
               title: "Error",
