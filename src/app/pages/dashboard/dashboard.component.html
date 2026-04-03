@@ -1,0 +1,32 @@
+<div class="dashboard">
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Yüklənir...</p>
+  </div>
+
+  <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && !errorMessage">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p>Sistemdəki modullar və menyular</p>
+    </div>
+
+    <div class="modules-grid">
+      <div class="module-card" *ngFor="let module of modules">
+        <div class="module-header">
+          <h3>{{ module.value }}</h3>
+        </div>
+        <div class="menu-list">
+          <div class="menu-item" *ngFor="let menu of menus[module.id]">
+            <span class="menu-dot"></span>
+            <a [href]="menu.link">{{ menu.value }}</a>
+          </div>
+          <div class="no-menu" *ngIf="!menus[module.id]?.length">
+            Menyu tapılmadı
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

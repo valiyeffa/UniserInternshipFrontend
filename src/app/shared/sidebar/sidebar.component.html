@@ -1,0 +1,42 @@
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">⬡</span>
+    <span class="logo-text">Eurasia</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="module-group" *ngFor="let module of modules">
+      <div class="module-header" (click)="toggleModule(module.id)"
+        [class.active]="activeModuleId === module.id">
+        <div class="module-left">
+          <span class="module-name">{{ module.value }}</span>
+        </div>
+        <span class="arrow" [class.open]="activeModuleId === module.id">▾</span>
+      </div>
+
+      <div class="menu-list" *ngIf="activeModuleId === module.id">
+        <a class="menu-item"
+          *ngFor="let menu of menus[module.id]"
+          [routerLink]="menu.link"
+          routerLinkActive="active">
+          <span class="menu-dot"></span>
+          {{ menu.value }}
+        </a>
+        <div class="no-menu" *ngIf="!menus[module.id]?.length">
+          Menyu yoxdur
+        </div>
+      </div>
+    </div>
+
+    <div class="static-links">
+      <a class="menu-item" routerLink="/dashboard" routerLinkActive="active">
+        <span class="menu-dot"></span>
+        Dashboard
+      </a>
+      <a class="menu-item" routerLink="/settings/users" routerLinkActive="active">
+        <span class="menu-dot"></span>
+        İstifadəçilər
+      </a>
+    </div>
+  </nav>
+</div>

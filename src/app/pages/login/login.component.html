@@ -1,0 +1,60 @@
+<div class="login-page">
+  <div class="login-card">
+
+    <!-- Logo -->
+    <div class="login-logo">
+      <span class="logo-icon">⬡</span>
+      <span class="logo-text">Eurasia Admin</span>
+    </div>
+
+    <h2>Daxil ol</h2>
+    <p class="subtitle">Admin panelinə daxil olmaq üçün məlumatlarınızı daxil edin</p>
+
+    <!-- Error -->
+    <div class="error-box" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Username -->
+      <div class="form-group">
+        <label>İstifadəçi adı</label>
+        <input
+          type="text"
+          formControlName="username"
+          placeholder="İstifadəçi adınızı daxil edin"
+          [class.invalid]="username?.invalid && username?.touched"
+        />
+        <span class="error-text" *ngIf="username?.invalid && username?.touched">
+          <span *ngIf="username?.errors?.['required']">Bu sahə məcburidir</span>
+          <span *ngIf="username?.errors?.['minlength']">Minimum 3 simvol olmalıdır</span>
+        </span>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label>Şifrə</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Şifrənizi daxil edin"
+          [class.invalid]="password?.invalid && password?.touched"
+        />
+        <span class="error-text" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">Bu sahə məcburidir</span>
+          <span *ngIf="password?.errors?.['minlength']">Minimum 6 simvol olmalıdır</span>
+        </span>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-login" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Daxil ol</span>
+        <span *ngIf="isLoading">Yüklənir...</span>
+      </button>
+
+    </form>
+
+  </div>
+</div>
