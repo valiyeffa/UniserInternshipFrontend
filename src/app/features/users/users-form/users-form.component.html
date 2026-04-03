@@ -1,5 +1,5 @@
 <div class="w-full my-5 px-50">
-    <p class="text-xl text-center uppercase font-bold">User add</p>
+    <p class="text-xl text-center uppercase font-bold">@if (id) {Update user}@else{User add}</p>
 
     <a routerLink="/users" class="bg-red-200 text-red-700 text-l rounded p-2 hover:bg-red-300 cursor-pointer">
         <- Go Back </a>
@@ -130,6 +130,8 @@
                         }
                     </div>
 
+                    @if(!id){
+
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-600 mb-1">
                             Password
@@ -148,12 +150,17 @@
                         <p class="text-red-600 text-sm">Password must be min 6 character</p>
                         }
                     </div>
+                    }
 
                     <button type="submit" [disabled]="userForm.invalid " [ngClass]="{
     'bg-gray-400 text-gray-700 cursor-not-allowed ring-0': userForm.invalid,
     'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-lg': !userForm.invalid
   }" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition">
+                        @if (!id) {
                         Add User
+                        }@else{
+                        Update User
+                        }
                     </button>
                 </form>
             </div>

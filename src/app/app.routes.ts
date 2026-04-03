@@ -3,7 +3,7 @@ import { LayoutComponent } from './layout/layout/layout.component';
 import { MainBodyComponent } from './features/main-body/main-body.component';
 import { authGuard } from './auth/auth.guard';
 import { ContractsComponent } from './features/contracts/contracts.component';
-import { UsersFormComponent } from './components/users-form/users-form.component';
+import { UsersFormComponent } from './features/users/users-form/users-form.component';
 
 export const routes: Routes = [
   {
