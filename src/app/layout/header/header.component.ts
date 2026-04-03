@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,9 @@ import Swal from 'sweetalert2';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private authService: AuthService
+  ) { }
 
   logoutFunc() {
     Swal.fire({
@@ -23,7 +26,15 @@ export class HeaderComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.clear();
+        this.authService.logout().subscribe({
+          next: (res) => {
+            // console.log(res);
+            localStorage.clear();
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        })
 
         Swal.fire({
           icon: 'success',

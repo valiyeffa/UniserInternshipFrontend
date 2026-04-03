@@ -15,5 +15,11 @@ export class AuthService {
     return this.http.post('/api/Auth/login', data);
   }
 
-  
+  logout() {
+    return this.http.get('/api/Auth/logout');
+  }
+
+  refreshToken(token: string): Observable<any> {
+    return this.http.post('/api/Auth/RefreshTokenLogin', token);
+  }
 }
