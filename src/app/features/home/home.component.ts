@@ -20,10 +20,10 @@ export class HomeComponent {
     this.globalService.getModules().subscribe({
       next: (res) => {
         this.modules = res.data;
-        // console.log(this.modules);
+        console.log(res);
       },
       error: (err) => {
-        console.error(err);
+        console.log(err);
       }
     })
   }

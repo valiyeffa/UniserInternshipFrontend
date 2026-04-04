@@ -1,11 +1,11 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { catchError, switchMap, throwError } from 'rxjs';
-import { AuthService } from '../services/auth.service';
-import { inject } from '@angular/core';
+import { HttpInterceptorFn } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { catchError, switchMap, throwError } from "rxjs";
+import { AuthService } from "../services/auth.service";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
-  const refreshToken: any = localStorage.getItem('refreshToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   const authService = inject(AuthService);
 
   let authReq = req;
@@ -15,26 +15,43 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
-    })
+    });
   }
 
   return next(authReq).pipe(
-    catchError((err, caught) => {
-      if (err.statusCode.includes(401)) {
+    catchError((err) => {
+
+      if (err.status === 401 && refreshToken) {
+
         return authService.refreshToken(refreshToken).pipe(
+
           switchMap((res: any) => {
-            const newToken = res.data.token;
+
+            if (!res || !res.token) {
+              localStorage.clear();
+              return throwError(() => err);
+            }
+
+            const newToken = res.token;
+
             localStorage.setItem('token', newToken);
-            
+
             const retryReq = req.clone({
               setHeaders: {
                 Authorization: `Bearer ${newToken}`
               }
             });
+
             return next(retryReq);
+          }),
+
+          catchError(() => {
+            localStorage.clear();
+            return throwError(() => err);
           })
         );
       }
+
       return throwError(() => err);
     })
   );
