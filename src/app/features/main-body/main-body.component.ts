@@ -10,7 +10,7 @@ import { GlobalService } from '../../services/global.service';
 export class MainBodyComponent {
   subMenus!: any[];
   id !: string;
-
+ 
   constructor(
     private globalService: GlobalService,
     private router: ActivatedRoute

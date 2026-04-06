@@ -1,19 +1,18 @@
 <header class="bg-white shadow">
   <nav class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
-      <div class="flex items-start">
+      <div (click)="homePage()" class="flex items-start cursor-pointer">
         <span class="text-xl font-bold text-indigo-600">MyApp</span>
       </div>
 
       <div class="flex justify-center space-x-8">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
-      
-          <a routerLink="/users" routerLinkActive="active"
+
+        <a routerLink="/users" routerLinkActive="active"
           class="text-gray-700 hover:text-indigo-600 font-medium">Users</a>
 
-        <button (click)="logoutFunc()"
-          class="text-gray-700 hover:text-indigo-600 cursor-pointer font-medium">Log out</button>
+        <button (click)="logoutFunc()" class="text-gray-700 hover:text-indigo-600 cursor-pointer font-medium">Log out</button>
       </div>
     </div>
   </nav>
