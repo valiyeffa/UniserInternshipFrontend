@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { ActivatedRoute, RouterOutlet } from "@angular/router";
 import { GlobalService } from '../../services/global.service';
+import { SideBarComponent } from "../../components/side-bar/side-bar.component";
 
 @Component({
   selector: 'app-main-body',
-  imports: [RouterLinkActive, RouterOutlet],
+  imports: [RouterOutlet, SideBarComponent],
   templateUrl: './main-body.component.html',
 })
 export class MainBodyComponent {

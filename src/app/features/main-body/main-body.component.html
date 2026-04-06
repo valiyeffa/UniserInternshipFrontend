@@ -1,14 +1,15 @@
 <div class="w-full flex">
-    <div class="w-1/5 shadow-xl">
+    <app-side-bar [subMenus]="subMenus" />
+    <!-- <div class="w-1/5 shadow-xl">
+
         <div class="flex justify-center flex-col">
             @for (item of subMenus; track item.id) {
-            <button routerLinkActive="text-indigo-600 border-blue-600"
-                [routerLinkActiveOptions]="{ exact: true }"
+            <button routerLinkActive="text-indigo-600 border-blue-600" [routerLinkActiveOptions]="{ exact: true }"
                 class="text-gray-700 flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
                 {{item.value}}</button>
             }
         </div>
-    </div>
+    </div> -->
     <div class="w-4/5 h-165 overflow-auto p-5">
         <router-outlet />
     </div>

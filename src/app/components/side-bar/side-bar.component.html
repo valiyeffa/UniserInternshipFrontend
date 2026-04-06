@@ -1,0 +1,7 @@
+<div class="flex justify-center flex-col">
+    @for (item of subMenus; track item.id) {
+    <button [routerLink]="item.link" routerLinkActive="text-indigo-600 border-blue-600" [routerLinkActiveOptions]="{ exact: true }"
+        class="text-gray-700 cursor-pointer flex items-center px-5 h-15 text-lg border-b-2 hover:text-indigo-600 font-medium">
+        {{item.value}}</button>
+    }
+</div>

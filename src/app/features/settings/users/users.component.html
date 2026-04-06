@@ -1,5 +1,7 @@
-<div class="max-w-7xl mx-auto mt-10 pb-10 flex flex-col gap-3 ">
-    <a routerLink="/users/new-user" class="cursor-pointer w-fit border-2 rounded bg-blue-300 border-blue-400 hover:bg-blue-200 transition p-2">+
+<div class="max-w-7xl mx-auto mt-1 pb-10 flex flex-col gap-3 ">
+    <b class="text-2xl text-center">USERS</b>
+    <a routerLink="/modules/settings/users/new-user"
+        class="cursor-pointer w-fit border-2 rounded bg-blue-300 border-blue-400 hover:bg-blue-200 transition p-2">+
         Add User</a>
 
     <div class="w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -9,7 +11,7 @@
 
                 <thead class="bg-gray-100">
                     <tr>
-                        <th colspan="8" class="px-6 py-4 text-center font-semibold text-gray-900 align-top uppercase">
+                        <th colspan="9" class="px-6 py-4 text-center font-semibold text-gray-900 align-top uppercase">
                             Users
                         </th>
                     </tr>
@@ -24,6 +26,7 @@
                         <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Email</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Phone</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Fin</th>
+                        <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Status</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Tools</th>
                     </tr>
 
@@ -36,9 +39,10 @@
                         <td class="px-6 py-4">{{item.email?item.email:'-'}}</td>
                         <td class="px-6 py-4">{{item.phone1?item.phone1:'-'}}</td>
                         <td class="px-6 py-4">{{item.finCode?item.finCode:'-'}}</td>
+                        <td class="px-6 py-4">{{item.status?'Aktiv':'Deaktiv'}}</td>
                         <td class="px-6 py-4">
                             <div class="flex gap-3">
-                                <a routerLink="/users/edit-user/{{item.id}}"
+                                <a routerLink="/modules/settings/users/edit-user/{{item.id}}"
                                     class="cursor-pointer border-2 rounded bg-amber-300 border-amber-400 hover:bg-amber-200 transition p-2">Edit</a>
                                 <button (click)="deleteUser(item.id)"
                                     class="cursor-pointer border-2 rounded bg-red-300 border-red-400 hover:bg-red-200 transition p-2">Delete</button>

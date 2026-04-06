@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { GlobalService } from '../../services/global.service';
 import { RouterLink } from "@angular/router";
 import Swal from 'sweetalert2';
+import { GlobalService } from '../../../services/global.service';
 
 @Component({
   selector: 'app-users',

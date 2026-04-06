@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { NgClass } from '@angular/common';
 import Swal from 'sweetalert2';
-import { GlobalService } from '../../../services/global.service';
+import { GlobalService } from '../../../../services/global.service';
 
 @Component({
   selector: 'app-users-form',
@@ -75,7 +75,7 @@ export class UsersFormComponent {
               text: "User successfuly updated!",
               icon: "success",
             }).then(() => {
-              this.router.navigate(['/users'])
+              this.router.navigate(['/modules/settings/users'])
             });
           }
         },
