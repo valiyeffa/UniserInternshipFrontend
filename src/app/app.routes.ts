@@ -7,53 +7,65 @@ import { UsersFormComponent } from './features/users/users-form/users-form.compo
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import('./auth/login/login.component').then(m => m.LoginComponent),
     title: 'Login',
   },
   {
-    path: '',
+    path: 'modules',
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./features/home/home.component').then(m => m.HomeComponent),
+          import('./features/modules/modules.component').then(m => m.ModulesComponent),
         title: 'Home',
       },
+
       {
-        path: 'users',
+        path: 'settings',
         loadComponent: () =>
           import('./features/users/users.component').then(m => m.UsersComponent),
         title: 'Users',
       },
-      {
-        path: 'users/new-user',
-        component: UsersFormComponent,
-        title: 'Create user',
-      },
-      {
-        path: 'users/edit-user/:id',
-        component: UsersFormComponent,
-        title: 'Edit user',
-      },
-      {
-        path: 'main',
-        component: MainBodyComponent,
-        title: 'Main Body',
-        children: [
-          {
-            path: ':id',
-            component: ContractsComponent
-          }
-        ],
-      },
-      {
-        path: '**',
-        redirectTo: ''
-      }
+      // {
+      //   path: 'users',
+      //   loadComponent: () =>
+      //     import('./features/users/users.component').then(m => m.UsersComponent),
+      //   title: 'Users',
+      // },
+      // {
+      //   path: 'users/new-user',
+      //   component: UsersFormComponent,
+      //   title: 'Create user',
+      // },
+      // {
+      //   path: 'users/edit-user/:id',
+      //   component: UsersFormComponent,
+      //   title: 'Edit user',
+      // },
+      // {
+      //   path: 'main',
+      //   component: MainBodyComponent,
+      //   title: 'Main Body',
+      //   children: [
+      //     {
+      //       path: ':id',
+      //       component: ContractsComponent
+      //     }
+      //   ],
+      // },
     ],
   },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];

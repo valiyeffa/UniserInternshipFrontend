@@ -7,10 +7,10 @@ import { Modules } from '../../models/model';
   selector: 'app-home',
   imports: [PageCardComponent],
   standalone: true,
-  templateUrl: './home.component.html',
+  templateUrl: './modules.component.html',
 })
 
-export class HomeComponent {
+export class ModulesComponent {
 
   constructor(private globalService: GlobalService) { }
 
@@ -20,7 +20,7 @@ export class HomeComponent {
     this.globalService.getModules().subscribe({
       next: (res) => {
         this.modules = res.data;
-        console.log(res);
+        // console.log(res);
       },
       error: (err) => {
         console.log(err);

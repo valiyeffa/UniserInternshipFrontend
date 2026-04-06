@@ -16,10 +16,6 @@ export class HeaderComponent {
     private authService: AuthService
   ) { }
 
-  homePage() {
-    this.router.navigate(['/']);
-  }
-
   logoutFunc() {
     Swal.fire({
       title: 'Are you sure you want to log out?',
