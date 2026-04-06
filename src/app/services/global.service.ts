@@ -5,12 +5,13 @@ import { BehaviorSubject, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class GlobalService {
 
   constructor(private http: HttpClient) { }
 
-  private users = new BehaviorSubject<any[]>([]);
-  users$ = this.users.asObservable();
+  private global = new BehaviorSubject<any[]>([]);
+  global$ = this.global.asObservable();
 
   getModules() {
     return this.http.get<any>('/api/Global/GetModules')
@@ -19,6 +20,22 @@ export class GlobalService {
   getMenus(moduleId: number) {
     return this.http.get<any>(`/api/Global/GetMenus/${moduleId}`)
   }
+
+  // ? ======================ROLES START===============================
+
+  getRoles() {
+    return this.http.get<any>('/api/Global/GetAllRoles')
+  }
+
+  addOrUpdateRole(data: any) {
+    return this.http.post<any>('/api/Global/AddOrUpdateRole', data)
+      .pipe(
+        tap(() => this.getRoles().subscribe())
+      )
+  }
+
+  // ? ======================ROLES END==================================
+
 
   //! ============================USERS START=============================
 
