@@ -11,7 +11,6 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
 })
 export class SettingsComponent {
   subMenus!: any[];
-  id !: string;
 
   constructor(
     private globalService: GlobalService,
@@ -22,7 +21,7 @@ export class SettingsComponent {
     this.globalService.getMenus(8).subscribe({
       next: (res) => {
         this.subMenus = res.data;
-        console.log(this.subMenus);
+        // console.log(this.subMenus);
       },
       error: (err) => {
         console.error(err);
