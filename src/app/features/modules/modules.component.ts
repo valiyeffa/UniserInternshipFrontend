@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { PageCardComponent } from "../../components/page-card/page-card.component";
 import { GlobalService } from '../../services/global.service';
 import { Modules } from '../../models/model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,7 @@ import { Modules } from '../../models/model';
 })
 
 export class ModulesComponent {
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(private globalService: GlobalService) { }
 
@@ -20,9 +22,11 @@ export class ModulesComponent {
     this.loadModules();
 
     // Subscribe to module changes to refresh the list automatically
-    this.globalService.modulesRefresh$.subscribe(() => {
-      this.loadModules();
-    })
+    this.globalService.modulesRefresh$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.loadModules();
+      })
   }
 
   private loadModules() {

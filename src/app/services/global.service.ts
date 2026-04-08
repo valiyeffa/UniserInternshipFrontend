@@ -26,21 +26,11 @@ export class GlobalService {
   menusRefresh$ = this.menusRefreshSubject.asObservable();
 
   getModules() {
-    return this.http.get<any>('/api/Global/GetModules')
-      .pipe(
-        tap(() => {
-          this.modulesRefreshSubject.next();
-        })
-      )
+    return this.http.get<any>('/api/Global/GetModules');
   }
 
   getMenus(moduleId: number) {
-    return this.http.get<any>(`/api/Global/GetMenus/${moduleId}`)
-      .pipe(
-        tap(() => {
-          this.menusRefreshSubject.next();
-        })
-      )
+    return this.http.get<any>(`/api/Global/GetMenus/${moduleId}`);
   }
 
   // ? ======================ROLES START===============================

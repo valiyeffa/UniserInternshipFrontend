@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import Swal from 'sweetalert2';
 import { GlobalService } from '../../../services/global.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-users',
@@ -11,6 +12,7 @@ import { GlobalService } from '../../../services/global.service';
 })
 export class UsersComponent {
   users!: any[];
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(private globalService: GlobalService) { }
 
@@ -18,9 +20,11 @@ export class UsersComponent {
     this.loadUsers();
 
     // Subscribe to user changes to refresh the list automatically
-    this.globalService.usersRefresh$.subscribe(() => {
-      this.loadUsers();
-    })
+    this.globalService.usersRefresh$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.loadUsers();
+      })
   }
 
   private loadUsers() {

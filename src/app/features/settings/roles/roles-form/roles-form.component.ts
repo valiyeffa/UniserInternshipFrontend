@@ -1,24 +1,30 @@
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators, ɵInternalFormsSharedModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlobalService } from '../../../../services/global.service';
 import Swal from 'sweetalert2';
+import { BooleanPipe } from '../../../../shared/boolean.pipe';
 
 @Component({
   selector: 'app-roles-form',
-  imports: [MatDialogModule, MatButtonModule, NgClass, ɵInternalFormsSharedModule, ReactiveFormsModule],
+  imports: [MatDialogModule, MatButtonModule, NgClass, ReactiveFormsModule],
   templateUrl: './roles-form.component.html',
   styles: ``
 })
 export class RolesFormComponent {
   newRoleCode!: number;
+  selectedRole: any;
+  private readonly booleanPipe = new BooleanPipe();
 
   constructor(
     private globalService: GlobalService,
-    public dialogRef: MatDialogRef<RolesFormComponent>
-  ) { }
+    public dialogRef: MatDialogRef<RolesFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.selectedRole = data;
+  }
 
   rolesForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -26,84 +32,98 @@ export class RolesFormComponent {
   })
 
   ngOnInit() {
-    this.globalService.getNewRoleCode().subscribe({
-      next: (res) => {
-        // console.log(res.data);
-        this.newRoleCode = res.data;
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    if (this.selectedRole) {
+      this.rolesForm.patchValue({
+        name: this.selectedRole.name,
+        status: this.booleanPipe.transform(this.selectedRole.status)
+      });
+    } else {
+      this.globalService.getNewRoleCode().subscribe({
+        next: (res) => {
+          this.newRoleCode = res.data;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    }
   }
+  
   addRoleFunc() {
     const formData = this.rolesForm.value;
+    const normalizedStatus = this.booleanPipe.transform(formData.status);
 
-    // if (this.id) {
-    const newForm = {
-      code: this.newRoleCode.toString(),
-      ...formData
-    }
+    if (this.selectedRole) {
+      const updateForm = {
+        id: this.selectedRole.id,
+        code: this.selectedRole.code,
+        ...formData,
+        status: normalizedStatus
+      };
 
-    this.globalService.addOrUpdateRole(newForm).subscribe({
-      next: (res) => {
-        console.log(res);
-        if (res.status == false) {
+      this.globalService.addOrUpdateRole(updateForm).subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res.status == false) {
+            Swal.fire({
+              title: "Error",
+              text: res.message,
+              icon: "error"
+            });
+          } else {
+            Swal.fire({
+              title: "Success",
+              text: "Role successfully updated!",
+              icon: "success",
+            }).then(() => {
+              this.dialogRef.close(true);
+            });
+          }
+        },
+        error: (err) => {
           Swal.fire({
             title: "Error",
-            text: res.message,
+            text: "Something went wrong!",
             icon: "error"
           });
-        } else {
-          Swal.fire({
-            title: "Success",
-            text: "Role successfuly added!",
-            icon: "success",
-          }).then(() => {
-            this.dialogRef.close(true);
-          });
+          console.error(err);
         }
-      },
-      error: (err) => {
-        Swal.fire({
-          title: "Error",
-          text: "Something went wrong!",
-          icon: "error"
-        });
-        console.error(err);
-      }
-    })
-
-    // } else {
-    //   this.globalService.addUser(formData).subscribe({
-    //     next: (res) => {
-    //       // console.log(res);
-    //       if (res.status == false) {
-    //         Swal.fire({
-    //           title: "Error",
-    //           text: res.message,
-    //           icon: "error"
-    //         });
-    //       } else {
-    //         Swal.fire({
-    //           title: "Success",
-    //           text: "User successfuly added!",
-    //           icon: "success",
-    //         }).then(() => {
-    //           this.rolesForm.reset();
-    //         });
-    //       }
-    //     },
-    //     error: (err) => {
-    //       Swal.fire({
-    //         title: "Error",
-    //         text: "Something went wrong!",
-    //         icon: "error"
-    //       });
-    //       console.error(err);
-    //     }
-    //   })
-    // }
-
+      });
+    } else {
+      const newForm = {
+        code: this.newRoleCode.toString(),
+        ...formData,
+        status: normalizedStatus
+      };
+      this.globalService.addOrUpdateRole(newForm).subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res.status == false) {
+            Swal.fire({
+              title: "Error",
+              text: res.message,
+              icon: "error"
+            });
+          } else {
+            Swal.fire({
+              title: "Success",
+              text: "Role successfully added!",
+              icon: "success",
+            }).then(() => {
+              this.dialogRef.close(true);
+            });
+          }
+        },
+        error: (err) => {
+          Swal.fire({
+            title: "Error",
+            text: "Something went wrong!",
+            icon: "error"
+          });
+          console.error(err);
+        }
+      });
+    }
   }
+
 }

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
 import { SideBarComponent } from "../../components/side-bar/side-bar.component";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-contracts',
@@ -10,6 +11,7 @@ import { SideBarComponent } from "../../components/side-bar/side-bar.component";
 
 export class ContractsComponent {
   subMenus!: any[];
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private globalService: GlobalService,
@@ -19,9 +21,11 @@ export class ContractsComponent {
     this.loadMenus();
 
     // Subscribe to menu changes to refresh the list automatically
-    this.globalService.menusRefresh$.subscribe(() => {
-      this.loadMenus();
-    })
+    this.globalService.menusRefresh$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.loadMenus();
+      })
   }
 
   private loadMenus() {

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { SideBarComponent } from "../../components/side-bar/side-bar.component";
 import { GlobalService } from '../../services/global.service';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-settings',
@@ -11,6 +12,7 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
 })
 export class SettingsComponent {
   subMenus!: any[];
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private globalService: GlobalService,
@@ -20,9 +22,11 @@ export class SettingsComponent {
   ngOnInit() {
     this.loadMenus();
 
-    this.globalService.menusRefresh$.subscribe(() => {
-      this.loadMenus();
-    })
+    this.globalService.menusRefresh$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.loadMenus();
+      })
   }
 
   private loadMenus() {
