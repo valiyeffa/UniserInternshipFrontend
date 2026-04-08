@@ -16,6 +16,15 @@ export class ContractsComponent {
   ) { }
 
   ngOnInit() {
+    this.loadMenus();
+
+    // Subscribe to menu changes to refresh the list automatically
+    this.globalService.menusRefresh$.subscribe(() => {
+      this.loadMenus();
+    })
+  }
+
+  private loadMenus() {
     this.globalService.getMenus(1).subscribe({
       next: (res) => {
         this.subMenus = res.data;

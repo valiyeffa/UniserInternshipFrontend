@@ -1,8 +1,8 @@
 <div class="max-w-7xl mx-auto mt-1 pb-10 flex flex-col gap-3 ">
     <b class="text-2xl text-center">ROLES</b>
-    <a routerLink="/modules/settings/roles/new-role"
+    <button mat-button (click)="openDialog()"
         class="cursor-pointer w-fit border-2 rounded bg-blue-300 border-blue-400 hover:bg-blue-200 transition p-2">+
-        Add Role</a>
+        Add Role</button>
 
     <div class="w-full bg-white shadow-md rounded-lg overflow-hidden">
 
@@ -34,8 +34,8 @@
                         <td class="px-6 py-4">{{item.status?'Aktiv':'Deaktiv'}}</td>
                         <td class="px-6 py-4">
                             <div class="flex gap-3">
-                                <a routerLink="/modules/settings/roles/edit-role/{{item.id}}"
-                                    class="cursor-pointer border-2 rounded bg-amber-300 border-amber-400 hover:bg-amber-200 transition p-2">Edit</a>
+                                <button mat-button (click)="openDialog()"
+                                    class="cursor-pointer border-2 rounded bg-amber-300 border-amber-400 hover:bg-amber-200 transition p-2">Edit</button>
                                 <!-- <button class="cursor-pointer border-2 rounded bg-red-300 border-red-400 hover:bg-red-200 transition p-2">Delete</button> -->
                             </div>
                         </td>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,34 @@ export class GlobalService {
   private global = new BehaviorSubject<any[]>([]);
   global$ = this.global.asObservable();
 
+  private rolesRefreshSubject = new Subject<void>();
+  rolesRefresh$ = this.rolesRefreshSubject.asObservable();
+
+  private usersRefreshSubject = new Subject<void>();
+  usersRefresh$ = this.usersRefreshSubject.asObservable();
+
+  private modulesRefreshSubject = new Subject<void>();
+  modulesRefresh$ = this.modulesRefreshSubject.asObservable();
+
+  private menusRefreshSubject = new Subject<void>();
+  menusRefresh$ = this.menusRefreshSubject.asObservable();
+
   getModules() {
     return this.http.get<any>('/api/Global/GetModules')
+      .pipe(
+        tap(() => {
+          this.modulesRefreshSubject.next();
+        })
+      )
   }
 
   getMenus(moduleId: number) {
     return this.http.get<any>(`/api/Global/GetMenus/${moduleId}`)
+      .pipe(
+        tap(() => {
+          this.menusRefreshSubject.next();
+        })
+      )
   }
 
   // ? ======================ROLES START===============================
@@ -27,10 +49,16 @@ export class GlobalService {
     return this.http.get<any>('/api/Global/GetAllRoles')
   }
 
+  getNewRoleCode(){
+    return this.http.get<any>('/api/Global/GetNewRoleCode')
+  }
+
   addOrUpdateRole(data: any) {
     return this.http.post<any>('/api/Global/AddOrUpdateRole', data)
       .pipe(
-        tap(() => this.getRoles().subscribe())
+        tap(() => {
+          this.rolesRefreshSubject.next();
+        })
       )
   }
 
@@ -50,21 +78,27 @@ export class GlobalService {
   addUser(data: any) {
     return this.http.post<any>('/api/Global/AddUser', data)
       .pipe(
-        tap(() => this.getUsers().subscribe())
+        tap(() => {
+          this.usersRefreshSubject.next();
+        })
       )
   }
 
   editUser(data: any) {
     return this.http.post<any>('/api/Global/UpdateUser', data)
       .pipe(
-        tap(() => this.getUsers().subscribe())
+        tap(() => {
+          this.usersRefreshSubject.next();
+        })
       )
   }
 
   deleteUser(id: number) {
     return this.http.delete(`/api/Global/DeleteUser?userId=${id}`)
       .pipe(
-        tap(() => this.getUsers().subscribe())
+        tap(() => {
+          this.usersRefreshSubject.next();
+        })
       )
   }
 

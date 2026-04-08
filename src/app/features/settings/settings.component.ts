@@ -18,6 +18,14 @@ export class SettingsComponent {
   ) { }
 
   ngOnInit() {
+    this.loadMenus();
+
+    this.globalService.menusRefresh$.subscribe(() => {
+      this.loadMenus();
+    })
+  }
+
+  private loadMenus() {
     this.globalService.getMenus(8).subscribe({
       next: (res) => {
         this.subMenus = res.data;

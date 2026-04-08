@@ -17,6 +17,15 @@ export class ModulesComponent {
   modules!: Modules[];
 
   ngOnInit() {
+    this.loadModules();
+
+    // Subscribe to module changes to refresh the list automatically
+    this.globalService.modulesRefresh$.subscribe(() => {
+      this.loadModules();
+    })
+  }
+
+  private loadModules() {
     this.globalService.getModules().subscribe({
       next: (res) => {
         this.modules = res.data;

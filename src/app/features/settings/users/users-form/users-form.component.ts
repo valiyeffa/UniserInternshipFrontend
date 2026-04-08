@@ -104,7 +104,7 @@ export class UsersFormComponent {
               text: "User successfuly added!",
               icon: "success",
             }).then(() => {
-              this.userForm.reset();
+              this.router.navigate(['/modules/settings/users'])
             });
           }
         },

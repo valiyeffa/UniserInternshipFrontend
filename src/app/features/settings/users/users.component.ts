@@ -15,6 +15,15 @@ export class UsersComponent {
   constructor(private globalService: GlobalService) { }
 
   ngOnInit() {
+    this.loadUsers();
+
+    // Subscribe to user changes to refresh the list automatically
+    this.globalService.usersRefresh$.subscribe(() => {
+      this.loadUsers();
+    })
+  }
+
+  private loadUsers() {
     this.globalService.getUsers().subscribe({
       next: (res) => {
         // console.log(res.data);
@@ -24,8 +33,6 @@ export class UsersComponent {
         console.error(err);
       }
     })
-
-    this.globalService.getUsers().subscribe();
   }
 
   deleteUser(id: number) {

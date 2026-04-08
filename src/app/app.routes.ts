@@ -7,7 +7,7 @@ import { ContractsComponent } from './features/contracts/contracts.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'modules',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
