@@ -39,7 +39,7 @@ export class GlobalService {
     return this.http.get<any>('/api/Global/GetAllRoles')
   }
 
-  getNewRoleCode(){
+  getNewRoleCode() {
     return this.http.get<any>('/api/Global/GetNewRoleCode')
   }
 
@@ -50,6 +50,19 @@ export class GlobalService {
           this.rolesRefreshSubject.next();
         })
       )
+  }
+
+  getRolesByUserId(id: number) {
+    return this.http.get<any>(`/api/Global/GetUserRolesByUserId?userId=${id}`)
+  }
+
+  addRolesToUser(data: any) {
+    return this.http.post<any>('/api/Global/AddRolesToUser', data)
+    .pipe(
+      tap(()=>{
+        this.rolesRefreshSubject.next();
+      })
+    )
   }
 
   // ? ======================ROLES END==================================

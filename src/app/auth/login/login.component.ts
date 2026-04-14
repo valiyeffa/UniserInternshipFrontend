@@ -40,7 +40,7 @@ export class LoginComponent {
             }).then(() => {
               localStorage.setItem("token", v.data.token);
               localStorage.setItem("refreshToken", v.data.refreshToken);
-              this.router.navigate(['/']);
+              this.router.navigate(['/modules']);
             });
           }
           // console.log(v)

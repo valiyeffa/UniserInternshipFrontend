@@ -3,6 +3,8 @@ import { RouterLink } from "@angular/router";
 import Swal from 'sweetalert2';
 import { GlobalService } from '../../../services/global.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { AddRolesTouserComponent } from './add-roles-touser/add-roles-touser.component';
 
 @Component({
   selector: 'app-users',
@@ -12,9 +14,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class UsersComponent {
   users!: any[];
+
   private readonly destroyRef = inject(DestroyRef);
+  readonly dialog = inject(MatDialog);
 
   constructor(private globalService: GlobalService) { }
+
+
+ openDialog(id: number) {
+     const dialogRef = this.dialog.open(AddRolesTouserComponent, {
+       data: id
+     });
+     dialogRef.afterClosed().subscribe(result => {
+       // console.log(`Dialog result: ${result}`);
+     });
+   }
 
   ngOnInit() {
     this.loadUsers();

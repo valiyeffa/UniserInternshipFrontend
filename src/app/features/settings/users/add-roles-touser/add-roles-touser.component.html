@@ -1,0 +1,22 @@
+<div class="w-130 h-100 flex flex-col gap-2 p-5">
+    <form [formGroup]="form" (ngSubmit)="addRolesToUser()">
+
+        @for (item of userRoles; track item.roleId) {
+        <div class="flex justify-between items-center">
+
+            <p>{{ item.roleName }}</p>
+
+            <input type="checkbox" [checked]="item.assignStatus" (change)="checkedData($event, item.roleId)" />
+        </div>
+        }
+
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-button [mat-dialog-close]="true" type="submit"
+                class=" bg-blue-600 text-white px-5 py-2 ml-3 rounded-lg hover:bg-blue-700 cursor-pointer transition"
+                (submit)="addRolesToUser()">
+                Save
+            </button>
+        </mat-dialog-actions>
+    </form>
+</div>

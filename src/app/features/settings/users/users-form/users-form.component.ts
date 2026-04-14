@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { NgClass } from '@angular/common';
 import Swal from 'sweetalert2';
 import { GlobalService } from '../../../../services/global.service';
+import { BooleanPipe } from '../../../../shared/boolean.pipe';
 
 @Component({
   selector: 'app-users-form',
@@ -13,6 +14,7 @@ import { GlobalService } from '../../../../services/global.service';
 })
 export class UsersFormComponent {
   id!: number;
+  private readonly booleanPipe = new BooleanPipe();
 
   constructor(
     private globalService: GlobalService,
@@ -53,11 +55,13 @@ export class UsersFormComponent {
 
   addUserFunc() {
     const formData = this.userForm.value;
+    const normalizedStatus = this.booleanPipe.transform(formData.status);
 
     if (this.id) {
       const updatedData = {
         ...formData,
-        id: this.id
+        id: this.id,
+        status: normalizedStatus
       }
 
       this.globalService.editUser(updatedData).subscribe({
@@ -118,6 +122,5 @@ export class UsersFormComponent {
         }
       })
     }
-
   }
 }

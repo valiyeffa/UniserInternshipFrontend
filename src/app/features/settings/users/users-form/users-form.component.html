@@ -1,7 +1,8 @@
 <div class="w-full my-5 px-50">
     <p class="text-xl text-center uppercase font-bold">@if (id) {Update user}@else{User add}</p>
 
-    <a routerLink="/modules/settings/users" class="bg-red-200 text-red-700 text-l rounded p-2 hover:bg-red-300 cursor-pointer">
+    <a routerLink="/modules/settings/users"
+        class="bg-red-200 text-red-700 text-l rounded p-2 hover:bg-red-300 cursor-pointer">
         <- Go Back </a>
 
             <div class="w-full flex justify-center align-center mt-10">
@@ -127,6 +128,24 @@
                     }">
                         @if(userForm.get('phone2')?.errors?.['minlength']){
                         <p class="text-red-600 text-sm">Phone must be min 10 character</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-600 mb-1">
+                            Status*
+                        </label>
+                        <select formControlName="status" id="status" autocomplete="status" placeholder="Status"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('status')?.invalid && userForm.get('status')?.touched,
+                      'border-gray-300': userForm.get('status')?.valid || !userForm.get('status')?.touched
+                    }">
+                            <option [ngValue]="true">Aktiv</option>
+                            <option [ngValue]="false">Deaktiv</option>
+                        </select>
+                        @if(userForm.get('status')?.errors?.['required'] && userForm.get('status')?.touched){
+                        <p class="text-red-600 text-sm">Status required</p>
                         }
                     </div>
 
