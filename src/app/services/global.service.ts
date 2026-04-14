@@ -58,11 +58,24 @@ export class GlobalService {
 
   addRolesToUser(data: any) {
     return this.http.post<any>('/api/Global/AddRolesToUser', data)
-    .pipe(
-      tap(()=>{
-        this.rolesRefreshSubject.next();
-      })
-    )
+      .pipe(
+        tap(() => {
+          this.rolesRefreshSubject.next();
+        })
+      )
+  }
+
+  getRoleMenusByRoleId(id: number) {
+    return this.http.get<any>(`/api/Global/GetRoleMenusByRoleId?roleId=${id}`)
+  }
+
+  saveRoleMenus(data: any) {
+    return this.http.post<any>('/api/Global/SaveRoleMenus', data)
+      .pipe(
+        tap(() => {
+          this.rolesRefreshSubject.next();
+        })
+      )
   }
 
   // ? ======================ROLES END==================================

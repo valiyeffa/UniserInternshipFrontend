@@ -3,6 +3,7 @@ import { GlobalService } from '../../../services/global.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RolesFormComponent } from './roles-form/roles-form.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RoleMenusComponent } from './role-menus/role-menus.component';
 
 @Component({
   selector: 'app-roles',
@@ -31,6 +32,15 @@ export class RolesComponent {
     });
     console.log(data);
     this.selectedRole = data;
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openMenuDialog(id: any) {
+    const dialogRef = this.dialog.open(RoleMenusComponent, {
+      data: id
+    });
     dialogRef.afterClosed().subscribe(result => {
       // console.log(`Dialog result: ${result}`);
     });
