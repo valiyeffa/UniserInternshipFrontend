@@ -57,6 +57,3 @@ export class LoginComponent {
     )
   }
 }
-
-//!======== firuzevaliyeva
-//!======== Firuze1!@#
