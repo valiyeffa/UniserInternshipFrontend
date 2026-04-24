@@ -1,0 +1,9 @@
+
+<div class="settings-page">
+  <div class="settings-content">
+    <div class="loading" *ngIf="isLoading">
+      <div class="spinner"></div>
+    </div>
+    <router-outlet *ngIf="!isLoading"></router-outlet>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 .dashboard {
-  padding: 32px;
+  padding: 40px 32px;
+  background: #f0f4ff;
+  min-height: 100vh;
 }
 
 .loading {
@@ -9,7 +11,7 @@
   justify-content: center;
   height: 300px;
   gap: 16px;
-  color: #64748b;
+  color: #6366f1;
 }
 
 .spinner {
@@ -28,96 +30,114 @@
 .error-box {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  color: #ef4444;
   padding: 16px;
   border-radius: 10px;
   margin-bottom: 20px;
 }
 
-.page-header {
-  margin-bottom: 32px;
-}
-
-.page-header h1 {
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.page-header p {
-  color: #64748b;
-  font-size: 14px;
-}
-
 .modules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
 .module-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 24px;
-  transition: border-color 0.2s;
+  background: linear-gradient(135deg, #dde8ff 0%, #eef2ff 60%, #f8f9ff 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
 }
 
 .module-card:hover {
-  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.18);
 }
 
-.module-header {
+.module-card.active {
+  background: linear-gradient(135deg, #5b5fc7 0%, #6366f1 100%);
+  border-color: #6366f1;
+}
+
+.module-card.active .module-name {
+  color: #ffffff;
+}
+
+.module-card.active .module-underline {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Sağ alt köşədəki böyük ikon */
+.module-bg-icon {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  font-size: 80px;
+  opacity: 0.12;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Sol üst kiçik ikon qutucuğu */
+.module-icon-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 48px;
+  height: 48px;
+  background: #5b5fc7;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  justify-content: center;
+  font-size: 22px;
 }
 
-.module-icon {
-  font-size: 24px;
+.module-card.active .module-icon-box {
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.module-header h3 {
-  color: #ffffff;
+.module-name {
+  color: #1e1b4b;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
 }
 
-.menu-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.menu-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.module-underline {
+  width: 28px;
+  height: 3px;
   background: #6366f1;
-  flex-shrink: 0;
+  border-radius: 2px;
+  position: relative;
+  z-index: 1;
 }
 
-.menu-item a {
-  color: #94a3b8;
-  font-size: 14px;
-  text-decoration: none;
-  transition: color 0.2s;
+@media (max-width: 1200px) {
+  .modules-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.menu-item a:hover {
-  color: #ffffff;
+@media (max-width: 900px) {
+  .modules-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.no-menu {
-  color: #475569;
-  font-size: 13px;
-  font-style: italic;
+@media (max-width: 560px) {
+  .modules-grid {
+    grid-template-columns: 1fr;
+  }
 }

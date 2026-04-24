@@ -1,0 +1,9 @@
+{
+  "/api": {
+    "target": "https://eurasia-dev.program.az/Eurasia/system",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+

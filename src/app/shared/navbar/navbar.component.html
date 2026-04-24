@@ -1,18 +1,58 @@
 <div class="navbar">
   <div class="navbar-left">
-    <span class="page-title">Eurasia Admin Panel</span>
+    <span class="page-title">
+      <img src="/logo.png" alt="Eurasia Logo" class="logo-img" />
+    </span>
+    <span class="module-name" *ngIf="moduleName">{{ moduleName }}</span>
   </div>
+
+  <!-- Dynamic Module Menus -->
+  <div class="navbar-center" *ngIf="menus.length > 0">
+    <nav class="menu-nav">
+      <button
+        class="menu-btn"
+        *ngFor="let menu of menus"
+        [class.active]="activeMenu?.id === menu.id"
+        (click)="navigateToMenu(menu)">
+        {{ menu.value }}
+      </button>
+    </nav>
+  </div>
+
   <div class="navbar-right">
-    <div class="user-info">
-      <div class="user-avatar">{{ username.charAt(0).toUpperCase() }}</div>
-      <span class="username">{{ username }}</span>
+    <div class="user-menu" (clickOutside)="closeDropdown()">
+      <button class="user-btn" (click)="toggleDropdown()">
+        <div class="user-avatar">{{ username.charAt(0).toUpperCase() }}</div>
+        <span class="username">{{ username }}</span>
+        <svg class="chevron" [class.open]="dropdownOpen" viewBox="0 0 24 24" fill="none" width="16" height="16">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="dropdown" *ngIf="dropdownOpen">
+        <button class="dropdown-item">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Account
+        </button>
+        <button class="dropdown-item">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Change password
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item logout" (click)="logout()">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Log out
+        </button>
+      </div>
     </div>
-    <button class="btn-logout" (click)="logout()">
-      <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
-        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Çıxış
-    </button>
   </div>
 </div>

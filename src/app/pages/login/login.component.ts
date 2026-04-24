@@ -15,6 +15,9 @@ export class LoginComponent {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  showPassword = false;
+  usernameFocused = false;
+  passwordFocused = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +53,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Username və ya şifrə yanlışdır!';
+        this.errorMessage = err.error?.message || 'İstifadəçi adı və ya şifrə yanlışdır!';
       }
     });
   }

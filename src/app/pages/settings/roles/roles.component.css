@@ -1,4 +1,4 @@
-.users-page {
+.roles-page {
   padding: 0;
   background: #ffffff;
   min-height: 100vh;
@@ -79,10 +79,6 @@
   cursor: not-allowed;
 }
 
-.ops-item.danger {
-  color: #e53935;
-}
-
 .ops-item-icon {
   font-size: 15px;
   width: 18px;
@@ -130,7 +126,7 @@
   background: #ffffff;
 }
 
-/* 7-8 rows visible: each row ~44px, header ~45px */
+/* 7-8 rows visible */
 .table-scroll {
   max-height: calc(44px * 8 + 45px);
   overflow-y: auto;
@@ -149,10 +145,6 @@
 .table-scroll::-webkit-scrollbar-thumb {
   background: #3d5a80;
   border-radius: 4px;
-}
-
-.table-scroll::-webkit-scrollbar-thumb:hover {
-  background: #2e4a66;
 }
 
 table {
@@ -174,7 +166,6 @@ th {
   font-size: 13px;
   font-weight: 700;
   border-bottom: 1px solid #d0d0d0;
-  white-space: nowrap;
 }
 
 td {
@@ -263,7 +254,6 @@ tbody tr.selected-row td {
   cursor: pointer;
   padding: 4px 7px;
   border-radius: 3px;
-  transition: color 0.15s;
   min-width: 26px;
 }
 
@@ -294,13 +284,13 @@ tbody tr.selected-row td {
   border-radius: 8px;
   padding: 28px;
   width: 100%;
-  max-width: 520px;
+  max-width: 440px;
   max-height: 88vh;
   overflow-y: auto;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
 }
 
-.roles-modal {
+.menus-modal {
   max-width: 480px;
 }
 
@@ -332,12 +322,6 @@ tbody tr.selected-row td {
 
 .btn-close:hover {
   background: #e0e0e0;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
 }
 
 .form-group {
@@ -375,22 +359,28 @@ tbody tr.selected-row td {
   border-color: #e53935;
 }
 
+.form-group input[readonly] {
+  background: #efefef;
+  color: #888888;
+  cursor: not-allowed;
+}
+
 .error-text {
   color: #e53935;
   font-size: 11px;
 }
 
-/* ── Roles Table inside modal ── */
-.roles-loading {
+/* ── Menus Table ── */
+.menus-loading {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px;
 }
 
-.roles-table-container {
+.menus-table-container {
   margin-bottom: 4px;
-  max-height: 360px;
+  max-height: 380px;
   overflow-y: auto;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
@@ -398,18 +388,18 @@ tbody tr.selected-row td {
   scrollbar-color: #cccccc transparent;
 }
 
-.roles-table {
+.menus-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.roles-table thead {
+.menus-table thead {
   background: #f0f2f5;
   position: sticky;
   top: 0;
 }
 
-.roles-table th {
+.menus-table th {
   padding: 10px 14px;
   text-align: left;
   color: #444444;
@@ -419,18 +409,18 @@ tbody tr.selected-row td {
   letter-spacing: 0.3px;
 }
 
-.roles-table td {
+.menus-table td {
   padding: 11px 14px;
   color: #333333;
   font-size: 13px;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.roles-table tr:last-child td {
+.menus-table tr:last-child td {
   border-bottom: none;
 }
 
-.roles-table tr.even-row {
+.menus-table tr.even-row {
   background: #f7f8fa;
 }
 

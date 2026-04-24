@@ -1,0 +1,174 @@
+<div class="roles-page">
+
+  <!-- Operations -->
+  <div class="top-bar">
+    <div class="operations-wrapper">
+      <button class="btn-operations" (click)="toggleOperationsMenu($event)">
+        <span class="ops-icon">⠿</span> Operations
+      </button>
+      <div class="operations-dropdown" *ngIf="showOperationsMenu" (click)="$event.stopPropagation()">
+        <button class="ops-item" (click)="openAddModal()">
+          <span class="ops-item-icon">⊕</span> Create
+        </button>
+        <button class="ops-item" (click)="openEditModalFromSelection()" [disabled]="!selectedRole">
+          <span class="ops-item-icon">✎</span> Edit
+        </button>
+        <button class="ops-item" (click)="openMenusModal()" [disabled]="!selectedRole">
+          <span class="ops-item-icon">☰</span> Menu İcazələri
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-box" *ngIf="errorMessage && !showModal && !showMenusModal">{{ errorMessage }}</div>
+
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper" *ngIf="!isLoading">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let role of pagedRoles"
+            [class.selected-row]="selectedRole?.id === role.id"
+            (click)="selectRole(role)">
+            <td>{{ role.code }}</td>
+            <td>{{ role.value }}</td>
+            <td>{{ role.status ? 'Active' : 'Inactive' }}</td>
+          </tr>
+          <tr *ngIf="pagedRoles.length === 0">
+            <td colspan="3" class="no-data">Rol tapılmadı</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-bar">
+      <div class="page-size-selector">
+        <span>Items per page:</span>
+        <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+          <option [value]="10">10</option>
+          <option [value]="15">15</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+      <div class="page-info">
+        {{ (currentPage - 1) * pageSize + 1 }} – {{ Math.min(currentPage * pageSize, roles.length) }} of {{ roles.length }}
+      </div>
+      <div class="page-nav">
+        <button class="page-btn" (click)="goToPage(1)" [disabled]="currentPage === 1">|◁</button>
+        <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">◁</button>
+        <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">▷</button>
+        <button class="page-btn" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">▷|</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Role Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ isEditing ? 'Rolu düzəlt' : 'Yeni rol' }}</h2>
+        <button class="btn-close" (click)="closeModal()">✕</button>
+      </div>
+
+      <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Kod</label>
+          <input type="text" formControlName="code" [readonly]="true"/>
+        </div>
+
+        <div class="form-group">
+          <label>Ad *</label>
+          <input type="text" formControlName="name" placeholder="Rol adı"
+            [class.invalid]="roleForm.get('name')?.invalid && roleForm.get('name')?.touched"/>
+          <span class="error-text" *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched">Ad daxil edin</span>
+        </div>
+
+        <div class="form-group" *ngIf="isEditing">
+          <label>Status</label>
+          <select formControlName="status">
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Ləğv et</button>
+          <button type="submit" class="btn-save" [disabled]="isSaving">
+            {{ isSaving ? 'Saxlanır...' : (isEditing ? 'Yadda saxla' : 'Əlavə et') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Menus Modal -->
+  <div class="modal-overlay" *ngIf="showMenusModal" (click)="closeMenusModal()">
+    <div class="modal menus-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Menu İcazələri — {{ selectedRole?.value }}</h2>
+        <button class="btn-close" (click)="closeMenusModal()">✕</button>
+      </div>
+
+      <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div class="menus-loading" *ngIf="menusLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <div class="menus-table-container" *ngIf="!menusLoading">
+        <table class="menus-table">
+          <thead>
+            <tr>
+              <th style="width:50px">№</th>
+              <th>Menyu</th>
+              <th style="width:80px">İcazə</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let menu of roleMenus; let i = index"
+                [class.even-row]="i % 2 === 1">
+              <td>{{ i + 1 }}</td>
+              <td>{{ menu.value }}</td>
+              <td>
+                <button
+                  class="role-toggle"
+                  [class.active]="menu.assignStatus"
+                  (click)="toggleMenu(menu)"
+                  type="button">
+                  <span class="toggle-circle"></span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="roleMenus.length === 0">
+              <td colspan="3" class="no-data">Menyu tapılmadı</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeMenusModal()">Ləğv et</button>
+        <button type="button" class="btn-save" (click)="saveRoleMenus()" [disabled]="menusLoading || isSaving">
+          {{ isSaving ? 'Saxlanır...' : 'Yadda saxla' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

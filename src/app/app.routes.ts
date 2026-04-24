@@ -21,8 +21,23 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       {
-        path: 'settings/users',
-        loadComponent: () => import('./pages/settings/users/users.component').then(m => m.UsersComponent)
+        path: 'settings',
+        loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
+        children: [
+          { path: '', redirectTo: 'users', pathMatch: 'full' },
+          {
+            path: 'users',
+            loadComponent: () => import('./pages/settings/users/users.component').then(m => m.UsersComponent)
+          },
+          {
+            path: 'roles',
+            loadComponent: () => import('./pages/settings/roles/roles.component').then(m => m.RolesComponent)
+          }
+        ]
+      },
+      {
+        path: 'order',
+        loadComponent: () => import('./pages/order/order.component').then(m => m.OrderComponent)
       }
     ]
   },
