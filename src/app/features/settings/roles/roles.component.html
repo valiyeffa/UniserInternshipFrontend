@@ -1,42 +1,50 @@
-<div class="max-w-7xl mx-auto mt-1 pb-10 flex flex-col gap-3 ">
-    <b class="text-2xl text-center">ROLES</b>
+<div class="mt-1 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <b class="text-center text-2xl">ROLES</b>
     <button mat-button (click)="openDialog()"
-        class="cursor-pointer w-fit border-2 rounded bg-blue-300 border-blue-400 hover:bg-blue-200 transition p-2">+
+        class="w-fit cursor-pointer rounded-lg border border-indigo-200 bg-indigo-50 p-2 text-indigo-700 hover:bg-indigo-100 transition">+
         Add Role</button>
 
-    <div class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="w-full overflow-hidden rounded-lg border border-slate-200">
+        <div class="thin-scrollbar h-[420px] overflow-auto">
+            <table class="min-w-full text-sm text-left border-separate border-spacing-y-2">
 
-        <div class="overflow-auto">
-            <table class="min-w-full text-sm text-left border-collapse">
-
-                <thead class="bg-gray-100">
+                <thead>
                     <tr>
-                        <th colspan="9" class="px-6 py-4 text-center font-semibold text-gray-900 align-top uppercase">
+                        <th colspan="9"
+                            class="rounded-xl bg-slate-100 px-6 py-4 text-center align-top text-xs font-semibold uppercase tracking-wide text-slate-700">
                             Roles
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr class="bg-gray-50">
-                        <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">ID</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Code</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Name</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Tools</th>
+                    <tr class="bg-slate-50">
+                        <th
+                            class="rounded-l-xl px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Code
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Name
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            Status</th>
+                        <th
+                            class="rounded-r-xl px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            Tools</th>
                     </tr>
 
-                    @for (item of roles; track item.id) {
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4">{{item.id}}</td>
-                        <td class="px-6 py-4">{{item.code}}</td>
-                        <td class="px-6 py-4">{{item.name}}</td>
-                        <td class="px-6 py-4">{{item.status?'Aktiv':'Deaktiv'}}</td>
-                        <td class="px-6 py-4">
+                    @for (item of paginatedRoles; track item.id) {
+                    <tr class="bg-white transition hover:bg-indigo-50/40">
+                        <td class="rounded-l-xl border-y border-l border-slate-200 px-6 py-4">{{item.id}}</td>
+                        <td class="border-y border-slate-200 px-6 py-4">{{item.code}}</td>
+                        <td class="border-y border-slate-200 px-6 py-4">{{item.name}}</td>
+                        <td class="border-y border-slate-200 px-6 py-4">{{item.status?'Aktiv':'Deaktiv'}}</td>
+                        <td class="rounded-r-xl border-y border-r border-slate-200 px-6 py-4">
                             <div class="flex gap-3">
                                 <button mat-button (click)="openEditDialog(item)"
-                                    class="cursor-pointer border-2 rounded bg-amber-300 border-amber-400 hover:bg-amber-200 transition p-2">Edit</button>
-                                <button (click)="openMenuDialog(item.id)" class="cursor-pointer border-2 rounded bg-blue-300 border-blue-400 hover:bg-blue-200 transition p-2">Menus</button>
+                                    class="cursor-pointer rounded-lg border border-amber-300 bg-amber-100 p-2 transition hover:bg-amber-200">Edit</button>
+                                <button (click)="openMenuDialog(item.id)"
+                                    class="cursor-pointer rounded-lg border border-blue-300 bg-blue-100 p-2 transition hover:bg-blue-200">Menus</button>
                             </div>
                         </td>
                     </tr>
@@ -46,5 +54,18 @@
             </table>
         </div>
 
+        <div class="flex items-center justify-between border-t border-slate-100 px-4 py-3">
+            <p class="text-sm text-slate-500">Page {{ currentPage }} / {{ totalPages }}</p>
+            <div class="flex gap-2">
+                <button (click)="prevPage()" [disabled]="currentPage === 1"
+                    class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 transition enabled:hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">
+                    Previous
+                </button>
+                <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+                    class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 transition enabled:hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">
+                    Next
+                </button>
+            </div>
+        </div>
     </div>
 </div>

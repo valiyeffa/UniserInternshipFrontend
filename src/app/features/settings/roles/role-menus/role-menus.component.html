@@ -1,20 +1,22 @@
-<div class="w-130 h-100 flex flex-col gap-2 p-5">
+<div class="flex h-[430px] w-[560px] flex-col gap-3 p-5">
     <form [formGroup]="form" (ngSubmit)="addRolesToUser()">
-        @for (item of roleMenus; track item.menuId) {
-        <div class="flex justify-between items-center">
-            <p>{{ item.module }}</p>
-            <p>{{ item.menu }}</p>
+        <div class="thin-scrollbar h-[300px] overflow-auto rounded-xl border border-slate-200 bg-slate-50 p-3">
+            @for (item of roleMenus; track item.menuId) {
+            <div class="mb-2 flex items-center justify-between rounded-lg border border-slate-100 bg-white px-3 py-2">
+                <div>
+                    <p class="text-sm font-semibold text-slate-700">{{ item.module }}</p>
+                    <p class="text-xs text-slate-500">{{ item.menu }}</p>
+                </div>
 
-            <input type="checkbox" [checked]="item.assignStatus" 
-            (change)="checkedData($event, item.menuId)" 
-            />
+                <input type="checkbox" [checked]="item.assignStatus" (change)="checkedData($event, item.menuId)" />
+            </div>
+            }
         </div>
-        }
 
         <mat-dialog-actions align="end">
             <button mat-button mat-dialog-close>Cancel</button>
             <button mat-button [mat-dialog-close]="true" type="submit"
-                class=" bg-blue-600 text-white px-5 py-2 ml-3 rounded-lg hover:bg-blue-700 cursor-pointer transition"
+                class="ml-3 cursor-pointer rounded-lg bg-indigo-600 px-5 py-2 text-white transition hover:bg-indigo-700"
                 >
                 Save
             </button>

@@ -13,7 +13,9 @@ import { AddRolesTouserComponent } from './add-roles-touser/add-roles-touser.com
   styles: ``
 })
 export class UsersComponent {
-  users!: any[];
+  users: any[] = [];
+  rowsPerPage = 6;
+  currentPage = 1;
 
   private readonly destroyRef = inject(DestroyRef);
   readonly dialog = inject(MatDialog);
@@ -46,6 +48,7 @@ export class UsersComponent {
       next: (res) => {
         // console.log(res.data);
         this.users = res.data.reverse();
+        this.currentPage = 1;
       },
       error: (err) => {
         console.error(err);
@@ -79,6 +82,27 @@ export class UsersComponent {
         });
       }
     });
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.users.length / this.rowsPerPage));
+  }
+
+  get paginatedUsers() {
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    return this.users.slice(start, start + this.rowsPerPage);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
 
 }

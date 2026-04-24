@@ -1,22 +1,22 @@
-<div class="w-full my-5 px-50">
-    <p class="text-xl text-center uppercase font-bold">@if (id) {Update user}@else{User add}</p>
+<div class="mx-auto my-3 w-full max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <p class="text-center text-2xl font-bold uppercase tracking-tight text-slate-900">@if (id) {Update user}@else{User add}</p>
 
     <a routerLink="/modules/settings/users"
-        class="bg-red-200 text-red-700 text-l rounded p-2 hover:bg-red-300 cursor-pointer">
+        class="mt-4 inline-flex cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700 hover:bg-rose-100">
         <- Go Back </a>
 
-            <div class="w-full flex justify-center align-center mt-10">
-                <form class="w-130 flex flex-col gap-3" [formGroup]="userForm" (ngSubmit)="addUserFunc()">
+            <div class="mt-6 flex w-full justify-center">
+                <form class="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-2" [formGroup]="userForm" (ngSubmit)="addUserFunc()">
                     <div>
-                        <label for="firstName" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="firstName" class="mb-1 block text-sm font-semibold text-slate-600">
                             Firstname
                         </label>
                         <input type="text" formControlName="firstName" id="firstName" autocomplete="firstName"
                             placeholder="FirstName"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched,
-                      'border-gray-300': userForm.get('firstName')?.valid || !userForm.get('firstName')?.touched
+                      'border-slate-300': userForm.get('firstName')?.valid || !userForm.get('firstName')?.touched
                     }">
                         @if(userForm.get('firstName')?.errors?.['required'] && userForm.get('firstName')?.touched){
                         <p class="text-red-600 text-sm">Firstname required</p>
@@ -26,15 +26,15 @@
                         }
                     </div>
                     <div>
-                        <label for="lastName" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="lastName" class="mb-1 block text-sm font-semibold text-slate-600">
                             Lastname
                         </label>
                         <input type="text" formControlName="lastName" id="lastName" autocomplete="lastName"
                             placeholder="Lastname"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched,
-                      'border-gray-300': userForm.get('lastName')?.valid || !userForm.get('lastName')?.touched
+                      'border-slate-300': userForm.get('lastName')?.valid || !userForm.get('lastName')?.touched
                     }">
                         @if(userForm.get('lastName')?.errors?.['required'] && userForm.get('lastName')?.touched){
                         <p class="text-red-600 text-sm">Lastname required</p>
@@ -44,15 +44,15 @@
                         }
                     </div>
                     <div>
-                        <label for="finCode" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="finCode" class="mb-1 block text-sm font-semibold text-slate-600">
                             Fin code
                         </label>
                         <input type="text" formControlName="finCode" id="finCode" autocomplete="finCode"
                             placeholder="Fin Code"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('finCode')?.invalid && userForm.get('finCode')?.touched,
-                      'border-gray-300': userForm.get('finCode')?.valid || !userForm.get('finCode')?.touched
+                      'border-slate-300': userForm.get('finCode')?.valid || !userForm.get('finCode')?.touched
                     }">
                         @if(userForm.get('finCode')?.errors?.['required'] && userForm.get('finCode')?.touched){
                         <p class="text-red-600 text-sm">Fin Code required</p>
@@ -63,15 +63,15 @@
                     </div>
 
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="username" class="mb-1 block text-sm font-semibold text-slate-600">
                             Username
                         </label>
                         <input type="text" formControlName="username" id="username" autocomplete="username"
                             placeholder="Username"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('username')?.invalid && userForm.get('username')?.touched,
-                      'border-gray-300': userForm.get('username')?.valid || !userForm.get('username')?.touched
+                      'border-slate-300': userForm.get('username')?.valid || !userForm.get('username')?.touched
                     }">
                         @if(userForm.get('username')?.errors?.['required'] && userForm.get('username')?.touched){
                         <p class="text-red-600 text-sm">Username required</p>
@@ -82,14 +82,14 @@
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="email" class="mb-1 block text-sm font-semibold text-slate-600">
                             Email
                         </label>
                         <input type="text" formControlName="email" id="email" autocomplete="email" placeholder="Email"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('email')?.invalid && userForm.get('email')?.touched,
-                      'border-gray-300': userForm.get('email')?.valid || !userForm.get('email')?.touched
+                      'border-slate-300': userForm.get('email')?.valid || !userForm.get('email')?.touched
                     }">
                         @if(userForm.get('email')?.errors?.['required'] && userForm.get('email')?.touched){
                         <p class="text-red-600 text-sm">Email required</p>
@@ -100,15 +100,15 @@
                     </div>
 
                     <div>
-                        <label for="phone1" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="phone1" class="mb-1 block text-sm font-semibold text-slate-600">
                             Phone 1
                         </label>
                         <input type="text" formControlName="phone1" id="phone1" autocomplete="phone1"
                             placeholder="0XX-XXX-XX-XX"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('phone1')?.invalid && userForm.get('phone1')?.touched,
-                      'border-gray-300': userForm.get('phone1')?.valid || !userForm.get('phone1')?.touched
+                      'border-slate-300': userForm.get('phone1')?.valid || !userForm.get('phone1')?.touched
                     }">
                         @if(userForm.get('phone1')?.errors?.['minlength']){
                         <p class="text-red-600 text-sm">Phone must be min 10 character</p>
@@ -116,30 +116,30 @@
                     </div>
 
                     <div>
-                        <label for="phone2" class="block text-sm font-medium text-gray-600 mb-1">
+                        <label for="phone2" class="mb-1 block text-sm font-semibold text-slate-600">
                             Phone 2
                         </label>
                         <input type="text" formControlName="phone2" id="phone2" autocomplete="phone1"
                             placeholder="0XX-XXX-XX-XX"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('phone2')?.invalid && userForm.get('phone2')?.touched,
-                      'border-gray-300': userForm.get('phone2')?.valid || !userForm.get('phone2')?.touched
+                      'border-slate-300': userForm.get('phone2')?.valid || !userForm.get('phone2')?.touched
                     }">
                         @if(userForm.get('phone2')?.errors?.['minlength']){
                         <p class="text-red-600 text-sm">Phone must be min 10 character</p>
                         }
                     </div>
 
-                    <div>
-                        <label for="status" class="block text-sm font-medium text-gray-600 mb-1">
+                    <div class="md:col-span-2">
+                        <label for="status" class="mb-1 block text-sm font-semibold text-slate-600">
                             Status*
                         </label>
                         <select formControlName="status" id="status" autocomplete="status" placeholder="Status"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('status')?.invalid && userForm.get('status')?.touched,
-                      'border-gray-300': userForm.get('status')?.valid || !userForm.get('status')?.touched
+                      'border-slate-300': userForm.get('status')?.valid || !userForm.get('status')?.touched
                     }">
                             <option [ngValue]="true">Aktiv</option>
                             <option [ngValue]="false">Deaktiv</option>
@@ -151,15 +151,15 @@
 
                     @if(!id){
 
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-600 mb-1">
+                    <div class="md:col-span-2">
+                        <label for="password" class="mb-1 block text-sm font-semibold text-slate-600">
                             Password
                         </label>
                         <input autocomplete="password" type="password" placeholder="********" formControlName="password"
-                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                             [ngClass]="{
                       'border-red-500': userForm.get('password')?.invalid && userForm.get('password')?.touched,
-                      'border-gray-300': userForm.get('password')?.valid || !userForm.get('password')?.touched
+                      'border-slate-300': userForm.get('password')?.valid || !userForm.get('password')?.touched
                     }">
 
                         @if(userForm.get('password')?.errors?.['required'] && userForm.get('password')?.touched){
@@ -172,9 +172,9 @@
                     }
 
                     <button type="submit" [disabled]="userForm.invalid " [ngClass]="{
-    'bg-gray-400 text-gray-700 cursor-not-allowed ring-0': userForm.invalid,
-    'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-lg': !userForm.invalid
-  }" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition">
+    'bg-slate-300 text-slate-500 cursor-not-allowed ring-0': userForm.invalid,
+    'bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg': !userForm.invalid
+  }" class="md:col-span-2 mt-2 w-full rounded-lg py-2.5 font-semibold transition">
                         @if (!id) {
                         Add User
                         }@else{

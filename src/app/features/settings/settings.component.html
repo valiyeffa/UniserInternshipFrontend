@@ -1,9 +1,9 @@
-<div class="w-full flex">
-    <div class="w-1/5 shadow-xl">
+<div class="grid w-full grid-cols-1 gap-5 lg:grid-cols-12">
+    <div class="lg:col-span-3">
         <app-side-bar [subMenus]="subMenus" />
     </div>
 
-    <div class="w-4/5 h-165 overflow-auto p-5">
+    <div class="lg:col-span-9">
         <router-outlet />
     </div>
 </div>

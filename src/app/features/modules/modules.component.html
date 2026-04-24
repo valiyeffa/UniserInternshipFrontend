@@ -1,7 +1,10 @@
-<div class="w-full h-min flex items-center flex-col gap-5 p-5">
-  <h1 class="text-3xl font-bold text-gray-800">Welcome!</h1>
+<div class="w-full rounded-2xl border border-indigo-100 bg-white/95 p-6 shadow-sm">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold tracking-tight text-slate-900">Welcome back!</h1>
+    <p class="mt-2 text-sm text-slate-500">Select a module to continue your workflow.</p>
+  </div>
 
-  <div class="flex flex-wrap justify-center gap-3 mb-5">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
     @for (item of modules; track item.id) {
     <app-page-card [item]="item"></app-page-card>
     }

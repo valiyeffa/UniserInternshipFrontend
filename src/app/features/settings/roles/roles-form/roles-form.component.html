@@ -1,16 +1,16 @@
 <h2 mat-dialog-title>{{ selectedRole ? 'Edit Role' : 'Add Role' }}</h2>
 <mat-dialog-content class="mat-typography">
-    <div>
+    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
         <form class="w-70 flex flex-col gap-3" [formGroup]="rolesForm" (ngSubmit)="addRoleFunc()">
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-600 mb-1">
+                <label for="name" class="mb-1 block text-sm font-semibold text-slate-600">
                     Name*
                 </label>
                 <input type="text" formControlName="name" id="name" autocomplete="name" placeholder="Name"
-                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                     [ngClass]="{
                       'border-red-500': rolesForm.get('name')?.invalid && rolesForm.get('name')?.touched,
-                      'border-gray-300': rolesForm.get('name')?.valid || !rolesForm.get('name')?.touched
+                      'border-slate-300': rolesForm.get('name')?.valid || !rolesForm.get('name')?.touched
                     }">
                 @if(rolesForm.get('name')?.errors?.['required'] && rolesForm.get('name')?.touched){
                 <p class="text-red-600 text-sm">Name required</p>
@@ -18,14 +18,14 @@
             </div>
 
             <div>
-                <label for="status" class="block text-sm font-medium text-gray-600 mb-1">
+                <label for="status" class="mb-1 block text-sm font-semibold text-slate-600">
                     Status*
                 </label>
                 <select formControlName="status" id="status" autocomplete="status" placeholder="Status"
-                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                     [ngClass]="{
                       'border-red-500': rolesForm.get('status')?.invalid && rolesForm.get('status')?.touched,
-                      'border-gray-300': rolesForm.get('status')?.valid || !rolesForm.get('status')?.touched
+                      'border-slate-300': rolesForm.get('status')?.valid || !rolesForm.get('status')?.touched
                     }">
                 <option [ngValue]="true">Aktiv</option>
                 <option [ngValue]="false">Deaktiv</option>
@@ -38,9 +38,9 @@
             <mat-dialog-actions align="end">
                 <button mat-button mat-dialog-close>Cancel</button>
                 <button mat-button [mat-dialog-close]="true" type="submit" [disabled]="rolesForm.invalid " [ngClass]="{
-            'bg-gray-400 text-gray-700 cursor-not-allowed ring-0': rolesForm.invalid,
-            'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-lg': !rolesForm.invalid
-            }" class=" bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition">
+            'bg-slate-300 text-slate-500 cursor-not-allowed ring-0': rolesForm.invalid,
+            'bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg': !rolesForm.invalid
+            }" class="rounded-lg px-3 py-2 transition">
                     {{ selectedRole ? 'Update Role' : 'Add Role' }}
                 </button>
             </mat-dialog-actions>
