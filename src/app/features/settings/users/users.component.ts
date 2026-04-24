@@ -35,7 +35,6 @@ export class UsersComponent {
   ngOnInit() {
     this.loadUsers();
 
-    // Subscribe to user changes to refresh the list automatically
     this.globalService.usersRefresh$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
