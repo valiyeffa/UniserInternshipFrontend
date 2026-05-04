@@ -26,25 +26,25 @@ export class GlobalService {
   menusRefresh$ = this.menusRefreshSubject.asObservable();
 
   getModules() {
-    return this.http.get<any>('/api/Global/GetModules');
+    return this.http.get<any>('/Global/GetModules');
   }
 
   getMenus(moduleId: number) {
-    return this.http.get<any>(`/api/Global/GetMenus/${moduleId}`);
+    return this.http.get<any>(`/Global/GetMenus/${moduleId}`);
   }
 
   // ? ======================ROLES START===============================
 
   getRoles() {
-    return this.http.get<any>('/api/Global/GetAllRoles')
+    return this.http.get<any>('/Global/GetAllRoles')
   }
 
   getNewRoleCode() {
-    return this.http.get<any>('/api/Global/GetNewRoleCode')
+    return this.http.get<any>('/Global/GetNewRoleCode')
   }
 
   addOrUpdateRole(data: any) {
-    return this.http.post<any>('/api/Global/AddOrUpdateRole', data)
+    return this.http.post<any>('/Global/AddOrUpdateRole', data)
       .pipe(
         tap(() => {
           this.rolesRefreshSubject.next();
@@ -53,11 +53,11 @@ export class GlobalService {
   }
 
   getRolesByUserId(id: number) {
-    return this.http.get<any>(`/api/Global/GetUserRolesByUserId?userId=${id}`)
+    return this.http.get<any>(`/Global/GetUserRolesByUserId?userId=${id}`)
   }
 
   addRolesToUser(data: any) {
-    return this.http.post<any>('/api/Global/AddRolesToUser', data)
+    return this.http.post<any>('/Global/AddRolesToUser', data)
       .pipe(
         tap(() => {
           this.rolesRefreshSubject.next();
@@ -66,11 +66,11 @@ export class GlobalService {
   }
 
   getRoleMenusByRoleId(id: number) {
-    return this.http.get<any>(`/api/Global/GetRoleMenusByRoleId?roleId=${id}`)
+    return this.http.get<any>(`/Global/GetRoleMenusByRoleId?roleId=${id}`)
   }
 
   saveRoleMenus(data: any) {
-    return this.http.post<any>('/api/Global/SaveRoleMenus', data)
+    return this.http.post<any>('/Global/SaveRoleMenus', data)
       .pipe(
         tap(() => {
           this.rolesRefreshSubject.next();
@@ -84,15 +84,15 @@ export class GlobalService {
   //! ============================USERS START=============================
 
   getUsers() {
-    return this.http.get<any>('/api/Global/GetAllUsers')
+    return this.http.get<any>('/Global/GetAllUsers')
   }
 
   getUserById(id: number) {
-    return this.http.get<any>(`/api/Global/GetUserById?userId=${id}`)
+    return this.http.get<any>(`/Global/GetUserById?userId=${id}`)
   }
 
   addUser(data: any) {
-    return this.http.post<any>('/api/Global/AddUser', data)
+    return this.http.post<any>('/Global/AddUser', data)
       .pipe(
         tap(() => {
           this.usersRefreshSubject.next();
@@ -101,7 +101,7 @@ export class GlobalService {
   }
 
   editUser(data: any) {
-    return this.http.post<any>('/api/Global/UpdateUser', data)
+    return this.http.post<any>('/Global/UpdateUser', data)
       .pipe(
         tap(() => {
           this.usersRefreshSubject.next();
@@ -110,7 +110,7 @@ export class GlobalService {
   }
 
   deleteUser(id: number) {
-    return this.http.delete(`/api/Global/DeleteUser?userId=${id}`)
+    return this.http.delete(`/Global/DeleteUser?userId=${id}`)
       .pipe(
         tap(() => {
           this.usersRefreshSubject.next();

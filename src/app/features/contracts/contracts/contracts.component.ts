@@ -1,20 +1,50 @@
 import { Component } from '@angular/core';
+import { ContractsService } from '../contracts.service';
+import { RouterLink } from "@angular/router";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contracts',
-  imports: [],
+  imports: [RouterLink, CommonModule],
   templateUrl: './contracts.component.html',
   styles: ``
 })
 export class ContractsComponent {
-  rowsPerPage = 5;
+  constructor(private contractService: ContractsService) { }
   currentPage = 1;
-  tableRows = Array.from({ length: 24 }, (_, index) => ({
-    id: index + 1,
-    data: `Data ${index + 1}`,
-    info: `Info ${index + 1}`,
-    tools: 'Tools',
-  }));
+  rowsPerPage = 15;
+  tableRows: any = [];
+  postedData = {
+    nextPageNumber: this.currentPage,
+    visibleItemCount: this.rowsPerPage,
+    // "filters": [
+    //   { 
+    // "columnName": "string",
+    // "value": "string",
+    //     "columnFilterType": 1
+    //   }
+    // ],
+    // "orderedFields": [
+    //   {
+    // "columnName": "string",
+    //     "order": 1
+    //   }
+    // ] 
+  };
+
+  ngOnInit() {
+    this.contractService.getAllContracts(this.postedData).subscribe({
+      next: (res) => {
+        this.tableRows = res.data.result;
+        this.currentPage = 1;
+
+        console.log(this.tableRows);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  }
 
   get totalPages(): number {
     return Math.ceil(this.tableRows.length / this.rowsPerPage);
