@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-contracts',
   imports: [],
-  templateUrl: './dashboard.component.html',
+  templateUrl: './contracts.component.html',
   styles: ``
 })
-export class DashboardComponent {
+export class ContractsComponent {
   rowsPerPage = 5;
   currentPage = 1;
   tableRows = Array.from({ length: 24 }, (_, index) => ({
