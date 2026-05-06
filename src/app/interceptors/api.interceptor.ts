@@ -5,7 +5,7 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   const apiContractUrl = 'https://eurasia-dev.program.az/contracts/api';
   let baseUrl = '';
 
-  if (req.url.startsWith('/Global')) {
+  if (req.url.startsWith('/Global') || req.url.startsWith('/Auth')) {
     baseUrl = apiUrl;
   } else if (req.url.startsWith('/Contracts')) {
     baseUrl = apiContractUrl;

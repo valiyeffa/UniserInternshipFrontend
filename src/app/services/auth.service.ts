@@ -12,15 +12,15 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   loginData(data: LoginForm): Observable<any> {
-    return this.http.post('/api/Auth/login', data);
+    return this.http.post('/Auth/login', data);
   }
 
   logout() {
-    return this.http.get('/api/Auth/logout');
+    return this.http.get('/Auth/logout');
   }
 
   refreshToken(refreshToken: any): Observable<any> {
-    return this.http.post('/api/Auth/RefreshTokenLogin', { refreshToken },
+    return this.http.post('/Auth/RefreshTokenLogin', { refreshToken },
       {
         headers: {
           'Content-Type': 'application/json'

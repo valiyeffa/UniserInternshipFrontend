@@ -14,3 +14,65 @@ html {
     density: 0,
   ));
 }
+
+
+.inputbox {
+    position: relative;
+    width: 100%;
+}
+
+.inputbox input {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    color: #23242a;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    z-index: 10;
+    height: 30px;
+
+}
+
+.inputbox span {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    letter-spacing: 00.05em;
+    transition: 0.3s;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.inputbox input:valid~span,
+.inputbox input:focus~span {
+    opacity: 0;
+}
+
+.inputbox i {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    opacity: 0.7;
+    border-radius: 4px;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.inputbox input:valid,
+.inputbox input:focus {
+    color: black;
+    padding: 0 5px;
+}
+
+.inputbox input:valid~i,
+.inputbox input:focus~i {
+    height: 30px;
+    opacity: 0.1;
+    background: #1B1464;
+}
