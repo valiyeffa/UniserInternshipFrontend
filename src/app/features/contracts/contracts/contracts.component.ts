@@ -35,6 +35,21 @@ export class ContractsComponent {
     this.loadContracts();
   });
 
+  handleFilter() {
+    const filters = Object.keys(this.filterForm.value)
+      .filter(key => {
+        const value = this.filterForm.get(key)?.value;
+        return value !== null && value !== undefined && value.length > 0;
+      })
+      .map(key => ({
+        columnName: key,
+        value: this.filterForm.get(key)?.value,
+        columnFilterType: 1
+      }));
+    this.filterData = filters;
+    this.loadContracts();
+  }
+
   loadContracts() {
     const postedData = {
       nextPageNumber: this.currentPage(),
@@ -56,21 +71,6 @@ export class ContractsComponent {
 
   get totalPages(): number {
     return Math.ceil(this.dataCount / this.rowsPerPage);
-  }
-
-  handleFilter() {
-    const filters = Object.keys(this.filterForm.value)
-      .filter(key => {
-        const value = this.filterForm.get(key)?.value;
-        return value !== null && value !== undefined && value.length > 0;
-      })
-      .map(key => ({
-        columnName: key,
-        value: this.filterForm.get(key)?.value,
-        columnFilterType: 1
-      }));
-    this.filterData = filters;
-    this.loadContracts();
   }
 
   nextPage() {
