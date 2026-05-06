@@ -1,0 +1,118 @@
+<mat-dialog-content class="mat-typography thin-scrollbar">
+    <p mat-dialog-title class="text-center text-xl font-bold pb-2">
+        {{ selectedContract ? 'Edit Contract' : 'Add Contract' }}</p>
+    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <form class="w-100 flex flex-col gap-3" [formGroup]="contractForm" (ngSubmit)="addContractFunc()">
+            <div>
+                <label for="contractType" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Contract type*
+                </label>
+                <select formControlName="contractType" id="contractType" autocomplete="contractType"
+                    placeholder="Contract Type"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    [ngClass]="{
+                      'border-red-500': contractForm.get('contractType')?.invalid && contractForm.get('contractType')?.touched,
+                      'border-slate-300': contractForm.get('contractType')?.valid || !contractForm.get('contractType')?.touched
+                    }">
+                    <option value="Transport">Transport</option>
+                    <option value="Subcontractor">Subcontractor</option>
+                </select>
+                @if(contractForm.get('contractType')?.errors?.['required'] &&
+                contractForm.get('contractType')?.touched){
+                <p class="text-red-600 text-sm">Contract Type required</p>
+                }
+            </div>
+
+            <div>
+                <label for="company" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Company*
+                </label>
+                <input type="text" formControlName="company" id="company" autocomplete="company" placeholder="company"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    [ngClass]="{
+                      'border-red-500': contractForm.get('company')?.invalid && contractForm.get('company')?.touched,
+                      'border-slate-300': contractForm.get('company')?.valid || !contractForm.get('company')?.touched
+                    }">
+                @if(contractForm.get('company')?.errors?.['required'] && contractForm.get('company')?.touched){
+                <p class="text-red-600 text-sm">Company required</p>
+                }
+            </div>
+
+            <div>
+                <label for="contractNo" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Contract №*
+                </label>
+                <input type="text" formControlName="contractNo" id="contractNo" autocomplete="contractNo"
+                    placeholder="Contract No"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    [ngClass]="{
+                      'border-red-500': contractForm.get('contractNo')?.invalid && contractForm.get('contractNo')?.touched,
+                      'border-slate-300': contractForm.get('contractNo')?.valid || !contractForm.get('contractNo')?.touched
+                    }">
+                @if(contractForm.get('contractNo')?.errors?.['required'] && contractForm.get('contractNo')?.touched){
+                <p class="text-red-600 text-sm">Contract No required</p>
+                }
+            </div>
+
+            <div>
+                <label for="contractDate" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Contract Date*
+                </label>
+                <input type="date" formControlName="contractDate" id="contractDate" autocomplete="contractDate"
+                    placeholder="Contract No"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    [ngClass]="{
+                      'border-red-500': contractForm.get('contractDate')?.invalid && contractForm.get('contractDate')?.touched,
+                      'border-slate-300': contractForm.get('contractDate')?.valid || !contractForm.get('contractDate')?.touched
+                    }">
+                @if(contractForm.get('contractDate')?.errors?.['required'] &&
+                contractForm.get('contractDate')?.touched){
+                <p class="text-red-600 text-sm">Contract Date required</p>
+                }
+            </div>
+
+            <div>
+                <label for="effectiveDate" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Effective Date*
+                </label>
+                <input type="date" formControlName="effectiveDate" id="effectiveDate" autocomplete="effectiveDate"
+                    placeholder="Contract No"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    [ngClass]="{
+                      'border-red-500': contractForm.get('effectiveDate')?.invalid && contractForm.get('effectiveDate')?.touched,
+                      'border-slate-300': contractForm.get('effectiveDate')?.valid || !contractForm.get('effectiveDate')?.touched
+                    }">
+                @if(contractForm.get('effectiveDate')?.errors?.['required'] &&
+                contractForm.get('effectiveDate')?.touched){
+                <p class="text-red-600 text-sm">Effective Date required</p>
+                }
+            </div>
+
+            <div>
+                <label for="endDate" class="mb-1 block text-sm font-semibold text-slate-600">
+                    End Date*
+                </label>
+                <input type="date" formControlName="endDate" id="endDate" autocomplete="endDate"
+                    placeholder="Contract No"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    [ngClass]="{
+                      'border-red-500': contractForm.get('endDate')?.invalid && contractForm.get('endDate')?.touched,
+                      'border-slate-300': contractForm.get('endDate')?.valid || !contractForm.get('endDate')?.touched
+                    }">
+                @if(contractForm.get('endDate')?.errors?.['required'] && contractForm.get('endDate')?.touched){
+                <p class="text-red-600 text-sm">End Date required</p>
+                }
+            </div>
+
+            <mat-dialog-actions align="end">
+                <button mat-button mat-dialog-close class="cursor-pointer mx-2">Cancel</button>
+                <button mat-button [mat-dialog-close]="true" type="submit" [disabled]="contractForm.invalid " [ngClass]="{
+            'bg-slate-300 text-slate-500 cursor-not-allowed ring-0': contractForm.invalid,
+            'bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg': !contractForm.invalid
+            }" class="rounded-lg px-3 py-2 transition">
+                    {{ selectedContract ? 'Update Contract' : 'Add Contract' }}
+                </button>
+            </mat-dialog-actions>
+        </form>
+    </div>
+</mat-dialog-content>

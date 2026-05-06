@@ -1,8 +1,8 @@
 <div class="mt-1 flex flex-col gap-3 bg-white p-4">
     <b class="text-center text-2xl">CONTRACTS</b>
-    <a routerLink="/modules/settings/users/new-user"
+    <button mat-button (click)="openDialog()"
         class="w-fit cursor-pointer rounded-lg border border-indigo-200 bg-indigo-50 p-2 text-indigo-700 hover:bg-indigo-100 transition">+
-        Add Contract</a>
+        Add Contract</button>
 
     <div class="w-full overflow-hidden rounded-lg border border-slate-200">
         <div class="thin-scrollbar h-93 w-full overflow-auto">
@@ -103,9 +103,9 @@
                             <td class="border-y whitespace-nowrap border-slate-200 px-6 py-4">{{ i.endDate }}</td>
                             <td class="rounded-r-xl border-y border-r border-slate-200 px-6 py-4">
                                 <div class="flex gap-3">
-                                    <button
+                                    <button type="button" mat-button (click)="openEditDialog(i)"
                                         class="cursor-pointer rounded-lg border border-amber-300 bg-amber-100 p-2 transition hover:bg-amber-200">Edit</button>
-                                    <button
+                                    <button type="button"
                                         class="cursor-pointer rounded-lg border border-red-300 bg-red-100 p-2 transition hover:bg-red-200">Delete</button>
                                 </div>
                             </td>
