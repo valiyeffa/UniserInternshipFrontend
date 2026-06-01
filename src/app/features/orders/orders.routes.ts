@@ -1,14 +1,15 @@
 import { Routes } from "@angular/router";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { ContractsComponent } from "./contracts/contracts.component";
+import { RailwayOrdersComponent } from "./railway-orders/railway-orders.component";
 
-export const Contracts_Routes: Routes = [
+export const Orders_Routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent
     },
     {
-        path: 'contracts',
-        component: ContractsComponent
+        path: 'railwayOrders',
+        component: RailwayOrdersComponent
     },
+
 ]

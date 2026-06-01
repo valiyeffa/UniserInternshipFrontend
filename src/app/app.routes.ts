@@ -3,6 +3,7 @@ import { LayoutComponent } from './layout/layout/layout.component';
 import { authGuard } from './auth/auth.guard';
 import { SettingsComponent } from './features/settings/settings.component';
 import { ContractsComponent } from './features/contracts/contracts.component';
+import { OrdersComponent } from './features/orders/orders.component';
 
 export const routes: Routes = [
   {
@@ -31,13 +32,19 @@ export const routes: Routes = [
         path: 'settings',
         component: SettingsComponent,
         title: 'Settings',
-        loadChildren:()=>import('./features/settings/settings.routes').then(m=>m.Settings_Routes)
+        loadChildren: () => import('./features/settings/settings.routes').then(m => m.Settings_Routes)
       },
       {
         path: 'contracts',
         component: ContractsComponent,
         title: 'Contracts',
-        loadChildren:()=>import('./features/contracts/contracts.routes').then(m=>m.Contracts_Services)
+        loadChildren: () => import('./features/contracts/contracts.routes').then(m => m.Contracts_Routes)
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
+        title: 'Orders',
+        loadChildren: () => import('./features/orders/orders.routes').then(m => m.Orders_Routes)
       },
     ],
   },
