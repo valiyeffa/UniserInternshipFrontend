@@ -1,8 +1,5 @@
-import { Component, DestroyRef, effect, inject, signal, WritableSignal } from '@angular/core';
-import { ContractFormComponent } from '../../contracts/contracts/contract-form/contract-form.component';
-import { ContractsService } from '../../contracts/contracts.service';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from '../orders.service';
 
@@ -13,9 +10,7 @@ import { OrdersService } from '../orders.service';
   styles: ``
 })
 export class RailwayOrdersComponent {
-  constructor(private contractService: ContractsService,
-    private OrdersService: OrdersService
-  ) { }
+  constructor(private OrdersService: OrdersService) { }
 
   tableHeaders = [
     { name: 'Order', field: 'orderNo' },
@@ -44,27 +39,6 @@ export class RailwayOrdersComponent {
   rowsPerPage = 15;
   dataCount = 0;
   tableRows: any = [];
-  readonly dialog = inject(MatDialog);
-  private readonly destroyRef = inject(DestroyRef);
-
-  openDialog() {
-    const dialogRef = this.dialog.open(ContractFormComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openEditDialog(data: any) {
-    const dialogRef = this.dialog.open(ContractFormComponent, {
-      data: data
-    });
-    console.log(data);
-    // this. = data;
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
-    });
-  }
 
   ngOnInit() {
     this.filterForm = this.fb.group({
@@ -89,7 +63,7 @@ export class RailwayOrdersComponent {
   }
 
   pageEffect = effect(() => {
-    this.loadContracts();
+    this.loadOrders();
   });
 
   handleFilter() {
@@ -104,10 +78,10 @@ export class RailwayOrdersComponent {
         columnFilterType: 1
       }));
     this.filterData = filters;
-    this.loadContracts();
+    this.loadOrders();
   }
 
-  loadContracts() {
+  loadOrders() {
     const postedData = {
       nextPageNumber: this.currentPage(),
       visibleItemCount: this.rowsPerPage,
