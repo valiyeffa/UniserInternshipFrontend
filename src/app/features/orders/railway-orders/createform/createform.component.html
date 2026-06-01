@@ -1,0 +1,111 @@
+<div class="mx-auto my-3 w-full max-w-4xl border-slate-200 bg-white p-6 max-h-135 thin-scrollbar overflow-y-scroll">
+    <a routerLink="/modules/orders/railwayOrders"
+        class="mt-4 inline-flex cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700 hover:bg-rose-100">
+        <- Go Back </a>
+
+            <div class="mt-6 flex w-full justify-center">
+                <form class="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-2" [formGroup]="userForm"
+                    (ngSubmit)="addUserFunc()">
+                    <div>
+                        <label for="orderNo" class="mb-1 block text-sm font-semibold text-slate-600">
+                            Order Number
+                        </label>
+                        <input type="text" formControlName="orderNo" id="orderNo" autocomplete="orderNo"
+                            placeholder="orderNo"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('orderNo')?.invalid && userForm.get('orderNo')?.touched,
+                      'border-slate-300': userForm.get('orderNo')?.valid || !userForm.get('orderNo')?.touched
+                    }">
+                        @if(userForm.get('orderNo')?.errors?.['required'] && userForm.get('orderNo')?.touched){
+                        <p class="text-red-600 text-sm">orderNo required</p>
+                        }
+                        @if(userForm.get('orderNo')?.errors?.['minlength']){
+                        <p class="text-red-600 text-sm">orderNo must be min 3 character</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="transportType" class="mb-1 block text-sm font-semibold text-slate-600">
+                            Mode
+                        </label>
+                        <select formControlName="transportType" id="transportType"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('transportType')?.invalid && userForm.get('transportType')?.touched,
+                      'border-slate-300': userForm.get('transportType')?.valid || !userForm.get('transportType')?.touched
+                    }">
+                            <option value="">Select Transport Type</option>
+                            <option value="rail">Rail</option>
+                            <option value="road">Road</option>
+                            <option value="sea">Sea</option>
+                        </select>
+                        @if(userForm.get('transportType')?.errors?.['required'] &&
+                        userForm.get('transportType')?.touched){
+                        <p class="text-red-600 text-sm">Transport Type required</p>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="podcode" class="mb-1 block text-sm font-semibold text-slate-600">
+                            Warrant number
+                        </label>
+                        <input type="text" formControlName="podcode" id="podcode" autocomplete="podcode"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    </div>
+
+                    <div>
+                        <label for="warrantDate" class="mb-1 block text-sm font-semibold text-slate-600">
+                            Warrant Date
+                        </label>
+
+                        <input type="date" formControlName="warrantDate" id="warrantDate"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    </div>
+
+                    <div>
+                        <label for="company" class="mb-1 block text-sm font-semibold text-slate-600">
+                            Company
+                        </label>
+                        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
+                            id="company" [matAutocomplete]="auto"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('company')?.invalid && userForm.get('company')?.touched,
+                      'border-slate-300': userForm.get('company')?.valid || !userForm.get('company')?.touched
+                    }">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            @for (option of filteredOptions | async; track option) {
+                            <mat-option [value]="option">{{option}}</mat-option>
+                            }
+                        </mat-autocomplete>
+                    </div>
+
+
+                    <div>
+                        <label for="startDate" class="mb-1 block text-sm font-semibold text-slate-600">
+                            Start Date
+                        </label>
+
+                        <input type="date" formControlName="startDate" id="startDate"
+                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                            [ngClass]="{
+                      'border-red-500': userForm.get('orderNo')?.invalid && userForm.get('orderNo')?.touched,
+                      'border-slate-300': userForm.get('orderNo')?.valid || !userForm.get('orderNo')?.touched
+                    }">
+
+                    </div>
+
+                    <button type="submit" [disabled]="userForm.invalid " [ngClass]="{
+    'bg-slate-300 text-slate-500 cursor-not-allowed ring-0': userForm.invalid,
+    'bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg': !userForm.invalid
+  }" class="md:col-span-2 mt-2 w-full rounded-lg py-2.5 font-semibold transition">
+                        @if (!id) {
+                        Add User
+                        }@else{
+                        Update User
+                        }
+                    </button>
+                </form>
+            </div>
+</div>

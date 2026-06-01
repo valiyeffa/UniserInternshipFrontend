@@ -1,6 +1,6 @@
 <div class="mt-1 flex flex-col gap-3 bg-white p-4">
     <b class="text-center text-2xl">Railway Orders</b>
-    <button mat-button
+    <button mat-button routerLink="/modules/orders/railwayOrders/new-railwayOrders"
         class="w-fit cursor-pointer rounded-lg border border-indigo-200 bg-indigo-50 p-2 text-indigo-700 hover:bg-indigo-100 transition">+
         Create</button>
 
@@ -49,6 +49,7 @@
                             <td class="rounded-r-xl border-y border-r border-slate-200 px-6 py-4">
                                 <div class="flex gap-3">
                                     <button type="button" mat-button
+                                        routerLink="/modules/orders/railwayOrders/edit/{{i.id}}"
                                         class="cursor-pointer rounded-lg border border-amber-300 bg-amber-100 p-2 transition hover:bg-amber-200">Edit</button>
                                     <button type="button"
                                         class="cursor-pointer rounded-lg border border-red-300 bg-red-100 p-2 transition hover:bg-red-200">Delete</button>

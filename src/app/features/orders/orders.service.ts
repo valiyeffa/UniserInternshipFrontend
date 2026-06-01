@@ -23,12 +23,16 @@ export class OrdersService {
       )
   }
 
-  getContractsById(id: number) {
-    return this.http.get<any>(`/Contracts/GetContractById/${id}`)
+  getNewOrdersNumber() {
+    return this.http.get<number>('/Orders/GetNewOrderNumber')
   }
 
-  addOrUpdateContract(data: any) {
-    return this.http.put<any>('/Contracts/AddOrUpdateContract', data)
+  getOrderById(id: number) {
+    return this.http.get<any>(`/Orders/GetOrderById/${id}`)
+  }
+
+  addOrUpdateOrder(data: any) {
+    return this.http.put<any>('/Orders/AddOrUpdateOrder', data)
       .pipe(
         tap(() => {
           this.ordersRefreshSubject.next();
@@ -36,8 +40,8 @@ export class OrdersService {
       )
   }
 
-  deleteContract(id: number) {
-    return this.http.delete(`/Contracts/DeleteContract/${id}`)
+  deleteOrder(id: number) {
+    return this.http.delete(`/Orders/DeleteOrder/${id}`)
       .pipe(
         tap(() => {
           this.ordersRefreshSubject.next();

@@ -2,10 +2,11 @@ import { Component, effect, inject, signal, WritableSignal } from '@angular/core
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from '../orders.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-railway-orders',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './railway-orders.component.html',
   styles: ``
 })
