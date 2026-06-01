@@ -24,7 +24,7 @@ export class OrdersService {
   }
 
   getNewOrdersNumber() {
-    return this.http.get<number>('/Orders/GetNewOrderNumber')
+    return this.http.get<any>('/Orders/GetNewOrderNumber')
   }
 
   getOrderById(id: number) {
