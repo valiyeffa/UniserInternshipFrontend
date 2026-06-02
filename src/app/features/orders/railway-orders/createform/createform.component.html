@@ -28,7 +28,7 @@
                       'border-slate-300': orderForm.get('transportType')?.valid || !orderForm.get('transportType')?.touched
                     }">
                             @for (item of transportTypes; track $index) {
-                            <option [value]="item.key">{{item.value}}</option>
+                            <option [ngValue]="item.key">{{item.value}}</option>
                             }
                         </select>
                         @if(orderForm.get('transportType')?.errors?.['required'] &&
@@ -80,7 +80,7 @@
                         <select formControlName="loadPlanId" id="loadPlanId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                             @for (item of customOrders; track item.key) {
-                            <option [value]="item.key">{{item.value}}</option>
+                            <option [ngValue]="item.key">{{item.value}}</option>
                             }
                         </select>
                     </div>
@@ -95,7 +95,7 @@
                     }" id="addendumId" formControlName="addendumId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                             @for (item of addendumIdOpt; track item.id) {
-                            <option [value]="item.addendumId">{{item.addendumNo}}</option>
+                            <option [ngValue]="item.addendumId">{{item.addendumNo}}</option>
                             }
                         </select>
 
@@ -115,7 +115,7 @@
                     }" formControlName="addendumDetailId" id="addendumDetailId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                             @for (item of addendumDetailOption; track item.id) {
-                            <option [value]="item.id">{{item.transportationModule}} - {{item.transportType}} -
+                            <option [ngValue]="item.id">{{item.transportationModule}} - {{item.transportType}} -
                                 {{item.borderExitStation}}</option>
                             }
                         </select>
@@ -195,8 +195,8 @@
                         <label for="destinationStationId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Destination
                         </label>
-                        <input type="text" aria-label="Number" matInput
-                            id="destinationStationId" [matAutocomplete]="destinationAuto" formControlName="destinationStationId"
+                        <input type="text" aria-label="Number" matInput id="destinationStationId"
+                            [matAutocomplete]="destinationAuto" formControlName="destinationStationId"
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                         <mat-autocomplete #destinationAuto="matAutocomplete"
                             (optionSelected)="onDesStationSelected($event)" [displayWith]="displayDestPointNames">
@@ -236,10 +236,9 @@
                         </label>
                         <select formControlName="shippingCountryId" id="shippingCountryId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            <option value="">Select Shipping Country</option>
-                            <option value="rail">Rail</option>
-                            <option value="road">Road</option>
-                            <option value="sea">Sea</option>
+                            @for (item of countries; track item.key) {
+                            <option [value]="item.key">{{item.value}}</option>
+                            }
                         </select>
                     </div>
 
@@ -249,10 +248,9 @@
                         </label>
                         <select formControlName="destinationCountryId" id="destinationCountryId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            <option value="">Select Destination Country</option>
-                            <option value="rail">Rail</option>
-                            <option value="road">Road</option>
-                            <option value="sea">Sea</option>
+                            @for (item of countries; track item.key) {
+                            <option [value]="item.key">{{item.value}}</option>
+                            }
                         </select>
                     </div>
 
@@ -262,10 +260,9 @@
                         </label>
                         <select formControlName="originCountryId" id="originCountryId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            <option value="">Select Origin Country</option>
-                            <option value="rail">Rail</option>
-                            <option value="road">Road</option>
-                            <option value="sea">Sea</option>
+                            @for (item of countries; track item.key) {
+                            <option [value]="item.key">{{item.value}}</option>
+                            }
                         </select>
                     </div>
 

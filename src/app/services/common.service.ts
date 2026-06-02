@@ -16,6 +16,10 @@ export class CommonService {
     return this.http.get('/ComboBox/GetTransportTypes');
   }
 
+  getContries(): Observable<any> {
+    return this.http.get('/ComboBox/GetCountries');
+  }
+
   getLoadPlansByCompany(companyId: number): Observable<any> {
     return this.http.get(`/ComboBox/GetLoadPlansByCompany?companyId=${companyId}`);
   }

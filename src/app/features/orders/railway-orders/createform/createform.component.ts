@@ -32,6 +32,7 @@ import { ContractsService } from '../../../contracts/contracts.service';
 export class CreateformComponent {
   newOrderNumber: any;
   transportTypes: any[] = [];
+  countries: any[] = [];
   companies: any[] = [];
   customOrders: any[] = [];
 
@@ -99,11 +100,18 @@ export class CreateformComponent {
 
         const loadPlan = this.orderForm.get('loadPlanId');
         const abde = this.orderForm.get('addendumDetailId');
+        const abId = this.orderForm.get('addendumId');
 
         if (!this.customOrders.length) {
           loadPlan?.disable({ emitEvent: false });
           abde?.disable({ emitEvent: false });
+          loadPlan?.setValue('');
+          abde?.setValue('');
+          abId?.setValue('');
         } else {
+          loadPlan?.setValue('');
+          abde?.setValue('');
+          abId?.setValue('');
           loadPlan?.enable({ emitEvent: false });
           abde?.enable({ emitEvent: false });
         }
@@ -213,6 +221,12 @@ export class CreateformComponent {
       }
     });
 
+    this.commonService.getContries().subscribe({
+      next: (res) => {
+        this.countries = res.data
+      }
+    })
+
     this.commonService.getTransportTypes().subscribe({
       next: (res) => {
         this.transportTypes = res.data;
@@ -243,7 +257,9 @@ export class CreateformComponent {
     const loadPlanIdC = this.orderForm.get('loadPlanId');
 
     loadPlanIdC?.valueChanges.subscribe((val: any) => {
-      this.contractService.getLoadPlanById(val).subscribe({
+      const id = Number(val);
+
+      this.contractService.getLoadPlanById(id).subscribe({
         next: (res) => {
           const data = this.normalizeArray<any>(res.data);
           this.addendumIdOpt = data;
@@ -260,13 +276,16 @@ export class CreateformComponent {
     const addendumIdC = this.orderForm.get('addendumId');
 
     addendumIdC?.valueChanges.subscribe((val: any) => {
-      this.contractService.getAddendumById(val).subscribe({
+      const id = Number(val);
+
+      this.contractService.getAddendumById(id).subscribe({
         next: (res) => {
-          this.addendumDetailOption = res.data.addendumDetails;
-          this.selectedCargoId = res.data.cargoId;
+          const responseData = res?.data ?? {};
+          this.addendumDetailOption = this.normalizeArray<any>(responseData.addendumDetails);
+          this.selectedCargoId = responseData.cargoId ?? '';
 
           this.orderForm.patchValue({
-            cargoId: res.data.cargo
+            cargoId: responseData.cargo ?? ''
           });
         }
       })
@@ -280,8 +299,9 @@ export class CreateformComponent {
       //     console.log(data);
       //   }
       // })
+      const id = Number(val);
 
-      const selectedAddendumDetail = this.addendumDetailOption.find(i => i.id == val);
+      const selectedAddendumDetail = this.addendumDetailOption.find(i => i.id == id);
       this.selectedBorderExitStationId = selectedAddendumDetail?.borderExitStationId;
       this.selectedBorderEntryStationId = selectedAddendumDetail?.borderEntryStationId;
 
@@ -290,20 +310,30 @@ export class CreateformComponent {
         borderExitStationId: selectedAddendumDetail?.borderExitStation
       });
     })
+
+
   }
 
   addOrderFunc() {
     const formData = this.orderForm.getRawValue();
 
-    const { addendumId, ...payload } = {
+    const payload = {
       ...formData,
-      borderExitStationId: this.selectedBorderExitStationId,
-      borderEntryStationId: this.selectedBorderEntryStationId,
-      cargoId: this.selectedCargoId,
-      shippingStationId: this.selectedLoadStation?.key,
-      destinationStationId: this.selectedDestinationStation?.key,
-    }
-    console.log(payload);
+      shippingCountryId: Number(formData.shippingCountryId),
+      destinationCountryId: Number(formData.destinationCountryId),
+      originCountryId: Number(formData.originCountryId),
+      transportType: Number(formData.transportType),
+      loadPlanId: Number(formData.loadPlanId),
+      addendumDetailId: Number(formData.addendumDetailId),
+      borderExitStationId: this.selectedBorderExitStationId || '',
+      borderEntryStationId: this.selectedBorderEntryStationId || '',
+      cargoId: this.selectedCargoId || '',
+      shippingStationId: this.selectedLoadStation?.key || '',
+      destinationStationId: this.selectedDestinationStation?.key || '',
+    };
+
+    const { addendumId, ...payloadWithoutAddendum } = payload;
+    console.log(payloadWithoutAddendum);
 
     // this.globalService.addUser(formData).subscribe({
     //   next: (res) => {
