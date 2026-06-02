@@ -46,4 +46,19 @@ export class ContractsService {
   }
 
   // ? ============================CONTRACTS END=============================
+
+  // !=============================LOAD PLANS STAR===============================
+
+  getLoadPlanById(id: number) {
+    return this.http.get<any>(`/LoadPlans/GetLoadPlanById/${id}`)
+  }
+
+  // !=============================LOAD PLANS END===============================
+  getAddendumById(id: number) {
+    return this.http.get<any>(`/Addendums/GetAddendumById/${id}`)
+  }
+
+  getTariffValuesByAddendumDetailId(id: number) {
+    return this.http.get<any>(`/Addendums/GetTariffValuesByAddendumDetailId/${id}`)
+  }
 }

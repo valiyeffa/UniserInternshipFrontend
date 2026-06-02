@@ -9,7 +9,7 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (req.url.startsWith('/Global') || req.url.startsWith('/Auth')) {
     baseUrl = apiUrl;
-  } else if (req.url.startsWith('/Contracts')) {
+  } else if (req.url.startsWith('/Contracts') || req.url.startsWith('/LoadPlans') || req.url.startsWith('/Addendums')) {
     baseUrl = apiContractUrl;
   } else if (req.url.startsWith('/Orders')) {
     baseUrl = apiOperationsUrl;

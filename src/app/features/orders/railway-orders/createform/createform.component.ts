@@ -2,17 +2,18 @@ import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { OrdersService } from '../../orders.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { map, Observable, startWith, debounceTime, distinctUntilChanged } from 'rxjs';
+import { map, Observable, startWith, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { CommonService } from '../../../../services/common.service';
+import { ContractsService } from '../../../contracts/contracts.service';
 
 @Component({
   selector: 'app-createform',
-  imports: [ReactiveFormsModule, RouterLink, NgClass, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe],
+  imports: [ReactiveFormsModule, RouterLink, NgClass, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe, CommonModule],
   templateUrl: './createform.component.html',
   styles: [
     `
@@ -27,19 +28,27 @@ import { CommonService } from '../../../../services/common.service';
     `
   ]
 })
+
 export class CreateformComponent {
   newOrderNumber: any;
   transportTypes: any[] = [];
   companies: any[] = [];
+  customOrders: any[] = [];
 
+  addendumIdOpt: any[] = [];
+  addendumDetailOption: any[] = [];
+
+  clientOptionsCache: any[] = [];
+  selectedCompany: any;
   myControl = new FormControl('');
-  companyControl = new FormControl('', Validators.required);
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
+  clientOptions$!: Observable<any[]>;
 
   constructor(
     private commonService: CommonService,
     private orderService: OrdersService,
+    private contractService: ContractsService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -55,17 +64,46 @@ export class CreateformComponent {
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  displayCompany(company: any): string {
-    if (!company) {
-      return '';
+  private normalizeArray<T>(value: any): T[] {
+    if (Array.isArray(value)) {
+      return value;
     }
-    if (typeof company === 'string') {
-      return company;
+    if (value == null) {
+      return [];
     }
-    return company.value ?? '';
+    return [value];
   }
 
+  onCompanySelected(event: MatAutocompleteSelectedEvent) {
+    this.selectedCompany = event.option.value;
+
+    this.orderForm.patchValue({
+      company: this.selectedCompany.key
+    });
+
+    this.commonService.getLoadPlansByCompany(this.selectedCompany.key).subscribe({
+      next: (res) => {
+        this.customOrders = this.normalizeArray<any>(res.data);
+
+        const loadPlan = this.orderForm.get('loadPlanId');
+
+        if (!this.customOrders.length) {
+          loadPlan?.disable({ emitEvent: false });
+        } else {
+          loadPlan?.enable({ emitEvent: false });
+        }
+      }
+    });
+  }
+
+  displayCompany = (key: any): string => {
+    return this.clientOptionsCache?.find(x => x.key === key)?.value || '';
+  };
+
   orderForm = new FormGroup({
+    addendumId: new FormControl({ value: '', disabled: true }), //! ==> Addendum Number
+
+    addendumDetailId: new FormControl('', Validators.required),
     orderNo: new FormControl({ value: '', disabled: true }),
     transportType: new FormControl('', Validators.required),
     startDate: new FormControl(''),
@@ -76,14 +114,13 @@ export class CreateformComponent {
     borderExitStationId: new FormControl(''),
     shipper: new FormControl('', Validators.required),
     receiver: new FormControl('', Validators.required),
-    company: this.companyControl,
-    loadPlanId: new FormControl(''),
-    addendumDetailId: new FormControl('', Validators.required),
+    company: new FormControl('', Validators.required),
+    loadPlanId: new FormControl({ value: '', disabled: true }), //! ==> CUSTOMER ORDER
     shippingCountryId: new FormControl(''),
     destinationCountryId: new FormControl(''),
     originCountryId: new FormControl(''),
     hasReturn: new FormControl(true),
-    cargoId: new FormControl(''),
+    cargoId: new FormControl({ value: '', disabled: true }),
     yds: new FormControl(''),
     podcode: new FormControl({ value: '', disabled: true }),
     warrantDate: new FormControl({ value: '', disabled: true }),
@@ -92,6 +129,18 @@ export class CreateformComponent {
   })
 
   ngOnInit() {
+    this.clientOptions$ = this.orderForm.get('company')!.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(value => this.commonService.getClients(value)),
+      map(res => {
+        const data = this.normalizeArray<any>(res.data);
+        this.clientOptionsCache = data;
+        return data;
+      })
+    );
+
     this.orderService.getNewOrdersNumber().subscribe({
       next: (res) => {
         this.newOrderNumber = res.data;
@@ -107,16 +156,6 @@ export class CreateformComponent {
       }
     });
 
-    this.companyControl.valueChanges.pipe(
-      startWith(''),
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe((value: string | null) => {
-      this.fetchClients(value || '');
-    });
-
-    this.fetchClients('');
-
     const transportTypeC = this.orderForm.get('transportType');
     const podcode = this.orderForm.get('podcode');
     const warrantDate = this.orderForm.get('warrantDate');
@@ -127,27 +166,55 @@ export class CreateformComponent {
       if (id === 2 || id === 4) {
         podcode?.enable({ emitEvent: false });
         warrantDate?.enable({ emitEvent: false });
+        podcode?.setValue('');
+        warrantDate?.setValue('');
       } else {
         podcode?.disable({ emitEvent: false });
         warrantDate?.disable({ emitEvent: false });
+        podcode?.setValue('');
+        warrantDate?.setValue('');
       }
     });
-  }
 
-  private fetchClients(filter: string) {
-    this.commonService.getClients(filter).subscribe({
-      next: (res) => {
-        this.companies = res.data;
+    //* ===========================================================
+    const loadPlanIdC = this.orderForm.get('loadPlanId');
 
-      },
-      error: (err) => {
-        console.error('Error fetching clients:', err);
-      }
-    });
+    loadPlanIdC?.valueChanges.subscribe((val: any) => {
+      this.contractService.getLoadPlanById(val).subscribe({
+        next: (res) => {
+          const data = this.normalizeArray<any>(res.data);
+          this.addendumIdOpt = data;
+
+          this.orderForm.patchValue({
+            addendumId: data[0]?.addendumId
+          });
+        }
+      })
+    })
+
+    // !===========================================================
+
+    const addendumIdC = this.orderForm.get('addendumId');
+
+    addendumIdC?.valueChanges.subscribe((val: any) => {
+      this.contractService.getAddendumById(val).subscribe({
+        next: (res) => {
+          this.addendumDetailOption = res.data.addendumDetails;
+
+          const addendumDetailIdC = this.orderForm.get('addendumDetailId');
+          
+          this.orderForm.patchValue({
+            cargoId: res.data?.cargoId
+          });
+        }
+      })
+    })
+
   }
 
   addOrderFunc() {
     const formData = this.orderForm.value;
+    console.log(formData);
 
     // this.globalService.addUser(formData).subscribe({
     //   next: (res) => {

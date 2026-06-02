@@ -65,9 +65,10 @@
                       'border-red-500': orderForm.get('company')?.invalid && orderForm.get('company')?.touched,
                       'border-slate-300': orderForm.get('company')?.valid || !orderForm.get('company')?.touched
                     }">
-                        <mat-autocomplete #companyAuto="matAutocomplete" [displayWith]="displayCompany">
-                            @for (option of companies; track option) {
-                            <mat-option [value]="option">{{displayCompany(option)}}</mat-option>
+                        <mat-autocomplete #companyAuto="matAutocomplete" (optionSelected)="onCompanySelected($event)"
+                            [displayWith]="displayCompany">
+                            @for (option of clientOptions$ | async; track option.key) {
+                            <mat-option [value]="option">{{(option.value)}}</mat-option>
                             }
                         </mat-autocomplete>
                     </div>
@@ -78,10 +79,9 @@
                         </label>
                         <select formControlName="loadPlanId" id="loadPlanId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            <option value="">Select Customer Order</option>
-                            <option value="rail">Rail</option>
-                            <option value="road">Road</option>
-                            <option value="sea">Sea</option>
+                            @for (item of customOrders; track item.key) {
+                            <option [value]="item.key">{{item.value}}</option>
+                            }
                         </select>
                     </div>
 
@@ -89,15 +89,14 @@
                         <label for="addendumId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Addendum number*
                         </label>
-                        <select disabled [ngClass]="{
+                        <select [ngClass]="{
                       'border-red-500': orderForm.get('addendumId')?.invalid && orderForm.get('addendumId')?.touched,
                       'border-slate-300': orderForm.get('addendumId')?.valid || !orderForm.get('addendumId')?.touched
-                    }" id="addendumId"
+                    }" id="addendumId" formControlName="addendumId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            <option value="">Select Addendum Number</option>
-                            <option value="rail">Rail</option>
-                            <option value="road">Road</option>
-                            <option value="sea">Sea</option>
+                            @for (item of addendumIdOpt; track item.id) {
+                            <option [value]="item.addendumId">{{item.addendumNo}}</option>
+                            }
                         </select>
 
                         @if(orderForm.get('addendumId')?.errors?.['required'] &&
@@ -115,10 +114,9 @@
                       'border-slate-300': orderForm.get('addendumDetailId')?.valid || !orderForm.get('addendumDetailId')?.touched
                     }" formControlName="addendumDetailId" id="addendumDetailId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            <option value="">Select Addendum Number</option>
-                            <option value="rail">Rail</option>
-                            <option value="road">Road</option>
-                            <option value="sea">Sea</option>
+                            @for (item of addendumDetailOption; track item.id) {
+                            <option [value]="item.id">{{item.transportationModule}} - {{item.transportType}} - {{item.borderExitStation}}</option>
+                            }
                         </select>
 
                         @if(orderForm.get('addendumDetailId')?.errors?.['required'] &&
@@ -284,7 +282,7 @@
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     </div>
 
-                    <div >
+                    <div>
                         <label for="note" class="mb-1 block text-sm font-semibold text-slate-600">
                             Note
                         </label>
