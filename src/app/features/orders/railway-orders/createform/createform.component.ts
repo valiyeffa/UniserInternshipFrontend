@@ -38,12 +38,24 @@ export class CreateformComponent {
   addendumIdOpt: any[] = [];
   addendumDetailOption: any[] = [];
 
+  selectedBorderEntryStationId: any;
+  selectedBorderExitStationId: any;
+  selectedCargoId: any;
+
   clientOptionsCache: any[] = [];
+  stationOptionsCache: any[] = [];
+  destStationOptionsCache: any[] = [];
   selectedCompany: any;
+
+  selectedLoadStation: any;
+  selectedDestinationStation: any;
+
   myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   clientOptions$!: Observable<any[]>;
+  stationOptions$!: Observable<any[]>;
+  dastStationOptions$!: Observable<any[]>;
 
   constructor(
     private commonService: CommonService,
@@ -86,13 +98,32 @@ export class CreateformComponent {
         this.customOrders = this.normalizeArray<any>(res.data);
 
         const loadPlan = this.orderForm.get('loadPlanId');
+        const abde = this.orderForm.get('addendumDetailId');
 
         if (!this.customOrders.length) {
           loadPlan?.disable({ emitEvent: false });
+          abde?.disable({ emitEvent: false });
         } else {
           loadPlan?.enable({ emitEvent: false });
+          abde?.enable({ emitEvent: false });
         }
       }
+    });
+  }
+
+  onStationSelected(event: MatAutocompleteSelectedEvent) {
+    this.selectedLoadStation = event.option.value;
+
+    this.orderForm.patchValue({
+      shippingStationId: this.selectedLoadStation.key,
+    });
+  }
+
+  onDesStationSelected(event: MatAutocompleteSelectedEvent) {
+    this.selectedDestinationStation = event.option.value;
+
+    this.orderForm.patchValue({
+      destinationStationId: this.selectedDestinationStation.key
     });
   }
 
@@ -100,18 +131,26 @@ export class CreateformComponent {
     return this.clientOptionsCache?.find(x => x.key === key)?.value || '';
   };
 
+  displayPointNames = (key: any): string => {
+    return this.stationOptionsCache?.find(x => x.key === key)?.value || '';
+  };
+
+  displayDestPointNames = (key: any): string => {
+    return this.destStationOptionsCache?.find(x => x.key === key)?.value || '';
+  };
+
   orderForm = new FormGroup({
     addendumId: new FormControl({ value: '', disabled: true }), //! ==> Addendum Number
 
-    addendumDetailId: new FormControl('', Validators.required),
+    addendumDetailId: new FormControl({ value: '', disabled: true }, Validators.required),
     orderNo: new FormControl({ value: '', disabled: true }),
     transportType: new FormControl('', Validators.required),
     startDate: new FormControl(''),
     endDate: new FormControl(''),
-    shippingStationId: new FormControl(''),
+    shippingStationId: new FormControl(''), //* ==> Loading ship
     destinationStationId: new FormControl(''),
-    borderEntryStationId: new FormControl(''),
-    borderExitStationId: new FormControl(''),
+    borderEntryStationId: new FormControl({ value: '', disabled: true }),
+    borderExitStationId: new FormControl({ value: '', disabled: true }),
     shipper: new FormControl('', Validators.required),
     receiver: new FormControl('', Validators.required),
     company: new FormControl('', Validators.required),
@@ -137,6 +176,30 @@ export class CreateformComponent {
       map(res => {
         const data = this.normalizeArray<any>(res.data);
         this.clientOptionsCache = data;
+        return data;
+      })
+    );
+
+    this.stationOptions$ = this.orderForm.get('shippingStationId')!.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(value => this.commonService.getAllPoints(value)),
+      map(res => {
+        const data = this.normalizeArray<any>(res.data);
+        this.stationOptionsCache = data;
+        return data;
+      })
+    );
+
+    this.dastStationOptions$ = this.orderForm.get('destinationStationId')!.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(value => this.commonService.getAllPoints(value)),
+      map(res => {
+        const data = this.normalizeArray<any>(res.data);
+        this.destStationOptionsCache = data;
         return data;
       })
     );
@@ -200,25 +263,51 @@ export class CreateformComponent {
       this.contractService.getAddendumById(val).subscribe({
         next: (res) => {
           this.addendumDetailOption = res.data.addendumDetails;
+          this.selectedCargoId = res.data.cargoId;
 
-          const addendumDetailIdC = this.orderForm.get('addendumDetailId');
-          
           this.orderForm.patchValue({
-            cargoId: res.data?.cargoId
+            cargoId: res.data.cargo
           });
         }
       })
     })
 
+    const addendumDetailIdC = this.orderForm.get('addendumDetailId');
+    addendumDetailIdC?.valueChanges.subscribe((val: any) => {
+      // this.contractService.getTariffValuesByAddendumDetailId(val).subscribe({
+      //   next: (res) => {
+      //     const data = this.normalizeArray<any>(res.data);
+      //     console.log(data);
+      //   }
+      // })
+
+      const selectedAddendumDetail = this.addendumDetailOption.find(i => i.id == val);
+      this.selectedBorderExitStationId = selectedAddendumDetail?.borderExitStationId;
+      this.selectedBorderEntryStationId = selectedAddendumDetail?.borderEntryStationId;
+
+      this.orderForm.patchValue({
+        borderEntryStationId: selectedAddendumDetail?.borderEntryStation,
+        borderExitStationId: selectedAddendumDetail?.borderExitStation
+      });
+    })
   }
 
   addOrderFunc() {
-    const formData = this.orderForm.value;
-    console.log(formData);
+    const formData = this.orderForm.getRawValue();
+
+    const { addendumId, ...payload } = {
+      ...formData,
+      borderExitStationId: this.selectedBorderExitStationId,
+      borderEntryStationId: this.selectedBorderEntryStationId,
+      cargoId: this.selectedCargoId,
+      shippingStationId: this.selectedLoadStation?.key,
+      destinationStationId: this.selectedDestinationStation?.key,
+    }
+    console.log(payload);
 
     // this.globalService.addUser(formData).subscribe({
     //   next: (res) => {
-    //     // console.log(res);
+    //   // console.log(res);
     //     if (res.status == false) {
     //       Swal.fire({
     //         title: "Error",

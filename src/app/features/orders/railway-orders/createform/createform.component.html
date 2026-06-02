@@ -13,7 +13,7 @@
                         <input type="text" formControlName="orderNo" id="orderNo" autocomplete="orderNo"
                             placeholder="orderNo" [class.bg-slate-500]="orderForm.get('orderNo')?.disabled"
                             [class.text-slate-500]="orderForm.get('orderNo')?.disabled"
-                            [class.cursor-not-allowed]="orderForm.get('orderNo')?.disabled"
+                            [class.cursor-not-allowed]="orderForm.get('orderNo')?.disabled" readonly
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     </div>
 
@@ -115,7 +115,8 @@
                     }" formControlName="addendumDetailId" id="addendumDetailId"
                             class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                             @for (item of addendumDetailOption; track item.id) {
-                            <option [value]="item.id">{{item.transportationModule}} - {{item.transportType}} - {{item.borderExitStation}}</option>
+                            <option [value]="item.id">{{item.transportationModule}} - {{item.transportType}} -
+                                {{item.borderExitStation}}</option>
                             }
                         </select>
 
@@ -179,12 +180,13 @@
                         <label for="shippingStationId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Loading station
                         </label>
-                        <input type="text" aria-label="Number" matInput [formControl]="myControl" id="shippingStationId"
-                            [matAutocomplete]="shippingAuto"
+                        <input type="text" aria-label="Number" matInput id="shippingStationId"
+                            [matAutocomplete]="shippingAuto" formControlName="shippingStationId"
                             class="w-full rounded-lg border-slate-300 border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                        <mat-autocomplete #shippingAuto="matAutocomplete">
-                            @for (option of filteredOptions | async; track option) {
-                            <mat-option [value]="option">{{option}}</mat-option>
+                        <mat-autocomplete #shippingAuto="matAutocomplete" [displayWith]="displayPointNames"
+                            (optionSelected)="onStationSelected($event)">
+                            @for (option of stationOptions$ | async; track option.key) {
+                            <mat-option [value]="option">{{option.value}}</mat-option>
                             }
                         </mat-autocomplete>
                     </div>
@@ -193,12 +195,13 @@
                         <label for="destinationStationId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Destination
                         </label>
-                        <input type="text" aria-label="Number" matInput [formControl]="myControl"
-                            id="destinationStationId" [matAutocomplete]="destinationAuto"
+                        <input type="text" aria-label="Number" matInput
+                            id="destinationStationId" [matAutocomplete]="destinationAuto" formControlName="destinationStationId"
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                        <mat-autocomplete #destinationAuto="matAutocomplete">
-                            @for (option of filteredOptions | async; track option) {
-                            <mat-option [value]="option">{{option}}</mat-option>
+                        <mat-autocomplete #destinationAuto="matAutocomplete"
+                            (optionSelected)="onDesStationSelected($event)" [displayWith]="displayDestPointNames">
+                            @for (option of dastStationOptions$ | async; track option.key) {
+                            <mat-option [value]="option">{{option.value}}</mat-option>
                             }
                         </mat-autocomplete>
                     </div>
@@ -207,7 +210,7 @@
                         <label for="borderEntryStationId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Border entry
                         </label>
-                        <input disabled type="text" id="borderEntryStationId"
+                        <input type="text" id="borderEntryStationId" formControlName="borderEntryStationId"
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     </div>
 
@@ -215,15 +218,15 @@
                         <label for="borderExitStationId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Border exit
                         </label>
-                        <input disabled type="text" id="borderExitStationId"
+                        <input type="text" id="borderExitStationId" formControlName="borderExitStationId"
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     </div>
 
                     <div class="md:col-span-2">
-                        <label for="borderExitStationId" class="mb-1 block text-sm font-semibold text-slate-600">
+                        <label for="cargoId" class="mb-1 block text-sm font-semibold text-slate-600">
                             Cargo (QNQ/ETSNQ)
                         </label>
-                        <input disabled type="text" id="borderExitStationId"
+                        <input type="text" id="cargoId" formControlName="cargoId"
                             class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     </div>
 

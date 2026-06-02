@@ -28,5 +28,9 @@ export class CommonService {
     return this.http.get(`/AutoComplete/GetClients?filter=${data}`);
   }
 
+  getAllPoints(data: any): Observable<any> {
+    return this.http.get(`/AutoComplete/GetAllPoints?filter=${data}`)
+  }
+
   // *=============================AUTOCOMPLETE END===============================
 }
