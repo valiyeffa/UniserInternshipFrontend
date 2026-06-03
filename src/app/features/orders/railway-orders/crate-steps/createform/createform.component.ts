@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
-import { OrdersService } from '../../orders.service';
+import { OrdersService } from '../../../orders.service';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { map, Observable, startWith, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { CommonService } from '../../../../services/common.service';
-import { ContractsService } from '../../../contracts/contracts.service';
+import { CommonService } from '../../../../../services/common.service';
+import { ContractsService } from '../../../../contracts/contracts.service';
 
 @Component({
   selector: 'app-createform',
@@ -52,11 +52,11 @@ export class CreateformComponent {
   selectedDestinationStation: any;
 
   myControl = new FormControl('');
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
   clientOptions$!: Observable<any[]>;
   stationOptions$!: Observable<any[]>;
   dastStationOptions$!: Observable<any[]>;
+
+  @Output() firstForm = new EventEmitter<any>();
 
   constructor(
     private commonService: CommonService,
@@ -64,18 +64,7 @@ export class CreateformComponent {
     private contractService: ContractsService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
+  ) { }
 
   private normalizeArray<T>(value: any): T[] {
     if (Array.isArray(value)) {
@@ -331,8 +320,9 @@ export class CreateformComponent {
       destinationStationId: this.selectedDestinationStation?.key || '',
     };
 
-    const { addendumId, ...payloadWithoutAddendum } = payload;
-    console.log(payloadWithoutAddendum);
+    const { addendumId, ...payloadForm } = payload;
+
+    this.firstForm.emit(payloadForm);
 
     // this.globalService.addUser(formData).subscribe({
     //   next: (res) => {

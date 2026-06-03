@@ -1,22 +1,7 @@
-<div class="mx-auto my-3 w-full max-w-4xl border-slate-200 bg-white p-6 max-h-135 thin-scrollbar overflow-y-scroll">
-    <a routerLink="/modules/orders/railwayOrders"
-        class="mt-4 inline-flex cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700 hover:bg-rose-100">
-        <- Go Back </a>
-
+<div class="mx-auto my-3 w-full max-w-4xl border-slate-200 bg-white p-6 max-h-120 thin-scrollbar overflow-y-scroll">
             <div class="mt-6 flex w-full justify-center">
                 <form class="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3" [formGroup]="orderForm"
                     (ngSubmit)="addOrderFunc()">
-                    <div>
-                        <label for="orderNo" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Order Number
-                        </label>
-                        <input type="text" formControlName="orderNo" id="orderNo" autocomplete="orderNo"
-                            placeholder="orderNo" [class.bg-slate-500]="orderForm.get('orderNo')?.disabled"
-                            [class.text-slate-500]="orderForm.get('orderNo')?.disabled"
-                            [class.cursor-not-allowed]="orderForm.get('orderNo')?.disabled" readonly
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
                     <div>
                         <label for="transportType" class="mb-1 block text-sm font-semibold text-slate-600">
                             Mode*
@@ -289,13 +274,6 @@
                         <input type="text" id="note" formControlName="note"
                             class="w-full col-span-3 border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
                     </div>
-
-                    <button type="submit" [disabled]="orderForm.invalid " [ngClass]="{
-                'bg-slate-300 text-slate-500 cursor-not-allowed ring-0': orderForm.invalid,
-                 'bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg': !orderForm.invalid
-                  }" class="md:col-span-3 mt-2 w-full rounded-lg py-2.5 font-semibold transition">
-                        Create
-                    </button>
                 </form>
             </div>
 </div>
