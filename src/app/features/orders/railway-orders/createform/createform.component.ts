@@ -293,13 +293,14 @@ export class CreateformComponent {
 
     const addendumDetailIdC = this.orderForm.get('addendumDetailId');
     addendumDetailIdC?.valueChanges.subscribe((val: any) => {
-      // this.contractService.getTariffValuesByAddendumDetailId(val).subscribe({
-      //   next: (res) => {
-      //     const data = this.normalizeArray<any>(res.data);
-      //     console.log(data);
-      //   }
-      // })
       const id = Number(val);
+
+      this.contractService.getTariffValuesByAddendumDetailId(id).subscribe({
+        next: (res) => {
+          const data = this.normalizeArray<any>(res.data);
+          console.log(data);
+        }
+      })
 
       const selectedAddendumDetail = this.addendumDetailOption.find(i => i.id == id);
       this.selectedBorderExitStationId = selectedAddendumDetail?.borderExitStationId;
@@ -310,8 +311,6 @@ export class CreateformComponent {
         borderExitStationId: selectedAddendumDetail?.borderExitStation
       });
     })
-
-
   }
 
   addOrderFunc() {
