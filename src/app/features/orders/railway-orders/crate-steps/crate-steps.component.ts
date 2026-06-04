@@ -33,11 +33,11 @@ export class CrateStepsComponent {
   }
 
   submit() {
-    const wagonData = this.step2Component.orderWagons.getRawValue();
+    const wagonData = this.step2Component.customOrders;
 
     const payload = {
       ...this.firstForm,
-      orderWagons: [wagonData]
+      orderWagons: wagonData
     };
 
     console.log(payload);
