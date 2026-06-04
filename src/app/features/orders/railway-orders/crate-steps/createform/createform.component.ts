@@ -56,7 +56,8 @@ export class CreateformComponent {
   stationOptions$!: Observable<any[]>;
   dastStationOptions$!: Observable<any[]>;
 
-  @Output() firstForm = new EventEmitter<any>();
+  tariffOptions: any[] = [];
+
 
   constructor(
     private commonService: CommonService,
@@ -287,7 +288,10 @@ export class CreateformComponent {
       this.contractService.getTariffValuesByAddendumDetailId(id).subscribe({
         next: (res) => {
           const data = this.normalizeArray<any>(res.data);
+          this.tariffOptions = data;
+
           console.log(data);
+          
         }
       })
 

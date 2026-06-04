@@ -20,8 +20,20 @@ export class CommonService {
     return this.http.get('/ComboBox/GetCountries');
   }
 
+  getParkTypes(): Observable<any> {
+    return this.http.get('/ComboBox/GetParkTypes');
+  }
+
   getLoadPlansByCompany(companyId: number): Observable<any> {
     return this.http.get(`/ComboBox/GetLoadPlansByCompany?companyId=${companyId}`);
+  }
+
+  getTransportCategories(transportationModuleId: number): Observable<any> {
+    return this.http.get(`/ComboBox/GetTransportCategories?transportationModuleId=${transportationModuleId}`);
+  }
+
+  getTransportTypeByCategory(categoryId: number): Observable<any> {
+    return this.http.get(`/ComboBox/GetTransportTypesByCategory?categoryId=${categoryId}`);
   }
 
   // !=============================COMBO BOXES===============================
