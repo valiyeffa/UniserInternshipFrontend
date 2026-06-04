@@ -289,9 +289,6 @@ export class CreateformComponent {
         next: (res) => {
           const data = this.normalizeArray<any>(res.data);
           this.tariffOptions = data;
-
-          console.log(data);
-          
         }
       })
 
