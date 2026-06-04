@@ -1,279 +1,104 @@
 <div class="mx-auto my-3 w-full max-w-4xl border-slate-200 bg-white p-6 max-h-120 thin-scrollbar overflow-y-scroll">
-            <div class="mt-6 flex w-full justify-center">
-                <form class="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3" [formGroup]="orderForm"
-                    (ngSubmit)="addOrderFunc()">
-                    <div>
-                        <label for="transportType" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Mode*
-                        </label>
-                        <select formControlName="transportType" id="transportType"
-                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                            [ngClass]="{
-                      'border-red-500': orderForm.get('transportType')?.invalid && orderForm.get('transportType')?.touched,
-                      'border-slate-300': orderForm.get('transportType')?.valid || !orderForm.get('transportType')?.touched
-                    }">
-                            @for (item of transportTypes; track $index) {
-                            <option [ngValue]="item.key">{{item.value}}</option>
-                            }
-                        </select>
-                        @if(orderForm.get('transportType')?.errors?.['required'] &&
-                        orderForm.get('transportType')?.touched){
-                        <p class="text-red-600 text-sm">Mode required</p>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="podcode" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Warrant number
-                        </label>
-                        <input type="text" formControlName="podcode" id="podcode" autocomplete="podcode"
-                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300 border-slate-300">
-                    </div>
-
-                    <div>
-                        <label for="warrantDate" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Warrant Date
-                        </label>
-
-                        <input type="date" formControlName="warrantDate" id="warrantDate"
-                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300 border-slate-300">
-                    </div>
-
-                    <div>
-                        <label for="company" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Company*
-                        </label>
-                        <input type="text" matInput formControlName="company" id="company"
-                            [matAutocomplete]="companyAuto"
-                            class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                            [ngClass]="{
-                      'border-red-500': orderForm.get('company')?.invalid && orderForm.get('company')?.touched,
-                      'border-slate-300': orderForm.get('company')?.valid || !orderForm.get('company')?.touched
-                    }">
-                        <mat-autocomplete #companyAuto="matAutocomplete" (optionSelected)="onCompanySelected($event)"
-                            [displayWith]="displayCompany">
-                            @for (option of clientOptions$ | async; track option.key) {
-                            <mat-option [value]="option">{{(option.value)}}</mat-option>
-                            }
-                        </mat-autocomplete>
-                    </div>
-
-                    <div>
-                        <label for="loadPlanId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Customer order
-                        </label>
-                        <select formControlName="loadPlanId" id="loadPlanId"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            @for (item of customOrders; track item.key) {
-                            <option [ngValue]="item.key">{{item.value}}</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="addendumId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Addendum number*
-                        </label>
-                        <select [ngClass]="{
-                      'border-red-500': orderForm.get('addendumId')?.invalid && orderForm.get('addendumId')?.touched,
-                      'border-slate-300': orderForm.get('addendumId')?.valid || !orderForm.get('addendumId')?.touched
-                    }" id="addendumId" formControlName="addendumId"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            @for (item of addendumIdOpt; track item.id) {
-                            <option [ngValue]="item.addendumId">{{item.addendumNo}}</option>
-                            }
-                        </select>
-
-                        @if(orderForm.get('addendumId')?.errors?.['required'] &&
-                        orderForm.get('addendumId')?.touched){
-                        <p class="text-red-600 text-sm">Addendum Number required</p>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="addendumDetailId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Addendum detail*
-                        </label>
-                        <select [ngClass]="{
-                      'border-red-500': orderForm.get('addendumDetailId')?.invalid && orderForm.get('addendumDetailId')?.touched,
-                      'border-slate-300': orderForm.get('addendumDetailId')?.valid || !orderForm.get('addendumDetailId')?.touched
-                    }" formControlName="addendumDetailId" id="addendumDetailId"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            @for (item of addendumDetailOption; track item.id) {
-                            <option [ngValue]="item.id">{{item.transportationModule}} - {{item.transportType}} -
-                                {{item.borderExitStation}}</option>
-                            }
-                        </select>
-
-                        @if(orderForm.get('addendumDetailId')?.errors?.['required'] &&
-                        orderForm.get('addendumDetailId')?.touched){
-                        <p class="text-red-600 text-sm">Addendum Number required</p>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="startDate" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Start Date
-                        </label>
-
-                        <input type="date" formControlName="startDate" id="startDate"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
-                    <div>
-                        <label for="endDate" class="mb-1 block text-sm font-semibold text-slate-600">
-                            End Date
-                        </label>
-
-                        <input type="date" formControlName="endDate" id="endDate"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
-                    <div>
-                        <label for="shipper" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Consignor*
-                        </label>
-                        <input [ngClass]="{
-                      'border-red-500': orderForm.get('shipper')?.invalid && orderForm.get('shipper')?.touched,
-                      'border-slate-300': orderForm.get('shipper')?.valid || !orderForm.get('shipper')?.touched
-                    }" type="text" formControlName="shipper" id="shipper" autocomplete="shipper"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-
-                        @if(orderForm.get('shipper')?.errors?.['required'] &&
-                        orderForm.get('shipper')?.touched){
-                        <p class="text-red-600 text-sm">Consignor required</p>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="receiver" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Consignee*
-                        </label>
-                        <input [ngClass]="{
-                      'border-red-500': orderForm.get('receiver')?.invalid && orderForm.get('receiver')?.touched,
-                      'border-slate-300': orderForm.get('receiver')?.valid || !orderForm.get('receiver')?.touched
-                    }" type="text" formControlName="receiver" id="receiver" autocomplete="receiver"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-
-                        @if(orderForm.get('receiver')?.errors?.['required'] &&
-                        orderForm.get('receiver')?.touched){
-                        <p class="text-red-600 text-sm">Consignee required</p>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="shippingStationId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Loading station
-                        </label>
-                        <input type="text" aria-label="Number" matInput id="shippingStationId"
-                            [matAutocomplete]="shippingAuto" formControlName="shippingStationId"
-                            class="w-full rounded-lg border-slate-300 border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                        <mat-autocomplete #shippingAuto="matAutocomplete" [displayWith]="displayPointNames"
-                            (optionSelected)="onStationSelected($event)">
-                            @for (option of stationOptions$ | async; track option.key) {
-                            <mat-option [value]="option">{{option.value}}</mat-option>
-                            }
-                        </mat-autocomplete>
-                    </div>
-
-                    <div>
-                        <label for="destinationStationId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Destination
-                        </label>
-                        <input type="text" aria-label="Number" matInput id="destinationStationId"
-                            [matAutocomplete]="destinationAuto" formControlName="destinationStationId"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                        <mat-autocomplete #destinationAuto="matAutocomplete"
-                            (optionSelected)="onDesStationSelected($event)" [displayWith]="displayDestPointNames">
-                            @for (option of dastStationOptions$ | async; track option.key) {
-                            <mat-option [value]="option">{{option.value}}</mat-option>
-                            }
-                        </mat-autocomplete>
-                    </div>
-
-                    <div>
-                        <label for="borderEntryStationId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Border entry
-                        </label>
-                        <input type="text" id="borderEntryStationId" formControlName="borderEntryStationId"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
-                    <div>
-                        <label for="borderExitStationId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Border exit
-                        </label>
-                        <input type="text" id="borderExitStationId" formControlName="borderExitStationId"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label for="cargoId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Cargo (QNQ/ETSNQ)
-                        </label>
-                        <input type="text" id="cargoId" formControlName="cargoId"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
-                    <div>
-                        <label for="shippingCountryId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Shipping country
-                        </label>
-                        <select formControlName="shippingCountryId" id="shippingCountryId"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            @for (item of countries; track item.key) {
-                            <option [value]="item.key">{{item.value}}</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="destinationCountryId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Destination country of the cargo
-                        </label>
-                        <select formControlName="destinationCountryId" id="destinationCountryId"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            @for (item of countries; track item.key) {
-                            <option [value]="item.key">{{item.value}}</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="originCountryId" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Origin of cargo
-                        </label>
-                        <select formControlName="originCountryId" id="originCountryId"
-                            class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                            @for (item of countries; track item.key) {
-                            <option [value]="item.key">{{item.value}}</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <input type="checkbox" formControlName="hasReturn" id="hasReturn"
-                            class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
-                        <label for="hasReturn" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Empty return
-                        </label>
-                    </div>
-
-                    <div>
-                        <label for="yds" class="mb-1 block text-sm font-semibold text-slate-600">
-                            YDS
-                        </label>
-                        <input type="text" id="yds" formControlName="yds"
-                            class="w-full border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-
-                    <div>
-                        <label for="note" class="mb-1 block text-sm font-semibold text-slate-600">
-                            Note
-                        </label>
-                        <input type="text" id="note" formControlName="note"
-                            class="w-full col-span-3 border-slate-300 rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    </div>
-                </form>
+    <div class="mt-6 flex w-full justify-center">
+        <form class="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3" [formGroup]="orderWagons"
+            (ngSubmit)="addOrderFunc()">
+            <div>
+                <label for="wagonNo" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Number
+                </label>
+                <input type="text" formControlName="wagonNo" id="wagonNo" autocomplete="wagonNo"
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300 border-slate-300">
             </div>
+
+            <div>
+                <label for="addendumTariffType" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Tariff
+                </label>
+                <select formControlName="addendumTariffType" id="addendumTariffType"
+                    class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    @for (item of customOrders; track item.key) {
+                    <option [ngValue]="item.key">{{item.value}}</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label for="parkType" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Park
+                </label>
+                <select formControlName="parkType" id="parkType"
+                    class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    @for (item of customOrders; track item.key) {
+                    <option [ngValue]="item.key">{{item.value}}</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label for="categoryId" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Category*
+                </label>
+                <select formControlName="categoryId" id="categoryId"
+                    class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    @for (item of countries; track item.key) {
+                    <option [value]="item.key">{{item.value}}</option>
+                    }
+                </select>
+
+                @if(orderWagons.get('categoryId')?.errors?.['required'] &&
+                orderWagons.get('categoryId')?.touched){
+                <p class="text-red-600 text-sm">Category required</p>
+                }
+            </div>
+
+            <div>
+                <label for="typeId" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Type*
+                </label>
+                <select formControlName="typeId" id="typeId"
+                    class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    @for (item of countries; track item.key) {
+                    <option [value]="item.key">{{item.value}}</option>
+                    }
+                </select>
+
+                @if(orderWagons.get('typeId')?.errors?.['required'] &&
+                orderWagons.get('typeId')?.touched){
+                <p class="text-red-600 text-sm">Type required</p>
+                }
+            </div>
+
+            <div>
+                <label for="weight" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Weight*
+                </label>
+                <input [ngClass]="{
+                      'border-red-500': orderWagons.get('weight')?.invalid && orderWagons.get('weight')?.touched,
+                      'border-slate-300': orderWagons.get('weight')?.valid || !orderWagons.get('weight')?.touched
+                    }" type="number" formControlName="weight" id="weight" autocomplete="weight"
+                    class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+
+                @if(orderWagons.get('weight')?.errors?.['required'] &&
+                orderWagons.get('weight')?.touched){
+                <p class="text-red-600 text-sm">Weight required</p>
+                }
+            </div>
+
+            <div>
+                <label for="count" class="mb-1 block text-sm font-semibold text-slate-600">
+                    Count*
+                </label>
+                <input [ngClass]="{
+                      'border-red-500': orderWagons.get('count')?.invalid && orderWagons.get('count')?.touched,
+                      'border-slate-300': orderWagons.get('count')?.valid || !orderWagons.get('count')?.touched
+                    }" type="number" formControlName="count" id="count" autocomplete="count"
+                    class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+
+                @if(orderWagons.get('count')?.errors?.['required'] &&
+                orderWagons.get('count')?.touched){
+                <p class="text-red-600 text-sm">Count required</p>
+                }
+            </div>
+        </form>
+    </div>
 </div>

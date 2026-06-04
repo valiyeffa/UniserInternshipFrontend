@@ -302,7 +302,7 @@ export class CreateformComponent {
     })
   }
 
-  addOrderFunc() {
+  preparePayload() {
     const formData = this.orderForm.getRawValue();
 
     const payload = {
@@ -322,35 +322,6 @@ export class CreateformComponent {
 
     const { addendumId, ...payloadForm } = payload;
 
-    this.firstForm.emit(payloadForm);
-
-    // this.globalService.addUser(formData).subscribe({
-    //   next: (res) => {
-    //   // console.log(res);
-    //     if (res.status == false) {
-    //       Swal.fire({
-    //         title: "Error",
-    //         text: res.message,
-    //         icon: "error"
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         title: "Success",
-    //         text: "User successfuly added!",
-    //         icon: "success",
-    //       }).then(() => {
-    //         this.router.navigate(['/modules/settings/users'])
-    //       });
-    //     }
-    //   },
-    //   error: (err) => {
-    //     Swal.fire({
-    //       title: "Error",
-    //       text: "Something went wrong!",
-    //       icon: "error"
-    //     });
-    //     console.error(err);
-    //   }
-    // })
+    return payloadForm;
   }
 }
