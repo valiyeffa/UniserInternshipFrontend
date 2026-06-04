@@ -1,10 +1,10 @@
 <div [hidden]="step !== 1">
     <app-createform />
-    <button
-        class="bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg w-fit rounded-lg p-2.5 font-semibold transition"
+    <button [disabled]="isFirstFormInvalid"
+        class="bg-indigo-600 text-white shadow-lg w-fit rounded-lg p-2.5 font-semibold transition"
+        [ngClass]="{ 'hover:bg-indigo-700 cursor-pointer': !isFirstFormInvalid, 'opacity-50 cursor-not-allowed': isFirstFormInvalid }"
         (click)="nextStep()">Next</button>
 </div>
-
 
 <div [hidden]="step !== 2">
     <app-create-step2 [tariffOptions]="tariffOptions" />
@@ -14,9 +14,3 @@
         class="bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg mt-2 w-fit rounded-lg p-2.5 font-semibold transition"
         (click)="submit()">Submit</button>
 </div>
-
-
-<!-- [ngClass]="{
-                'bg-slate-300 text-slate-500 cursor-not-allowed ring-0': firstForm.invalid,
-                 'bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg': !firstForm.invalid
-                  }" -->

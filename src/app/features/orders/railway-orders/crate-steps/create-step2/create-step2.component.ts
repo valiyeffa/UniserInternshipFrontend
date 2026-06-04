@@ -5,6 +5,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-create-step2',
@@ -22,6 +23,12 @@ export class CreateStep2Component {
   constructor(private commonService: CommonService) { }
 
   customOrders: any[] = [];
+
+  get fileInputDisabled(): boolean {
+    return !this.orderWagons.get('parkType')?.value ||
+      !this.orderWagons.get('categoryId')?.value ||
+      !this.orderWagons.get('typeId')?.value;
+  }
 
   orderWagons = new FormGroup({
     orderId: new FormControl({ value: '', disabled: true }),
@@ -54,6 +61,43 @@ export class CreateStep2Component {
     });
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const workbook = XLSX.read(e.target.result, {
+        type: 'binary'
+      });
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      const excelData: any[] =
+        XLSX.utils.sheet_to_json(worksheet);
+
+      const formValue = this.orderWagons.getRawValue();
+
+      const mappedRows = excelData.map(row => ({
+        wagonNo: row.wagonNo,
+        weight: row.weight,
+        count: row.count,
+
+        addendumTariffType: formValue.addendumTariffType,
+        parkType: formValue.parkType,
+        categoryId: formValue.categoryId,
+        typeId: formValue.typeId
+      }));
+
+      this.customOrders.push(...mappedRows);
+    };
+
+    reader.readAsBinaryString(file);
+  }
+
   addToTable() {
     if (this.orderWagons.invalid) {
       this.orderWagons.markAllAsTouched();
@@ -69,8 +113,10 @@ export class CreateStep2Component {
       weight: this.orderWagons.value.weight,
       count: this.orderWagons.value.count,
     });
-
     this.orderWagons.reset();
   }
 
+  removeRow(index: number) {
+    this.customOrders.splice(index, 1);
+  }
 }

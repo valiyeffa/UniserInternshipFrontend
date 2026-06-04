@@ -3,6 +3,7 @@ import { CreateformComponent } from "./createform/createform.component";
 import { CommonModule } from '@angular/common';
 import { CreateStep2Component } from "./create-step2/create-step2.component";
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crate-steps',
@@ -17,9 +18,17 @@ export class CrateStepsComponent {
   @ViewChild(CreateStep2Component)
   step2Component!: CreateStep2Component;
 
+  constructor(
+    private router: Router
+  ) { }
+
   step: number = 1;
   firstForm: any;
   tariffOptions: any[] = [];
+
+  get isFirstFormInvalid(): boolean {
+    return this.step1Component?.orderForm?.invalid ?? true;
+  }
 
   nextStep() {
     this.firstForm = this.step1Component.preparePayload();
@@ -41,6 +50,14 @@ export class CrateStepsComponent {
     };
 
     console.log(payload);
+
+    // Swal.fire({
+    //   title: "Success",
+    //   text: "User successfuly added!",
+    //   icon: "success",
+    // }).then(() => {
+    //   this.router.navigate(['/modules/orders/railwayOrders'])
+    // });
 
     // this.globalService.addUser(formData).subscribe({
     //   next: (res) => {
