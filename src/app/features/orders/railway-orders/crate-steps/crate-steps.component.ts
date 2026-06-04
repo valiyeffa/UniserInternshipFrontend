@@ -42,7 +42,7 @@ export class CrateStepsComponent {
   }
 
   submit() {
-    const wagonData = this.step2Component.customOrders;
+    const wagonData = this.step2Component.getCleanOrders();
 
     const payload = {
       ...this.firstForm,

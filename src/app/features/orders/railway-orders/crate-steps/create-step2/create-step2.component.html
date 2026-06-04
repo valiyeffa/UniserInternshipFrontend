@@ -1,13 +1,16 @@
 <div class="mx-auto my-3 w-full max-w-4xl border-slate-200 bg-white p-6 max-h-120 thin-scrollbar overflow-auto">
     <b>Wagons</b>
+    <p>In details <mat-slide-toggle (change)="onToggle($event.checked)">General</mat-slide-toggle></p>
     <div class="mt-6 flex w-full justify-center">
+
         <form class="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3" [formGroup]="orderWagons">
             <div>
                 <label for="wagonNo" class="mb-1 block text-sm font-semibold text-slate-600">
                     Number
                 </label>
                 <input type="text" formControlName="wagonNo" id="wagonNo" autocomplete="wagonNo"
-                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300 border-slate-300">
+                    class="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300 border-slate-300"
+                    [ngClass]="{ 'bg-slate-200 border-slate-400 text-slate-700': orderWagons.get('wagonNo')?.disabled }">
             </div>
 
             <div>
@@ -16,7 +19,7 @@
                 </label>
                 <select formControlName="addendumTariffType" id="addendumTariffType"
                     class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                    <option [ngValue]="">Not selected</option>
+                    <option [ngValue]=" " disabled>Not selected</option>
                     @for (item of tariffOptions; track item.key) {
                     <option [ngValue]="item.key">{{item.value}}</option>
                     }
@@ -90,9 +93,10 @@
                     Count*
                 </label>
                 <input [ngClass]="{
-                      'border-red-500': orderWagons.get('count')?.invalid && orderWagons.get('count')?.touched,
-                      'border-slate-300': orderWagons.get('count')?.valid || !orderWagons.get('count')?.touched
-                    }" type="number" formControlName="count" id="count" autocomplete="count"
+                                            'border-red-500': orderWagons.get('count')?.invalid && orderWagons.get('count')?.touched,
+                                            'border-slate-300': orderWagons.get('count')?.valid || !orderWagons.get('count')?.touched,
+                                            'bg-slate-200 border-slate-400 text-slate-700': orderWagons.get('count')?.disabled
+                                        }" type="number" formControlName="count" id="count" autocomplete="count"
                     class="w-full rounded-lg border px-4 py-2.5 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300">
 
                 @if(orderWagons.get('count')?.errors?.['required'] &&
@@ -103,19 +107,14 @@
         </form>
     </div>
 
-    <button type="button"
-        class="mt-4 px-4 py-2 rounded text-white transition"
-        [disabled]="orderWagons.invalid"
+    <button type="button" class="mt-4 px-4 py-2 rounded text-white transition" [disabled]="orderWagons.invalid"
         [ngClass]="{ 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer': !orderWagons.invalid, 'bg-indigo-300 opacity-50 cursor-not-allowed': orderWagons.invalid }"
         (click)="addToTable()">
         + Add
     </button>
 
-    <input type="file"
-        class="mt-4 p-2 mx-3 rounded text-white transition"
-        accept=".xlsx,.xls"
-        (change)="onFileChange($event)"
-        [disabled]="fileInputDisabled"
+    <input type="file" class="mt-4 p-2 mx-3 rounded text-white transition" accept=".xlsx,.xls"
+        (change)="onFileChange($event)" [disabled]="fileInputDisabled"
         [ngClass]="{ 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer': !fileInputDisabled, 'bg-indigo-300 opacity-50 cursor-not-allowed': fileInputDisabled }">
 
     <div class="mt-6 flex w-full justify-center">
@@ -160,14 +159,15 @@
                 <tr class="bg-white transition hover:bg-indigo-50/40 text-center">
                     <td class="rounded-l-xl border-y border-l border-slate-200 px-6 py-4">{{i+1}}</td>
                     <td class="border-y border-slate-200 px-6 py-4">{{item.wagonNo}}</td>
-                    <td class="border-y border-slate-200 px-6 py-4">{{item.addendumTariffType}}</td>
-                    <td class="border-y border-slate-200 px-6 py-4">{{item.parkType}}</td>
-                    <td class="border-y border-slate-200 px-6 py-4">{{item.categoryId}}</td>
-                    <td class="border-y border-slate-200 px-6 py-4">{{item.typeId}}</td>
+                    <td class="border-y border-slate-200 px-6 py-4">{{item.tariffName}}</td>
+                    <td class="border-y border-slate-200 px-6 py-4">{{item.parkName}}</td>
+                    <td class="border-y border-slate-200 px-6 py-4">{{item.categoryName}}</td>
+                    <td class="border-y border-slate-200 px-6 py-4">{{item.typeName}}</td>
                     <td class="border-y border-slate-200 px-6 py-4">{{item.weight}}</td>
                     <td class="border-y border-slate-200 px-6 py-4">{{item.count}}</td>
-                    <td class="rounded-r-xl border-y border-r border-slate-200 px-6 py-4">
-                        <button class="cursor-pointer bg-amber-200 px-3 py-1 rounded-md">Edit</button>
+                    <td class="rounded-r-xl border-y border-r border-slate-200 px-6 py-4 flex gap-1">
+                        <button class="cursor-pointer bg-amber-200 px-3 py-1 rounded-md"
+                            (click)="editRow(i,item)">Edit</button>
                         <button class="bg-red-400 text-white px-2 py-1 rounded cursor-pointer" (click)="removeRow(i)">
                             Delete
                         </button>

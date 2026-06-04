@@ -5,11 +5,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-create-step2',
-  imports: [ReactiveFormsModule, NgClass, MatFormFieldModule, MatInputModule, MatAutocompleteModule, CommonModule],
+  imports: [ReactiveFormsModule, NgClass, MatFormFieldModule, MatInputModule, MatAutocompleteModule, CommonModule, MatSlideToggleModule],
   templateUrl: './create-step2.component.html',
   styles: ``
 })
@@ -18,9 +19,34 @@ export class CreateStep2Component {
   parkTypes: any[] = [];
   typeOptions: any[] = [];
   transportCtgOptions: any[] = [];
+  editingIndex: number | null = null;
+  isManualMode = false;
+
+  typeMap: Record<number, string> = {};
+
   @Input() tariffOptions: any[] = [];
 
   constructor(private commonService: CommonService) { }
+  
+  getCleanOrders() {
+    return this.customOrders.map(({
+      wagonNo,
+      weight,
+      count,
+      addendumTariffType,
+      parkType,
+      categoryId,
+      typeId
+    }) => ({
+      wagonNo,
+      weight,
+      count,
+      addendumTariffType,
+      parkType,
+      categoryId,
+      typeId
+    }));
+  }
 
   customOrders: any[] = [];
 
@@ -41,7 +67,27 @@ export class CreateStep2Component {
     count: new FormControl(''),
   });
 
+  onToggle(value: boolean) {
+    this.isManualMode = value;
+    this.setToggleState(value);
+  }
+
+  setToggleState(isManual: boolean) {
+    const wagonNo = this.orderWagons.get('wagonNo');
+    const count = this.orderWagons.get('count');
+
+    if (!isManual) {
+      wagonNo?.enable();
+      count?.disable();
+    } else {
+      wagonNo?.disable();
+      count?.enable();
+    }
+  }
+
   ngOnInit() {
+    this.setToggleState(false);
+
     this.commonService.getParkTypes().subscribe(res => {
       this.parkTypes = res.data;
     });
@@ -57,6 +103,12 @@ export class CreateStep2Component {
 
       this.commonService.getTransportTypeByCategory(id).subscribe(res => {
         this.typeOptions = res.data;
+
+        this.typeMap = {};
+        res.data.forEach((x: any) => {
+          this.typeMap[x.key] = x.value;
+        });
+
       });
     });
   }
@@ -88,8 +140,13 @@ export class CreateStep2Component {
 
         addendumTariffType: formValue.addendumTariffType,
         parkType: formValue.parkType,
-        categoryId: formValue.categoryId,
-        typeId: formValue.typeId
+        categoryId: Number(formValue.categoryId),
+        typeId: Number(formValue.typeId),
+
+        categoryName: this.transportCtgOptions.find(x => x.key == formValue.categoryId)?.value,
+        typeName: this.typeOptions.find(x => x.key == formValue.typeId)?.value,
+        parkName: this.parkTypes.find(x => x.key == formValue.parkType)?.value,
+        tariffName: this.tariffOptions.find(x => x.key == formValue.addendumTariffType)?.value,
       }));
 
       this.customOrders.push(...mappedRows);
@@ -104,19 +161,55 @@ export class CreateStep2Component {
       return;
     }
 
-    this.customOrders.push({
-      wagonNo: this.orderWagons.value.wagonNo,
-      addendumTariffType: this.orderWagons.value.addendumTariffType,
-      parkType: this.orderWagons.value.parkType,
-      categoryId: this.orderWagons.value.categoryId,
-      typeId: this.orderWagons.value.typeId,
-      weight: this.orderWagons.value.weight,
-      count: this.orderWagons.value.count,
-    });
+    const formData = this.orderWagons.getRawValue();
+
+    const selectedType = this.typeOptions.find(
+      x => x.key == formData.typeId
+    );
+
+    const selectedCategory = this.transportCtgOptions.find(
+      x => x.key == formData.categoryId
+    );
+
+    const selectedPark = this.parkTypes.find(
+      x => x.key == formData.parkType
+    );
+
+    const selectedTariff = this.tariffOptions.find(
+      x => x.key == formData.addendumTariffType
+    );
+
+    const payload = {
+      ...formData,
+
+      categoryId: Number(formData.categoryId),
+      typeId: Number(formData.typeId),
+
+      categoryName: selectedCategory?.value,
+      typeName: selectedType?.value,
+      parkName: selectedPark?.value,
+      tariffName: selectedTariff?.value
+    };
+
+    if (this.editingIndex !== null) {
+      this.customOrders[this.editingIndex] = payload;
+      this.editingIndex = null;
+    } else {
+      this.customOrders.push(payload);
+    }
+
     this.orderWagons.reset();
+  }
+
+  editRow(index: number, item: any) {
+    this.orderWagons.patchValue(item);
+    this.editingIndex = index;
   }
 
   removeRow(index: number) {
     this.customOrders.splice(index, 1);
   }
+
+  // !==========================================================
+
 }
