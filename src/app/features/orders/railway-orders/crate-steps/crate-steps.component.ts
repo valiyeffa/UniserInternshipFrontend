@@ -3,7 +3,8 @@ import { CreateformComponent } from "./createform/createform.component";
 import { CommonModule } from '@angular/common';
 import { CreateStep2Component } from "./create-step2/create-step2.component";
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OrdersService } from '../../orders.service';
 
 @Component({
   selector: 'app-crate-steps',
@@ -19,8 +20,13 @@ export class CrateStepsComponent {
   step2Component!: CreateStep2Component;
 
   constructor(
-    private router: Router
+    private route: ActivatedRoute,
+    private router: Router,
+    private orderService: OrdersService
   ) { }
+
+  selectedId!: number;
+  selectedOrder: any[] = [];
 
   step: number = 1;
   firstForm: any;
@@ -39,6 +45,22 @@ export class CrateStepsComponent {
 
   prevStep() {
     this.step--;
+  }
+
+  ngOnInit() {
+    this.selectedId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (this.selectedId) {
+      this.orderService.getOrderById(this.selectedId).subscribe({
+        next: (res) => {
+          this.selectedOrder = res.data;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
+    
   }
 
   submit() {

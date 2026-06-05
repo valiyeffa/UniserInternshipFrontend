@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonService } from '../../../../../services/common.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -25,9 +25,10 @@ export class CreateStep2Component {
   typeMap: Record<number, string> = {};
 
   @Input() tariffOptions: any[] = [];
+  @Input() selectedOrder: any;
 
   constructor(private commonService: CommonService) { }
-  
+
   getCleanOrders() {
     return this.customOrders.map(({
       wagonNo,
@@ -82,6 +83,20 @@ export class CreateStep2Component {
     } else {
       wagonNo?.disable();
       count?.enable();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedOrder']) {
+      const val = changes['selectedOrder'].currentValue;
+      const order = Array.isArray(val) ? val[0] : val;
+      const wagons = Array.isArray(order?.orderWagons) ? order.orderWagons : [];
+
+      if (wagons.length) {
+        this.customOrders = [...wagons];
+      } else {
+        this.customOrders = [];
+      }
     }
   }
 

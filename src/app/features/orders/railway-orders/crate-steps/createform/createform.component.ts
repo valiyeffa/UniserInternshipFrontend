@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { OrdersService } from '../../../orders.service';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -58,13 +58,12 @@ export class CreateformComponent {
 
   tariffOptions: any[] = [];
 
+  @Input() selectedOrder!: any;
 
   constructor(
     private commonService: CommonService,
     private orderService: OrdersService,
     private contractService: ContractsService,
-    private route: ActivatedRoute,
-    private router: Router,
   ) { }
 
   private normalizeArray<T>(value: any): T[] {
@@ -75,6 +74,112 @@ export class CreateformComponent {
       return [];
     }
     return [value];
+  }
+
+  private toAutocompleteText(value: any): string {
+    if (value == null) {
+      return '';
+    }
+    if (typeof value === 'object') {
+      return value.value ?? value.key ?? '';
+    }
+    return String(value);
+  }
+
+  private formatDate(value: any): string {
+    if (!value) {
+      return '';
+    }
+    return String(value).split('T')[0];
+  }
+
+  private patchSelectedOrder(order: any): void {
+    if (!order) {
+      return;
+    }
+
+    const loadPlanIdC = this.orderForm.get('loadPlanId');
+    const addendumIdC = this.orderForm.get('addendumId');
+    const addendumDetailIdC = this.orderForm.get('addendumDetailId');
+
+    loadPlanIdC?.enable({ emitEvent: false });
+    addendumIdC?.enable({ emitEvent: false });
+    addendumDetailIdC?.enable({ emitEvent: false });
+
+    this.orderForm.patchValue({
+      orderNo: order.orderNo ?? '',
+      transportType: order.transportType ?? '',
+      startDate: this.formatDate(order.startDate),
+      endDate: this.formatDate(order.endDate),
+      shippingStationId: order.shippingStationId ?? '',
+      destinationStationId: order.destinationStationId ?? '',
+      borderEntryStationId: order.borderEntryStation ?? '',
+      borderExitStationId: order.borderExitStation ?? '',
+      shipper: order.shipper ?? '',
+      receiver: order.receiver ?? '',
+      company: order.companyId ?? order.company ?? '',
+      loadPlanId: order.loadPlanId ?? '',
+      addendumId: order.addendumId ?? '',
+      addendumDetailId: order.addendumDetailId ?? '',
+      shippingCountryId: order.shippingCountryId ?? '',
+      destinationCountryId: order.destinationCountryId ?? '',
+      originCountryId: order.originCountryId ?? '',
+      hasReturn: order.hasReturn ?? true,
+      cargoId: order.cargoId ?? '',
+      yds: order.yds ?? '',
+      podcode: order.podcode ?? '',
+      warrantDate: this.formatDate(order.warrantDate),
+      note: order.note ?? '',
+    }, { emitEvent: false });
+
+    this.selectedCompany = { key: order.companyId, value: order.company };
+    this.selectedLoadStation = { key: order.shippingStationId, value: order.shippingStation };
+    this.selectedDestinationStation = { key: order.destinationStationId, value: order.destinationStation };
+    this.selectedBorderEntryStationId = order.borderEntryStationId;
+    this.selectedBorderExitStationId = order.borderExitStationId;
+    this.selectedCargoId = order.cargoId;
+
+    if (this.selectedCompany.key) {
+      this.clientOptionsCache = [this.selectedCompany];
+      this.commonService.getLoadPlansByCompany(this.selectedCompany.key).subscribe({
+        next: (res) => {
+          this.customOrders = this.normalizeArray<any>(res.data);
+          if (order.loadPlanId) {
+            this.orderForm.patchValue({ loadPlanId: order.loadPlanId }, { emitEvent: false });
+          }
+        }
+      });
+    }
+    if (this.selectedLoadStation.key) {
+      this.stationOptionsCache = [this.selectedLoadStation];
+    }
+    if (this.selectedDestinationStation.key) {
+      this.destStationOptionsCache = [this.selectedDestinationStation];
+    }
+
+    if (order.loadPlanId) {
+      this.contractService.getLoadPlanById(order.loadPlanId).subscribe({
+        next: (res) => {
+          this.addendumIdOpt = this.normalizeArray<any>(res.data);
+          addendumIdC?.patchValue(order.addendumId ?? '', { emitEvent: false });
+
+          if (order.addendumId) {
+            this.contractService.getAddendumById(order.addendumId).subscribe({
+              next: (res2) => {
+                const responseData = res2?.data ?? {};
+                this.addendumDetailOption = this.normalizeArray<any>(responseData.addendumDetails);
+                this.selectedCargoId = responseData.cargoId ?? '';
+                this.orderForm.patchValue({
+                  cargoId: responseData.cargo ?? ''
+                }, { emitEvent: false });
+
+                addendumDetailIdC?.patchValue(order.addendumDetailId ?? '', { emitEvent: true });
+              }
+            });
+          }
+        }
+      });
+    }
   }
 
   onCompanySelected(event: MatAutocompleteSelectedEvent) {
@@ -125,16 +230,34 @@ export class CreateformComponent {
     });
   }
 
-  displayCompany = (key: any): string => {
-    return this.clientOptionsCache?.find(x => x.key === key)?.value || '';
+  displayCompany = (value: any): string => {
+    if (!value) {
+      return '';
+    }
+    if (typeof value === 'object') {
+      return value.value ?? '';
+    }
+    return this.clientOptionsCache?.find(x => x.key === value)?.value || String(value);
   };
 
-  displayPointNames = (key: any): string => {
-    return this.stationOptionsCache?.find(x => x.key === key)?.value || '';
+  displayPointNames = (value: any): string => {
+    if (!value) {
+      return '';
+    }
+    if (typeof value === 'object') {
+      return value.value ?? '';
+    }
+    return this.stationOptionsCache?.find(x => x.key === value)?.value || String(value);
   };
 
-  displayDestPointNames = (key: any): string => {
-    return this.destStationOptionsCache?.find(x => x.key === key)?.value || '';
+  displayDestPointNames = (value: any): string => {
+    if (!value) {
+      return '';
+    }
+    if (typeof value === 'object') {
+      return value.value ?? '';
+    }
+    return this.destStationOptionsCache?.find(x => x.key === value)?.value || String(value);
   };
 
   orderForm = new FormGroup({
@@ -165,12 +288,20 @@ export class CreateformComponent {
     orderWagons: new FormArray([]),
   })
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedOrder']) {
+      const val = changes['selectedOrder'].currentValue;
+
+      this.patchSelectedOrder(val);
+    }
+  }
+
   ngOnInit() {
     this.clientOptions$ = this.orderForm.get('company')!.valueChanges.pipe(
       startWith(''),
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(value => this.commonService.getClients(value)),
+      switchMap(value => this.commonService.getClients(this.toAutocompleteText(value))),
       map(res => {
         const data = this.normalizeArray<any>(res.data);
         this.clientOptionsCache = data;
@@ -182,7 +313,7 @@ export class CreateformComponent {
       startWith(''),
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(value => this.commonService.getAllPoints(value)),
+      switchMap(value => this.commonService.getAllPoints(this.toAutocompleteText(value))),
       map(res => {
         const data = this.normalizeArray<any>(res.data);
         this.stationOptionsCache = data;
@@ -194,7 +325,7 @@ export class CreateformComponent {
       startWith(''),
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(value => this.commonService.getAllPoints(value)),
+      switchMap(value => this.commonService.getAllPoints(this.toAutocompleteText(value))),
       map(res => {
         const data = this.normalizeArray<any>(res.data);
         this.destStationOptionsCache = data;

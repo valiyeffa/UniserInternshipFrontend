@@ -1,5 +1,5 @@
 <div [hidden]="step !== 1">
-    <app-createform />
+    <app-createform [selectedOrder]="selectedOrder" />
     <button [disabled]="isFirstFormInvalid"
         class="bg-indigo-600 text-white shadow-lg w-fit rounded-lg p-2.5 font-semibold transition"
         [ngClass]="{ 'hover:bg-indigo-700 cursor-pointer': !isFirstFormInvalid, 'opacity-50 cursor-not-allowed': isFirstFormInvalid }"
@@ -7,7 +7,7 @@
 </div>
 
 <div [hidden]="step !== 2">
-    <app-create-step2 [tariffOptions]="tariffOptions" />
+    <app-create-step2 [tariffOptions]="tariffOptions" [selectedOrder]="selectedOrder" />
     <button (click)="prevStep()"
         class="bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer shadow-lg w-fit rounded-lg p-2.5 mx-4 font-semibold transition">Back</button>
     <button
