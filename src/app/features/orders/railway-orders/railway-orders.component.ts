@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from '../orders.service';
 import { RouterLink } from "@angular/router";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-railway-orders',
@@ -11,7 +12,9 @@ import { RouterLink } from "@angular/router";
   styles: ``
 })
 export class RailwayOrdersComponent {
-  constructor(private OrdersService: OrdersService) { }
+  constructor(private OrdersService: OrdersService,
+    private orderService: OrdersService
+  ) { }
 
   tableHeaders = [
     { name: 'Order', field: 'orderNo' },
@@ -97,6 +100,40 @@ export class RailwayOrdersComponent {
       },
       error: (err) => {
         console.error(err);
+      }
+    });
+  }
+
+  deleteFunc(id: number) {
+    Swal.fire({
+      title: 'Are you sure you want to delete order?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Order deleted!',
+          timer: 1000,
+          showConfirmButton: false
+        })
+        // this.orderService.deleteOrder(id).subscribe({
+        //   next: (res) => {
+        //     // console.log(res);
+        //     Swal.fire({
+        //       icon: 'success',
+        //       title: 'Order deleted!',
+        //       timer: 1000,
+        //       showConfirmButton: false
+        //     })
+        //   },
+        //   error: (err) => {
+        //     console.error(err);
+        //   },
+        // });
       }
     });
   }

@@ -52,7 +52,8 @@
                                         routerLink="/modules/orders/railwayOrders/edit/{{i.id}}"
                                         class="cursor-pointer rounded-lg border border-amber-300 bg-amber-100 p-2 transition hover:bg-amber-200">Edit</button>
                                     <button type="button"
-                                        class="cursor-pointer rounded-lg border border-red-300 bg-red-100 p-2 transition hover:bg-red-200">Delete</button>
+                                        class="cursor-pointer rounded-lg border border-red-300 bg-red-100 p-2 transition hover:bg-red-200"
+                                        (click)="deleteFunc(i.id)">Delete</button>
                                 </div>
                             </td>
                         </tr>
