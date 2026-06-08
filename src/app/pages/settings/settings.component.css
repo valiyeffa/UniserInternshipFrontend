@@ -1,0 +1,8 @@
+.settings-page {
+  min-height: calc(100vh - 64px);
+  background: #ffffff;
+}
+
+.settings-content {
+  padding: 0;
+}

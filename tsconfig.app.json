@@ -3,8 +3,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": []
+    "target": "ES2022",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2015",
+      "ES2020", 
+      "DOM",
+      "DOM.Iterable"
+    ]
   },
   "files": [
     "src/main.ts"

@@ -1,0 +1,79 @@
+<div class="railway-orders-page">
+  <div class="top-bar">
+    <div class="operations-wrapper">
+      <button class="btn-operations" (click)="toggleOperationsMenu($event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ops-icon-svg">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        Operations
+      </button>
+      <div class="operations-dropdown" *ngIf="showOperationsMenu" (click)="$event.stopPropagation()">
+        <button class="ops-item" (click)="openCreateForm()"><span class="ops-item-icon">⊕</span> Create</button>
+        <button class="ops-item" (click)="openEditForm()" [disabled]="!selectedOrder"><span class="ops-item-icon">✎</span> Edit</button>
+        <button class="ops-item delete-item" (click)="deleteSelectedOrder()" [disabled]="!selectedOrder"><span class="ops-item-icon">🗑</span> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="loading-wrap" *ngIf="isLoading"><div class="spinner"></div></div>
+
+  <div class="table-wrapper" *ngIf="!isLoading">
+    <div class="table-scroll">
+      <table class="railway-table">
+        <thead>
+          <tr class="header-row">
+            <th class="filterable-th" (click)="openFilter('orderNo', $event)"><span class="th-label">Order</span><input *ngIf="activeFilterColumn === 'orderNo'" class="inline-filter" data-col="orderNo" type="text" [(ngModel)]="filters.orderNo" (keydown)="onFilterKeydown($event, 'orderNo')" (blur)="applyFilter('orderNo')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('transportTypeName', $event)"><span class="th-label">Mode</span><input *ngIf="activeFilterColumn === 'transportTypeName'" class="inline-filter" data-col="transportTypeName" type="text" [(ngModel)]="filters.transportTypeName" (keydown)="onFilterKeydown($event, 'transportTypeName')" (blur)="applyFilter('transportTypeName')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('company', $event)"><span class="th-label">Company</span><input *ngIf="activeFilterColumn === 'company'" class="inline-filter" data-col="company" type="text" [(ngModel)]="filters.company" (keydown)="onFilterKeydown($event, 'company')" (blur)="applyFilter('company')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('startDate', $event)"><span class="th-label">Start date</span><input *ngIf="activeFilterColumn === 'startDate'" class="inline-filter" data-col="startDate" type="text" [(ngModel)]="filters.startDate" (keydown)="onFilterKeydown($event, 'startDate')" (blur)="applyFilter('startDate')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('endDate', $event)"><span class="th-label">End date</span><input *ngIf="activeFilterColumn === 'endDate'" class="inline-filter" data-col="endDate" type="text" [(ngModel)]="filters.endDate" (keydown)="onFilterKeydown($event, 'endDate')" (blur)="applyFilter('endDate')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('loadPlan', $event)"><span class="th-label">Load plan</span><input *ngIf="activeFilterColumn === 'loadPlan'" class="inline-filter" data-col="loadPlan" type="text" [(ngModel)]="filters.loadPlan" (keydown)="onFilterKeydown($event, 'loadPlan')" (blur)="applyFilter('loadPlan')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('addendumNo', $event)"><span class="th-label">Addendum №</span><input *ngIf="activeFilterColumn === 'addendumNo'" class="inline-filter" data-col="addendumNo" type="text" [(ngModel)]="filters.addendumNo" (keydown)="onFilterKeydown($event, 'addendumNo')" (blur)="applyFilter('addendumNo')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('cargo', $event)"><span class="th-label">Cargo (QNQ/ETSNQ)</span><input *ngIf="activeFilterColumn === 'cargo'" class="inline-filter" data-col="cargo" type="text" [(ngModel)]="filters.cargo" (keydown)="onFilterKeydown($event, 'cargo')" (blur)="applyFilter('cargo')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th num-col" (click)="openFilter('wagonCount', $event)"><span class="th-label">Count</span><input *ngIf="activeFilterColumn === 'wagonCount'" class="inline-filter" data-col="wagonCount" type="text" [(ngModel)]="filters.wagonCount" (keydown)="onFilterKeydown($event, 'wagonCount')" (blur)="applyFilter('wagonCount')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th num-col" (click)="openFilter('wagonWeight', $event)"><span class="th-label">Weight</span><input *ngIf="activeFilterColumn === 'wagonWeight'" class="inline-filter" data-col="wagonWeight" type="text" [(ngModel)]="filters.wagonWeight" (keydown)="onFilterKeydown($event, 'wagonWeight')" (blur)="applyFilter('wagonWeight')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('shippingStation', $event)"><span class="th-label">Loading station</span><input *ngIf="activeFilterColumn === 'shippingStation'" class="inline-filter" data-col="shippingStation" type="text" [(ngModel)]="filters.shippingStation" (keydown)="onFilterKeydown($event, 'shippingStation')" (blur)="applyFilter('shippingStation')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('destinationStation', $event)"><span class="th-label">Destination</span><input *ngIf="activeFilterColumn === 'destinationStation'" class="inline-filter" data-col="destinationStation" type="text" [(ngModel)]="filters.destinationStation" (keydown)="onFilterKeydown($event, 'destinationStation')" (blur)="applyFilter('destinationStation')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('borderEntry', $event)"><span class="th-label">Border entry</span><input *ngIf="activeFilterColumn === 'borderEntry'" class="inline-filter" data-col="borderEntry" type="text" [(ngModel)]="filters.borderEntry" (keydown)="onFilterKeydown($event, 'borderEntry')" (blur)="applyFilter('borderEntry')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('borderExit', $event)"><span class="th-label">Border exit</span><input *ngIf="activeFilterColumn === 'borderExit'" class="inline-filter" data-col="borderExit" type="text" [(ngModel)]="filters.borderExit" (keydown)="onFilterKeydown($event, 'borderExit')" (blur)="applyFilter('borderExit')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('warrant', $event)"><span class="th-label">Warrant</span><input *ngIf="activeFilterColumn === 'warrant'" class="inline-filter" data-col="warrant" type="text" [(ngModel)]="filters.warrant" (keydown)="onFilterKeydown($event, 'warrant')" (blur)="applyFilter('warrant')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('park', $event)"><span class="th-label">Park</span><input *ngIf="activeFilterColumn === 'park'" class="inline-filter" data-col="park" type="text" [(ngModel)]="filters.park" (keydown)="onFilterKeydown($event, 'park')" (blur)="applyFilter('park')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+            <th class="filterable-th" (click)="openFilter('createDate', $event)"><span class="th-label">Create date</span><input *ngIf="activeFilterColumn === 'createDate'" class="inline-filter" data-col="createDate" type="text" [(ngModel)]="filters.createDate" (keydown)="onFilterKeydown($event, 'createDate')" (blur)="applyFilter('createDate')" placeholder="Axtar..." (click)="$event.stopPropagation()"/></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders" [class.selected-row]="selectedOrder?.id === order.id" (click)="selectOrder(order)">
+            <td class="order-num" [title]="order.orderNo || ''">{{ order.orderNo }}</td>
+            <td><span class="mode-badge" [ngClass]="{'mode-import': order.transportTypeName === 'Import','mode-export': order.transportTypeName === 'Export','mode-transit': order.transportTypeName === 'Transit','mode-local': order.transportTypeName === 'Local'}">{{ order.transportTypeName || '–' }}</span></td>
+            <td class="ellipsis" [title]="order.company || ''">{{ order.company || '–' }}</td>
+            <td [title]="order.startDate || ''">{{ order.startDate || '–' }}</td>
+            <td [title]="order.endDate || ''">{{ order.endDate || '–' }}</td>
+            <td [title]="order.loadPlanNumber || ''">{{ order.loadPlanNumber || '–' }}</td>
+            <td class="ellipsis" [title]="order.addendumNo || ''">{{ order.addendumNo || '–' }}</td>
+            <td class="ellipsis" [title]="order.cargo || ''">{{ order.cargo || '–' }}</td>
+            <td class="num-col">{{ order.wagonCount ?? '–' }}</td>
+            <td class="num-col">{{ order.wagonWeight != null ? (order.wagonWeight | number) : '–' }}</td>
+            <td class="ellipsis" [title]="order.shippingStation || ''">{{ order.shippingStation || '–' }}</td>
+            <td class="ellipsis" [title]="order.destinationStation || ''">{{ order.destinationStation || '–' }}</td>
+            <td class="ellipsis" [title]="order.borderEntry || ''">{{ order.borderEntry || '–' }}</td>
+            <td class="ellipsis" [title]="order.borderExit || ''">{{ order.borderExit || '–' }}</td>
+            <td [title]="order.warrantDate || ''">{{ order.warrantDate || '–' }}</td>
+            <td [title]="order.parkType || ''">{{ order.parkType || '–' }}</td>
+            <td [title]="order.createDate || ''">{{ order.createDate || '–' }}</td>
+          </tr>
+          <tr *ngIf="orders.length === 0"><td colspan="17" class="no-data">Sifariş tapılmadı</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-bar">
+      <div class="page-size-selector"><span>Items per page:</span><select [(ngModel)]="pageSize" (change)="onPageSizeChange()"><option [value]="10">10</option><option [value]="15">15</option><option [value]="25">25</option><option [value]="50">50</option></select></div>
+      <div class="page-info">{{ (currentPage - 1) * pageSize + 1 }} – {{ Math.min(currentPage * pageSize, totalCount) }} of {{ totalCount }}</div>
+      <div class="page-nav"><button class="page-btn" (click)="goToPage(1)" [disabled]="currentPage === 1">|◁</button><button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">◁</button><button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">▷</button><button class="page-btn" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">▷|</button></div>
+    </div>
+  </div>
+</div>

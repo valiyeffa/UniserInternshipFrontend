@@ -1,5 +1,9 @@
+/* dashboard.component.css - YENİLƏNMİŞ VERSİYA */
+
 .dashboard {
-  padding: 32px;
+  padding: 40px 32px;
+  background: #f0f4ff;
+  min-height: 100vh;
 }
 
 .loading {
@@ -9,7 +13,7 @@
   justify-content: center;
   height: 300px;
   gap: 16px;
-  color: #64748b;
+  color: #6366f1;
 }
 
 .spinner {
@@ -28,96 +32,162 @@
 .error-box {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  color: #ef4444;
   padding: 16px;
   border-radius: 10px;
   margin-bottom: 20px;
 }
 
-.page-header {
-  margin-bottom: 32px;
-}
-
-.page-header h1 {
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.page-header p {
-  color: #64748b;
-  font-size: 14px;
-}
-
 .modules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
 .module-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 24px;
-  transition: border-color 0.2s;
+  background: linear-gradient(135deg, #dde8ff 0%, #eef2ff 60%, #f8f9ff 100%);
+  border: 2px solid #b8c4e6;  
+  border-radius: 20px;  
+  padding: 32px 28px;  
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  min-height: 190px;  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .module-card:hover {
-  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
+  border-color: #8a9bdc; 
 }
 
-.module-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+.module-card.active {
+  background: linear-gradient(135deg, #5b5fc7 0%, #6366f1 100%);
+  border-color: #4a4eaa;
 }
 
-.module-icon {
-  font-size: 24px;
-}
-
-.module-header h3 {
+.module-card.active .module-name {
   color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
 }
 
-.menu-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.module-card.active .module-underline {
+  background: rgba(255, 255, 255, 0.6);
 }
 
-.menu-item {
+.module-bg-icon {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  font-size: 100px; 
+  opacity: 0.15;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.module-icon-box {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 56px;  
+  height: 56px; 
+  background: #5b5fc7;
+  border-radius: 14px;  
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  font-size: 26px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.menu-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.module-card.active .module-icon-box {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.module-name {
+  color: #1e1b4b;
+  font-size: 18px; 
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.module-underline {
+  width: 32px;  
+  height: 3px;
   background: #6366f1;
-  flex-shrink: 0;
+  border-radius: 3px;
+  position: relative;
+  z-index: 1;
 }
 
-.menu-item a {
-  color: #94a3b8;
-  font-size: 14px;
-  text-decoration: none;
-  transition: color 0.2s;
+@media (max-width: 1200px) {
+  .modules-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .module-card {
+    min-height: 175px;
+    padding: 28px 24px;
+  }
+  
+  .module-icon-box {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+  
+  .module-bg-icon {
+    font-size: 85px;
+  }
 }
 
-.menu-item a:hover {
-  color: #ffffff;
+@media (max-width: 900px) {
+  .modules-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  
+  .module-card {
+    min-height: 165px;
+    padding: 24px 20px;
+  }
 }
 
-.no-menu {
-  color: #475569;
-  font-size: 13px;
-  font-style: italic;
+@media (max-width: 560px) {
+  .modules-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .dashboard {
+    padding: 24px 16px;
+  }
+  
+  .module-card {
+    min-height: 155px;
+    padding: 22px 20px;
+  }
+  
+  .module-icon-box {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .module-bg-icon {
+    font-size: 75px;
+  }
+  
+  .module-name {
+    font-size: 16px;
+  }
 }

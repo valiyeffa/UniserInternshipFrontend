@@ -1,64 +1,93 @@
 <div class="users-page">
-  <div class="page-header">
-    <div>
-      <h1>İstifadəçilər</h1>
-      <p>Sistemdəki bütün istifadəçiləri idarə edin</p>
+
+  <div class="top-bar">
+    <div class="operations-wrapper">
+      <button class="btn-operations" (click)="toggleOperationsMenu($event)">
+        <span class="ops-icon">⠿</span> Operations
+      </button>
+      <div class="operations-dropdown" *ngIf="showOperationsMenu" (click)="$event.stopPropagation()">
+        <button class="ops-item" (click)="openAddModal()">
+          <span class="ops-item-icon">⊕</span> Create
+        </button>
+        <button class="ops-item" (click)="openEditModalFromSelection()" [disabled]="!selectedUser">
+          <span class="ops-item-icon">✎</span> Edit
+        </button>
+        <button class="ops-item" (click)="openRolesModalFromSelection()" [disabled]="!selectedUser">
+          <span class="ops-item-icon">⚙</span> Roles
+        </button>
+        <button class="ops-item" (click)="resetPassword()" [disabled]="!selectedUser">
+          <span class="ops-item-icon">🔧</span> Reset password
+        </button>
+        <button class="ops-item delete-item" (click)="deleteSelectedUser()" [disabled]="!selectedUser">
+          <span class="ops-item-icon">🗑</span> Delete
+        </button>
+      </div>
     </div>
-    <button class="btn-add" (click)="openAddModal()">+ Yeni istifadəçi</button>
   </div>
 
-  <div class="error-box" *ngIf="errorMessage && !showModal">{{ errorMessage }}</div>
+  <div class="error-box" *ngIf="errorMessage && !showModal && !showRolesModal">{{ errorMessage }}</div>
 
   <div class="loading" *ngIf="isLoading">
     <div class="spinner"></div>
-    <p>Yüklənir...</p>
   </div>
 
   <div class="table-wrapper" *ngIf="!isLoading">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Ad Soyad</th>
-          <th>İstifadəçi adı</th>
-          <th>Email</th>
-          <th>Telefon</th>
-          <th>Status</th>
-          <th>Əməliyyatlar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>
-            <div class="user-cell">
-              <div class="user-avatar">{{ user.firstName ? user.firstName.charAt(0).toUpperCase() : '?' }}</div>
-              {{ user.firstName }} {{ user.lastName }}
-            </div>
-          </td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.phone1 || '-' }}</td>
-          <td>
-            <span class="status-badge" [class.active]="user.status" [class.inactive]="!user.status">
-              {{ user.status ? 'Aktiv' : 'Deaktiv' }}
-            </span>
-          </td>
-          <td>
-            <div class="actions">
-              <button class="btn-edit" (click)="openEditModal(user)">Düzəlt</button>
-              <button class="btn-delete" (click)="deleteUser(user.id)">Sil</button>
-            </div>
-          </td>
-        </tr>
-        <tr *ngIf="users.length === 0">
-          <td colspan="7" class="no-data">İstifadəçi tapılmadı</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>İstifadəçi adı</th>
+            <th>Phone</th>
+            <th>E-mail</th>
+            <th>Fin kod</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let user of pagedUsers"
+            [class.selected-row]="selectedUser?.id === user.id"
+            (click)="selectUser(user)">
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.phone1 || '' }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.finCode || '' }}</td>
+            <td>{{ user.status ? 'Aktiv' : 'Deaktiv' }}</td>
+          </tr>
+          <tr *ngIf="pagedUsers.length === 0">
+            <td colspan="7" class="no-data">İstifadəçi tapılmadı</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-bar">
+      <div class="page-size-selector">
+        <span>Items per page:</span>
+        <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+          <option [value]="10">10</option>
+          <option [value]="15">15</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+      <div class="page-info">
+        {{ (currentPage - 1) * pageSize + 1 }} – {{ Math.min(currentPage * pageSize, users.length) }} of {{ users.length }}
+      </div>
+      <div class="page-nav">
+        <button class="page-btn" (click)="goToPage(1)" [disabled]="currentPage === 1">|◁</button>
+        <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">◁</button>
+        <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">▷</button>
+        <button class="page-btn" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">▷|</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Modal -->
+  <!-- User Add/Edit Modal -->
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
     <div class="modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -136,11 +165,61 @@
 
         <div class="modal-footer">
           <button type="button" class="btn-cancel" (click)="closeModal()">Ləğv et</button>
-          <button type="submit" class="btn-save">
-            {{ isEditing ? 'Yadda saxla' : 'Əlavə et' }}
-          </button>
+          <button type="submit" class="btn-save">{{ isEditing ? 'Yadda saxla' : 'Əlavə et' }}</button>
         </div>
       </form>
     </div>
   </div>
+
+  <!-- Roles Modal -->
+  <div class="modal-overlay" *ngIf="showRolesModal" (click)="closeRolesModal()">
+    <div class="modal roles-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>İstifadəçi Rollları</h2>
+        <button class="btn-close" (click)="closeRolesModal()">✕</button>
+      </div>
+
+      <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div class="roles-loading" *ngIf="rolesLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <div class="roles-table-container" *ngIf="!rolesLoading">
+        <table class="roles-table">
+          <thead>
+            <tr>
+              <th style="width:50px">№</th>
+              <th>Rol</th>
+              <th style="width:80px">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let role of userRoles; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ role.name }}</td>
+              <td>
+                <button
+                  class="role-toggle"
+                  [class.active]="role.assignStatus"
+                  (click)="toggleRole(role)"
+                  type="button">
+                  <span class="toggle-circle"></span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="userRoles.length === 0">
+              <td colspan="3" class="no-data">Rol tapılmadı</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeRolesModal()">Ləğv et</button>
+        <button type="button" class="btn-save" (click)="saveUserRoles()" [disabled]="rolesLoading">Yadda saxla</button>
+      </div>
+    </div>
+  </div>
+
 </div>

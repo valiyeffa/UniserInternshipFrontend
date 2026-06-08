@@ -1,0 +1,397 @@
+<div class="form-page">
+
+  <div class="tabs-row">
+    <button class="tab-btn" [class.active]="activeTab === 'main'" (click)="activeTab = 'main'">
+      Main Information
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'wagons'" (click)="activeTab = 'wagons'">
+      Wagons
+    </button>
+  </div>
+
+  <form [formGroup]="mainForm" *ngIf="activeTab === 'main'" autocomplete="off">
+    <div class="fields-grid">
+
+      <div class="field-group">
+        <label>Order number</label>
+        <input type="text" formControlName="orderNo" readonly class="field-readonly"/>
+      </div>
+
+      <div class="field-group">
+        <label>Mode <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select formControlName="mode" [class.invalid]="f['mode'].invalid && f['mode'].touched">
+            <option [value]="null">Not selected</option>
+            <option *ngFor="let m of modeOptions" [value]="m.key ?? m.id">{{ m.value ?? m.name }}</option>
+          </select>
+        </div>
+        <span class="err-text" *ngIf="f['mode'].invalid && f['mode'].touched">Seçin</span>
+      </div>
+
+      <div class="field-group">
+        <label>Warrant number</label>
+        <input type="text" formControlName="warrantNumber" class="field-disabled" />
+      </div>
+
+      <div class="field-group">
+        <label>Warrant date</label>
+        <input type="date" formControlName="warrantDate" class="field-disabled" />
+      </div>
+
+      <div class="field-group autocomplete-wrap">
+        <label>Company <span class="req">*</span></label>
+        <input type="text"
+          [value]="companySearch"
+          (input)="onCompanyInput($any($event.target).value)"
+          (focus)="showCompanyDrop = companyOptions.length > 0"
+          [class.invalid]="companyError"
+          placeholder="Axtarın..."/>
+        <div class="autocomplete-drop" *ngIf="showCompanyDrop">
+          <div class="ac-item" *ngFor="let opt of companyOptions"
+            (mousedown)="selectCompany(opt)">
+            {{ opt.value }}
+          </div>
+        </div>
+        <span class="err-text" *ngIf="companyError">Şirkət seçin</span>
+      </div>
+
+      <div class="field-group">
+        <label>Customer order</label>
+        <div class="select-wrap">
+          <select formControlName="customerOrder" class="field-disabled" (change)="onCustomerOrderChange($any($event.target).value)">
+            <option [value]="null">Not selected</option>
+            <option *ngFor="let opt of customerOrderOptions" [value]="opt.key">
+              {{ opt.value }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Addendum number</label>
+        <div class="select-wrap">
+          <select formControlName="addendumNo" class="field-disabled" (change)="onAddendumChange($any($event.target).value)">
+            <option [value]="null">Not selected</option>
+            <option *ngFor="let opt of addendumOptions" [value]="opt.id">
+              {{ opt.addendumNo || opt.value }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Addendum details</label>
+        <div class="select-wrap">
+           <select formControlName="addendumDetails" class="field-disabled" (change)="onAddendumDetailChange($any($event.target).value)">
+              <option [value]="null">Not selected</option>
+              <option *ngFor="let opt of addendumDetailOptions" [value]="opt.id">
+                {{ opt.transportationModule }} - {{ opt.transportType }} - {{ opt.startPointName }} → {{ opt.endPointName }}
+              </option>
+            </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Start date <span class="req">*</span></label>
+        <input type="date" formControlName="startDate"
+          [class.invalid]="f['startDate'].invalid && f['startDate'].touched"/>
+        <span class="err-text" *ngIf="f['startDate'].invalid && f['startDate'].touched">Tarix daxil edin</span>
+      </div>
+
+      <div class="field-group">
+        <label>End date <span class="req">*</span></label>
+        <input type="date" formControlName="endDate"
+          [class.invalid]="f['endDate'].invalid && f['endDate'].touched"/>
+        <span class="err-text" *ngIf="f['endDate'].invalid && f['endDate'].touched">Tarix daxil edin</span>
+      </div>
+
+      <div class="field-group">
+        <label>Consignor <span class="req">*</span></label>
+        <input type="text" formControlName="consignor"
+          [class.invalid]="f['consignor'].invalid && f['consignor'].touched"/>
+        <span class="err-text" *ngIf="f['consignor'].invalid && f['consignor'].touched">Daxil edin</span>
+      </div>
+
+      <div class="field-group">
+        <label>Consignee <span class="req">*</span></label>
+        <input type="text" formControlName="consignee"
+          [class.invalid]="f['consignee'].invalid && f['consignee'].touched"/>
+        <span class="err-text" *ngIf="f['consignee'].invalid && f['consignee'].touched">Daxil edin</span>
+      </div>
+
+      <div class="field-group autocomplete-wrap">
+        <label>Loading station</label>
+        <input type="text"
+          [value]="loadingStationSearch"
+          (input)="onLoadingStationInput($any($event.target).value)"
+          (focus)="showLoadingStationDrop = loadingStationOptions.length > 0"
+          placeholder="Axtarın..."/>
+        <div class="autocomplete-drop" *ngIf="showLoadingStationDrop">
+          <div class="ac-item" *ngFor="let opt of loadingStationOptions"
+            (mousedown)="selectLoadingStation(opt)">
+            {{ opt.value ?? opt.name ?? opt }}
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group autocomplete-wrap">
+        <label>Destination</label>
+        <input type="text"
+          [value]="destinationSearch"
+          (input)="onDestinationInput($any($event.target).value)"
+          (focus)="showDestinationDrop = destinationOptions.length > 0"
+          placeholder="Axtarın..."/>
+        <div class="autocomplete-drop" *ngIf="showDestinationDrop">
+          <div class="ac-item" *ngFor="let opt of destinationOptions"
+            (mousedown)="selectDestination(opt)">
+            {{ opt.value ?? opt.name ?? opt }}
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group autocomplete-wrap">
+        <label>Border entry</label>
+        <input type="text"
+          [value]="borderEntrySearch"
+          (input)="onBorderEntryInput($any($event.target).value)"
+          (focus)="showBorderEntryDrop = borderEntryOptions.length > 0"
+          class="field-disabled"/>
+        <div class="autocomplete-drop" *ngIf="showBorderEntryDrop">
+          <div class="ac-item" *ngFor="let opt of borderEntryOptions"
+            (mousedown)="selectBorderEntry(opt)">
+            {{ opt.value ?? opt.name ?? opt }}
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group autocomplete-wrap">
+        <label>Border exit</label>
+        <input type="text"
+          [value]="borderExitSearch"
+          (input)="onBorderExitInput($any($event.target).value)"
+          (focus)="showBorderExitDrop = borderExitOptions.length > 0"
+          class="field-disabled"/>
+        <div class="autocomplete-drop" *ngIf="showBorderExitDrop">
+          <div class="ac-item" *ngFor="let opt of borderExitOptions"
+            (mousedown)="selectBorderExit(opt)">
+            {{ opt.value ?? opt.name ?? opt }}
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group col-span-4">
+        <label>Cargo (QNQ/ETSNQ)</label>
+        <input type="text" formControlName="cargo" placeholder="" class="field-disabled" />
+      </div>
+
+      <div class="field-group">
+        <label>Shipping country</label>
+        <div class="select-wrap">
+          <select formControlName="shippingCountry">
+            <option [value]="null">Not selected</option>
+            <option *ngFor="let c of countries" [value]="c.key ?? c.id">{{ c.value ?? c.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Destination country of the cargo</label>
+        <div class="select-wrap">
+          <select formControlName="destinationCountry">
+            <option [value]="null">Not selected</option>
+            <option *ngFor="let c of countries" [value]="c.key ?? c.id">{{ c.value ?? c.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Origin of cargo</label>
+        <div class="select-wrap">
+          <select formControlName="originOfCargo">
+            <option [value]="null">Not selected</option>
+            <option *ngFor="let c of countries" [value]="c.key ?? c.id">{{ c.value ?? c.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group center-self">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="emptyReturn" class="checkbox"/>
+          <span>Empty return</span>
+        </label>
+      </div>
+
+      <div class="field-group">
+        <label>YDS</label>
+        <input type="text" formControlName="yds" placeholder=""/>
+      </div>
+
+      <div class="field-group col-span-3">
+        <label>Note</label>
+        <input type="text" formControlName="note" placeholder=""/>
+      </div>
+
+    </div>
+
+    <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <div class="form-footer">
+      <button type="button" class="btn-exit" (click)="exit()">Exit</button>
+      <button type="button" class="btn-next" (click)="goToWagons()">Next</button>
+    </div>
+  </form>
+
+  <div *ngIf="activeTab === 'wagons'">
+
+    <form [formGroup]="wagonForm" class="wagon-inputs">
+      <div class="in-details-toggle">
+        <button type="button"
+          class="toggle-btn"
+          [class.on]="inDetails"
+          (click)="inDetails = !inDetails">
+          <span class="toggle-circle"></span>
+        </button>
+        <span class="toggle-label">In details</span>
+      </div>
+
+      <div class="wagon-fields">
+        <div class="field-group" *ngIf="inDetails">
+          <label>Number</label>
+          <input type="text" formControlName="number" placeholder=""/>
+        </div>
+
+        <div class="field-group">
+          <label>Tariff</label>
+          <div class="select-wrap">
+            <select formControlName="tariffId">
+              <option [value]="null">Not selected</option>
+              <option *ngFor="let t of tariffOptions" [value]="t.key">
+                {{ t.value }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Park</label>
+          <div class="select-wrap">
+            <select formControlName="parkId"
+              (change)="onParkChange($any($event.target).value)">
+              <option [value]="null">Not selected</option>
+              <option *ngFor="let p of parkOptions" [value]="p.key ?? p.id">{{ p.value ?? p.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Category <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select formControlName="categoryId"
+              [class.invalid]="wf['categoryId'].invalid && wf['categoryId'].touched">
+              <option [value]="null">Not selected</option>
+              <option *ngFor="let c of categoryOptions" [value]="c.key ?? c.id">{{ c.value ?? c.name }}</option>
+            </select>
+          </div>
+          <span class="err-text" *ngIf="wf['categoryId'].invalid && wf['categoryId'].touched">Seçin</span>
+        </div>
+
+        <div class="field-group">
+          <label>Type <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select formControlName="typeId"
+              (change)="onTypeChange($any($event.target).value)"
+              [class.invalid]="wf['typeId'].invalid && wf['typeId'].touched">
+              <option [value]="null">Not selected</option>
+              <option *ngFor="let t of typeOptions" [value]="t.key ?? t.id">{{ t.value ?? t.name }}</option>
+            </select>
+          </div>
+          <span class="err-text" *ngIf="wf['typeId'].invalid && wf['typeId'].touched">Seçin</span>
+        </div>
+
+        <div class="field-group">
+          <label>Weight <span class="req">*</span></label>
+          <input type="number" formControlName="weight"
+            [class.invalid]="wf['weight'].invalid && wf['weight'].touched"/>
+          <span class="err-text" *ngIf="wf['weight'].invalid && wf['weight'].touched">Daxil edin</span>
+        </div>
+
+        <div class="field-group">
+          <label>Count</label>
+          <input type="number" formControlName="count" min="1"/>
+        </div>
+      </div>
+
+      <div class="wagon-actions">
+        <button type="button" class="btn-add-wagon" (click)="addWagon()">+ Add</button>
+        <button type="button" class="btn-import-wagon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          Import
+        </button>
+      </div>
+    </form>
+
+    <div class="wagon-table-wrap">
+      <table class="wagon-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Number</th>
+            <th>Tariff</th>
+            <th>Park</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Weight</th>
+            <th>Count</th>
+            <th>#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let w of wagons; let i = index" [class.even-row]="i % 2 === 1">
+            <td>{{ i + 1 }}</td>
+            <td>{{ w.number || '–' }}</td>
+            <td>{{ w.tariff || '–' }}</td>
+            <td>{{ w.park || '–' }}</td>
+            <td>{{ w.category || '–' }}</td>
+            <td>{{ w.type || '–' }}</td>
+            <td>{{ w.weight }}</td>
+            <td>{{ w.count }}</td>
+            <td class="action-col">
+              <button class="btn-icon edit-icon" (click)="editWagon(i)" title="Düzəlt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+              <button class="btn-icon delete-icon" (click)="deleteWagon(i)" title="Sil">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                  <path d="M10 11v6M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="wagons.length === 0">
+            <td colspan="9" class="no-data">Vaqon əlavə edilməyib</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+    
+    <div class="form-footer">
+      <button type="button" class="btn-back" (click)="goToMain()">Back</button>
+      <button type="button" class="btn-approve" (click)="approve()" [disabled]="isSaving">
+        {{ isSaving ? 'Saxlanır...' : 'Approve' }}
+      </button>
+    </div>
+  </div>
+
+</div>

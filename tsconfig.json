@@ -3,7 +3,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
+    // "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -15,8 +15,14 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022"
+    "target": "ES2015",
+    "lib": [
+      "ES2015",
+      "ES2020", 
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ES2020"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
