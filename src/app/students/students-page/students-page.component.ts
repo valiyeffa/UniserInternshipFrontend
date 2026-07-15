@@ -80,7 +80,7 @@ export class StudentsPageComponent implements OnInit {
   onSubmit() {
     // Form invalid olarsa bütün sahələri touched et
     if (this.studentForm.invalid) {
-      this.studentForm.markAllAsTouched();
+      this.studentForm.markAllAsTouched();  
       return;
     }
 
